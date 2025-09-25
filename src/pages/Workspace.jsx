@@ -31,6 +31,23 @@ function Workspace({ onOpenProducts, onNavigateToOrders }) {
 
   return (
     <div className="page-content">
+      {/* 更多内容即将到来提示块 */}
+      <div className="coming-soon-banner">
+        <div className="coming-soon-content">
+          <div className="coming-soon-icon">
+            <div className="person-icon">👤</div>
+            <div className="card-icon">💳</div>
+          </div>
+          <div className="coming-soon-text">
+            <h3>更多内容</h3>
+            <p>即将到来</p>
+          </div>
+          <div className="coming-soon-badge">
+            <span>coming soon</span>
+          </div>
+        </div>
+      </div>
+
       {/* 功能网格 */}
       <div className="function-grid">
         <div className="function-item" onClick={() => handleNavigateToFunction('shipped')}>
