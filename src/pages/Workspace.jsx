@@ -31,31 +31,6 @@ function Workspace({ onOpenProducts, onNavigateToOrders }) {
 
   return (
     <div className="page-content">
-      {/* 顶部卡片区域 */}
-      <div className="top-card">
-        <div className="card-content">
-          <div className="card-icon">
-            <svg width="120" height="80" viewBox="0 0 120 80" fill="none">
-              {/* 卡片背景 */}
-              <rect x="10" y="20" width="80" height="50" rx="8" fill="#E3F2FD" stroke="#2196F3" strokeWidth="2"/>
-              {/* 放大镜 */}
-              <circle cx="75" cy="35" r="12" fill="none" stroke="#2196F3" strokeWidth="3"/>
-              <line x1="84" y1="44" x2="95" y2="55" stroke="#2196F3" strokeWidth="3" strokeLinecap="round"/>
-              {/* 人物 */}
-              <circle cx="35" cy="30" r="4" fill="#2196F3"/>
-              <path d="M25 45 Q35 40 45 45 L45 55 L25 55 Z" fill="#2196F3"/>
-            </svg>
-          </div>
-          <div className="card-text">
-            <h3>更多内容</h3>
-            <p>敬请期待</p>
-          </div>
-          <div className="coming-soon">
-            <span className="coming-badge">coming soon</span>
-          </div>
-        </div>
-      </div>
-
       {/* 功能网格 */}
       <div className="function-grid">
         <div className="function-item" onClick={() => handleNavigateToFunction('shipped')}>

@@ -8,59 +8,7 @@
     gap: 24px;
 }
 
-/* 顶部卡片 */
-.top-card {
-    background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(33, 150, 243, 0.1);
-}
 
-.card-content {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    position: relative;
-}
-
-.card-icon {
-    flex-shrink: 0;
-}
-
-.card-text {
-    flex: 1;
-}
-
-.card-text h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 4px;
-}
-
-.card-text p {
-    font-size: 14px;
-    color: #666;
-}
-
-.coming-soon {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-}
-
-.coming-badge {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    color: white;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 4px 8px;
-    border-radius: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(238, 90, 36, 0.3);
-}
 
 /* 功能网格 */
 .function-grid {
