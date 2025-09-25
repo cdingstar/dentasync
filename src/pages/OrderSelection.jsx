@@ -40,6 +40,11 @@ function OrderSelection({ onClose, productName }) {
     setShowOrderForm(false)
   }
 
+  // 如果显示订单表单，则只显示订单表单
+  if (showOrderForm) {
+    return <OrderForm onClose={closeOrderForm} />
+  }
+
   return (
     <div className="order-selection-page">
       {/* 顶部导航栏 */}
@@ -114,11 +119,6 @@ function OrderSelection({ onClose, productName }) {
             立即下单
           </button>
       </div>
-
-      {/* 订单表单页面 */}
-      {showOrderForm && (
-        <OrderForm onClose={closeOrderForm} />
-      )}
     </div>
   )
 }

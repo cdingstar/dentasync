@@ -44,10 +44,10 @@ function OrderForm({ onClose }) {
         <div className="header-left">
           <div className="back-btn" onClick={onClose}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M12.5 15L7.5 10L12.5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <div className="header-title">下单</div>
+          <div className="header-title">创建订单</div>
         </div>
       </div>
 
@@ -251,7 +251,7 @@ function OrderForm({ onClose }) {
       {/* 底部提交按钮 */}
       <div className="order-form-footer">
         <button className="submit-btn" onClick={handleSubmitOrder}>
-          提交订单
+          提交
         </button>
       </div>
     </div>

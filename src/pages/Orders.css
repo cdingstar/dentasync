@@ -194,6 +194,7 @@
 }
 
 .btn-detail,
+.btn-submit,
 .btn-confirm,
 .btn-track {
     padding: 8px 16px;
@@ -212,6 +213,15 @@
 
 .btn-detail:hover {
     background: #e8e8e8;
+}
+
+.btn-submit {
+    background: #9c27b0;
+    color: white;
+}
+
+.btn-submit:hover {
+    background: #7b1fa2;
 }
 
 .btn-confirm {

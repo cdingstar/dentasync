@@ -19,9 +19,9 @@ function Workspace({ onOpenProducts, onNavigateToOrders }) {
   }
 
   const handlePendingOrders = () => {
-    // 点击"待下单"进入Orders页面
+    // 点击"待下单"进入Orders页面并默认显示"待下单"标签
     if (onNavigateToOrders) {
-      onNavigateToOrders()
+      onNavigateToOrders('draft')
     }
   }
 

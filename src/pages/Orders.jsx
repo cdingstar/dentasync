@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import './Orders.css'
 
-function Orders() {
-  const [activeTab, setActiveTab] = useState('all')
+function Orders({ defaultTab = 'all' }) {
+  const [activeTab, setActiveTab] = useState(defaultTab)
   
   const orders = [
     {
@@ -48,11 +48,34 @@ function Orders() {
       createTime: '2024-01-16 16:45',
       expectedTime: '2024-01-25',
       urgency: 'emergency'
+    },
+    {
+      id: 'ORD-2024-005',
+      patientName: '陈七',
+      productType: 'D1氧化锆全瓷牙',
+      toothPosition: '21, 22',
+      status: 'draft',
+      statusText: '待下单',
+      createTime: '2024-01-17 11:20',
+      expectedTime: '2024-01-26',
+      urgency: 'normal'
+    },
+    {
+      id: 'ORD-2024-006',
+      patientName: '刘八',
+      productType: '全瓷冠',
+      toothPosition: '16',
+      status: 'draft',
+      statusText: '待下单',
+      createTime: '2024-01-17 15:30',
+      expectedTime: '2024-01-27',
+      urgency: 'urgent'
     }
   ]
 
   const getStatusColor = (status) => {
     switch (status) {
+      case 'draft': return '#9c27b0'
       case 'pending': return '#ff9800'
       case 'processing': return '#2196f3'
       case 'shipped': return '#4caf50'
@@ -86,6 +109,7 @@ function Orders() {
 
   const tabs = [
     { id: 'all', label: '全部', count: orders.length },
+    { id: 'draft', label: '待下单', count: orders.filter(o => o.status === 'draft').length },
     { id: 'pending', label: '待确认', count: orders.filter(o => o.status === 'pending').length },
     { id: 'processing', label: '制作中', count: orders.filter(o => o.status === 'processing').length },
     { id: 'shipped', label: '已发货', count: orders.filter(o => o.status === 'shipped').length },
@@ -161,6 +185,9 @@ function Orders() {
             
             <div className="order-actions">
               <button className="btn-detail">查看详情</button>
+              {order.status === 'draft' && (
+                <button className="btn-submit">提交订单</button>
+              )}
               {order.status === 'pending' && (
                 <button className="btn-confirm">确认订单</button>
               )}

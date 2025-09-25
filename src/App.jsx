@@ -14,6 +14,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('workspace')
   const [showProducts, setShowProducts] = useState(false)
   const [showOrderSelection, setShowOrderSelection] = useState(false)
+  const [ordersDefaultTab, setOrdersDefaultTab] = useState('all')
 
   const handlePageChange = (page) => {
     if (page === 'order') {
@@ -38,18 +39,25 @@ function App() {
     setShowProducts(false)
   }
 
+  const handleNavigateToOrders = (defaultTab = 'all') => {
+    setOrdersDefaultTab(defaultTab)
+    setCurrentPage('orders')
+    setShowProducts(false)
+    setShowOrderSelection(false)
+  }
+
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'workspace':
         return <Workspace 
           onOpenProducts={handleOpenProducts} 
-          onNavigateToOrders={() => setCurrentPage('orders')}
+          onNavigateToOrders={handleNavigateToOrders}
         />
       case 'messages':
         return <Messages />
 
       case 'orders':
-        return <Orders />
+        return <Orders defaultTab={ordersDefaultTab} />
       case 'more':
         return <More />
       default:
