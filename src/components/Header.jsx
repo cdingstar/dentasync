@@ -1,13 +1,31 @@
 import React, { useState } from 'react'
 import './Header.css'
 
-function Header() {
+function Header({ currentPage }) {
   const [showDropdown, setShowDropdown] = useState(false)
   const [selectedOrg, setSelectedOrg] = useState({
     id: 1,
     name: 'ASIANTECH PTE. LTD.',
     icon: '🏢'
   })
+
+  // 根据当前页面决定显示内容
+  const getHeaderContent = () => {
+    if (currentPage === 'orders') {
+      return {
+        name: '订单管理',
+        icon: '📋',
+        showDropdown: false
+      }
+    }
+    return {
+      name: selectedOrg.name,
+      icon: selectedOrg.icon,
+      showDropdown: true
+    }
+  }
+
+  const headerContent = getHeaderContent()
 
   const organizations = [
     { id: 1, name: 'ASIANTECH PTE. LTD.', icon: '🏢' },
@@ -16,7 +34,9 @@ function Header() {
   ]
 
   const toggleDropdown = () => {
-    setShowDropdown(!showDropdown)
+    if (headerContent.showDropdown) {
+      setShowDropdown(!showDropdown)
+    }
   }
 
   const selectOrganization = (org) => {
@@ -29,18 +49,20 @@ function Header() {
       <div className="header-content">
         <div className="header-left">
           <div className="org-selector" onClick={toggleDropdown}>
-            <div className="org-icon">{selectedOrg.icon}</div>
+            <div className="org-icon">{headerContent.icon}</div>
             <div className="org-info">
-              <div className="org-name">{selectedOrg.name}</div>
+              <div className="org-name">{headerContent.name}</div>
             </div>
-            <div className={`dropdown-arrow ${showDropdown ? 'open' : ''}`}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 6L8 10L12 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
+            {headerContent.showDropdown && (
+              <div className={`dropdown-arrow ${showDropdown ? 'open' : ''}`}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 6L8 10L12 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            )}
           </div>
           
-          {showDropdown && (
+          {showDropdown && headerContent.showDropdown && (
             <div className="org-dropdown">
               {organizations.map(org => (
                 <div 

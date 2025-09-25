@@ -1,51 +1,146 @@
 /* 订单页面样式 */
 .orders-page {
     background: white;
-    min-height: 100%;
+    width: 100%;
+    max-width: 414px;
+    height: calc(100vh - env(safe-area-inset-top, 44px) - 44px);
     display: flex;
     flex-direction: column;
+    position: relative;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
+/* 顶部导航栏 */
 .orders-header {
-    padding: 20px;
-    border-bottom: 1px solid #f0f0f0;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background: #f8f9fa;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: white;
+    border-bottom: 1px solid #f0f0f0;
+    position: absolute;
+    top: -44px;
+    left: 0;
+    right: 0;
+    height: 44px;
+    z-index: 1000;
 }
 
-.orders-header h2 {
-    font-size: 20px;
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.header-title {
+    font-size: 18px;
     font-weight: 600;
     color: #333;
 }
 
-.header-actions {
-    display: flex;
-    gap: 8px;
+/* 搜索容器 */
+.search-container {
+    position: relative;
+    flex: 1;
+    max-width: 320px;
+    margin-right: 8px;
+    margin-left: auto;
 }
 
-.refresh-btn,
-.search-btn {
-    width: 36px;
-    height: 36px;
-    border: none;
+.search-container input {
+    width: 100%;
+    padding: 8px 80px 8px 12px;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    background: #f8f9fa;
+    box-sizing: border-box;
+}
+
+.search-container input:focus {
+    border-color: #2196f3;
     background: white;
-    cursor: pointer;
+}
+
+.search-clear {
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    color: #999;
     font-size: 16px;
+    border-radius: 50%;
     transition: all 0.2s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.refresh-btn:hover,
-.search-btn:hover {
+.search-clear:hover {
     background: #f0f0f0;
-    transform: translateY(-1px);
+    color: #666;
+}
+
+.search-btn {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 28px;
+    padding: 0 8px;
+    background: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.2s;
+}
+
+.search-btn:hover {
+    background: #1976d2;
+}
+
+.search-btn svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* 医生头像 */
+.doctor-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e0e0e0;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.doctor-avatar:hover {
+    border-color: #2196f3;
+}
+
+.doctor-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .orders-tabs {
@@ -110,17 +205,11 @@
 
 .order-item {
     background: white;
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 8px;
+    padding: 12px;
     margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f0f0f0;
-    transition: all 0.2s;
-}
-
-.order-item:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
 }
 
 .order-header {
@@ -131,115 +220,155 @@
 }
 
 .order-id {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 500;
     color: #333;
 }
 
-.order-urgency {
+.order-status-tag {
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
+    color: white;
     padding: 4px 8px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
 }
 
-.order-content {
+.order-main {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
+    gap: 12px;
+    margin-bottom: 4px;
 }
 
-.order-info {
+.order-number {
+    width: 48px;
+    height: 48px;
+    background: #4285f4;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.order-details {
     flex: 1;
 }
 
-.info-row {
+.patient-info {
     display: flex;
+    align-items: center;
+    gap: 8px;
     margin-bottom: 6px;
+}
+
+.patient-label {
     font-size: 14px;
-}
-
-.info-row .label {
     color: #666;
-    width: 80px;
-    flex-shrink: 0;
 }
 
-.info-row .value {
-    color: #333;
-    font-weight: 500;
-}
-
-.order-status {
-    flex-shrink: 0;
-    margin-left: 16px;
-}
-
-.status-badge {
-    color: white;
-    font-size: 12px;
+.patient-name {
+    font-size: 14px;
     font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 16px;
-    text-align: center;
-    min-width: 60px;
+    color: #333;
 }
+
+.urgency-tag {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #e8f5e8;
+}
+
+.responsibility-unit {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.delivery-date {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+
 
 .order-actions {
     display: flex;
-    gap: 8px;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 2px;
 }
 
-.btn-detail,
-.btn-submit,
-.btn-confirm,
-.btn-track {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
+.action-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.institution-name {
     font-size: 12px;
+    color: #666;
+    line-height: 1.3;
+    text-align: left;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    max-width: 200px;
+}
+
+.btn-chat,
+.btn-logistics,
+.btn-confirm-receipt {
+    padding: 6px 6px;
+    border: 1px solid #4285f4;
+    border-radius: 4px;
+    font-size: 10px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+    text-align: center;
+    white-space: nowrap;
+    min-width: 50px;
+    flex: 1;
 }
 
-.btn-detail {
-    background: #f5f5f5;
-    color: #666;
-}
-
-.btn-detail:hover {
-    background: #e8e8e8;
-}
-
-.btn-submit {
-    background: #9c27b0;
+.btn-chat {
+    background: #4285f4;
     color: white;
 }
 
-.btn-submit:hover {
-    background: #7b1fa2;
+.btn-chat:hover {
+    background: #3367d6;
 }
 
-.btn-confirm {
-    background: #4caf50;
+.btn-logistics {
+    background: white;
+    color: #4285f4;
+}
+
+.btn-logistics:hover {
+    background: #f8f9ff;
+}
+
+.btn-confirm-receipt {
+    background: #4285f4;
     color: white;
 }
 
-.btn-confirm:hover {
-    background: #45a049;
-}
-
-.btn-track {
-    background: #2196f3;
-    color: white;
-}
-
-.btn-track:hover {
-    background: #1976d2;
+.btn-confirm-receipt:hover {
+    background: #3367d6;
 }
 
 .empty-state {

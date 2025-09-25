@@ -229,6 +229,8 @@
     font-size: 14px;
     color: #333;
     margin-bottom: 12px;
+    margin-right: 16px;
+    flex-shrink: 0;
 }
 
 .option-label::before {
@@ -241,6 +243,13 @@
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    flex: 1;
+}
+
+.option-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
 .option-btn {
@@ -280,25 +289,6 @@
     padding: 16px;
 }
 
-.delivery-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.delivery-label {
-    font-size: 14px;
-    color: #333;
-}
-
-.delivery-value {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: #333;
-    font-size: 14px;
-}
-
 /* 颜色选择区域 */
 .color-section {
     background: white;
@@ -323,56 +313,235 @@
     color: #333;
 }
 
-.color-input-container {
+.color-items {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
-.color-input {
-    flex: 1;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
+.color-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.color-card {
+    position: relative;
+    background: #e3f2fd;
+    border: 2px solid #2196f3;
+    border-radius: 12px;
+    padding: 12px;
+    width: 120px;
+    height: 80px;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1px;
+    height: 100%;
+    background: #2196f3;
     border-radius: 4px;
-    font-size: 14px;
+    overflow: hidden;
+}
+
+.color-grid.empty {
+    background: #e0e0e0;
+}
+
+.color-cell {
     background: white;
-    outline: none;
-}
-
-.color-input:focus {
-    border-color: #007AFF;
-}
-
-.main-color-section {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 500;
+    color: #333;
 }
 
-.main-color-label {
-    font-size: 12px;
-    color: #666;
+.color-grid.empty .color-cell {
+    background: #f5f5f5;
 }
+
+.color-delete-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 2;
+}
+
+.color-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
 
 .color-brand {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.brand-label {
     font-size: 12px;
-    color: #333;
+    color: #666;
 }
 
 .brand-text {
+    font-size: 12px;
     color: #007AFF;
+    font-weight: 500;
 }
 
-.brand-add-btn {
+.brand-add-btn,
+.brand-edit-btn {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 2px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.brand-add-btn:hover,
+.brand-edit-btn:hover {
+    background: rgba(0, 122, 255, 0.1);
+}
+
+.add-detail-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px;
+    color: #2196f3;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 8px;
+}
+
+.add-detail-link:hover {
+    background: #f0f8ff;
+}
+
+.add-detail-link .add-icon {
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.add-detail-link .add-text {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 质保卡选项 */
+.warranty-options {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+}
+
+.warranty-btn {
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    background: white;
+    font-size: 12px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.warranty-btn.active {
+    background: #2196F3;
+    color: white;
+    border-color: #2196F3;
+}
+
+.warranty-btn:hover:not(.active) {
+    border-color: #2196F3;
+    color: #2196F3;
+}
+
+/* 附件功能按钮区域 */
+.attachment-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-item:hover {
+    background: #e3f2fd;
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    width: 48px;
+    height: 48px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-text {
+    font-size: 12px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* 地址信息 */
+.address-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.location-icon {
+    flex-shrink: 0;
+}
+
+.address-text {
+    flex: 1;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.address-arrow {
+    flex-shrink: 0;
 }
 
 /* 底部提交按钮 */
@@ -403,6 +572,147 @@
     background: #004499;
 }
 
+/* 详细内容区域 */
+.detail-content-section {
+    background: white;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.attachment-content-section {
+    background: white;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.section-header {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.section-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    transform: skewX(-20deg);
+    transform-origin: left;
+}
+
+.section-icon {
+    font-size: 18px;
+    margin-right: 8px;
+    z-index: 1;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    z-index: 1;
+}
+
+.collapse-hint {
+    font-size: 12px;
+    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 4px 8px;
+    border-radius: 12px;
+    z-index: 1;
+}
+
+.detail-form,
+.attachment-form {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group .form-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.form-group .form-label::before {
+    display: none;
+}
+
+
+
+.add-detail-btn,
+.add-design-btn,
+.add-attachment-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background 0.2s;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.add-detail-btn:hover,
+.add-design-btn:hover,
+.add-attachment-btn:hover {
+    background: rgba(33, 150, 243, 0.1);
+}
+
+.design-add-area {
+    background: #f8f9fa;
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.design-add-area:hover {
+    border-color: #2196F3;
+    background: #f0f8ff;
+}
+
+.add-design-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-icon {
+    font-size: 24px;
+    color: #2196F3;
+    font-weight: 300;
+}
+
+.add-text {
+    font-size: 14px;
+    color: #2196F3;
+    font-weight: 500;
+}
+
 /* 移动端适配 */
 @media (max-width: 480px) {
     .option-buttons {
@@ -418,7 +728,12 @@
         padding: 12px 16px;
     }
     
-    .product-section, .option-section, .delivery-section, .color-section {
+    .product-section, .option-section, .delivery-section, .color-section,
+    .detail-content-section, .attachment-content-section {
         padding: 12px;
+    }
+    
+    .detail-form, .attachment-form {
+        padding: 16px;
     }
 }

@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
 import './Orders.css'
+import OrderChat from './OrderChat'
+import OrderDetail from './OrderDetail'
 
 function Orders({ defaultTab = 'all' }) {
   const [activeTab, setActiveTab] = useState(defaultTab)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showChat, setShowChat] = useState(false)
+  const [showDetail, setShowDetail] = useState(false)
+  const [selectedOrderId, setSelectedOrderId] = useState('')
+  const [selectedOrder, setSelectedOrder] = useState(null)
   
   const orders = [
     {
@@ -102,8 +109,69 @@ function Orders({ defaultTab = 'all' }) {
     }
   }
 
+  const getStatusPercentage = (status) => {
+    switch (status) {
+      case 'draft': return '0%'
+      case 'pending': return '10%'
+      case 'processing': return '60%'
+      case 'shipped': return '90%'
+      case 'completed': return '100%'
+      default: return '0%'
+    }
+  }
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value)
+  }
+
+  const clearSearch = () => {
+    setSearchQuery('')
+  }
+
+  const executeSearch = () => {
+    console.log('执行搜索:', searchQuery)
+  }
+
+  const handleSearchKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      executeSearch()
+    }
+  }
+
+  const handleChatOpen = (orderId) => {
+    setSelectedOrderId(orderId)
+    setShowChat(true)
+  }
+
+  const handleChatClose = () => {
+    setShowChat(false)
+    setSelectedOrderId('')
+  }
+
+  const handleDetailOpen = (order) => {
+    setSelectedOrder(order)
+    setShowDetail(true)
+  }
+
+  const handleDetailClose = () => {
+    setShowDetail(false)
+    setSelectedOrder(null)
+  }
+
   const filteredOrders = orders.filter(order => {
-    if (activeTab === 'all') return true
+    if (activeTab === 'all') {
+      if (searchQuery && !order.patientName.toLowerCase().includes(searchQuery.toLowerCase()) && 
+          !order.productType.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !order.id.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false
+      }
+      return true
+    }
+    if (searchQuery && !order.patientName.toLowerCase().includes(searchQuery.toLowerCase()) && 
+        !order.productType.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        !order.id.toLowerCase().includes(searchQuery.toLowerCase())) {
+      return false
+    }
     return order.status === activeTab
   })
 
@@ -118,11 +186,34 @@ function Orders({ defaultTab = 'all' }) {
 
   return (
     <div className="orders-page">
+      {/* 顶部导航栏 */}
       <div className="orders-header">
-        <h2>订单管理</h2>
-        <div className="header-actions">
-          <button className="refresh-btn">🔄</button>
-          <button className="search-btn">🔍</button>
+        <div className="header-left">
+          <div className="header-title">订单管理</div>
+        </div>
+        <div className="header-right">
+          <div className="search-container">
+            <input 
+              type="text" 
+              placeholder="患者姓名/产品名称/订单号" 
+              value={searchQuery}
+              onChange={handleSearch}
+              onKeyPress={handleSearchKeyPress}
+            />
+            {searchQuery && (
+              <div className="search-clear" onClick={clearSearch}>×</div>
+            )}
+            <button className="search-btn" onClick={executeSearch}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M14 14L10.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              搜索
+            </button>
+          </div>
+          <div className="doctor-avatar">
+            <img src="/api/placeholder/32/32" alt="医生头像" />
+          </div>
         </div>
       </div>
 
@@ -140,60 +231,48 @@ function Orders({ defaultTab = 'all' }) {
       </div>
 
       <div className="orders-list">
-        {filteredOrders.map(order => (
+        {filteredOrders.map((order, index) => (
           <div key={order.id} className="order-item">
             <div className="order-header">
               <div className="order-id">{order.id}</div>
-              <div className="order-urgency" style={{ color: getUrgencyColor(order.urgency) }}>
-                {getUrgencyText(order.urgency)}
+              <div className="order-status-tag" style={{ backgroundColor: getStatusColor(order.status) }}>
+                {order.statusText} {getStatusPercentage(order.status)}
               </div>
             </div>
             
-            <div className="order-content">
-              <div className="order-info">
-                <div className="info-row">
-                  <span className="label">患者：</span>
-                  <span className="value">{order.patientName}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">产品：</span>
-                  <span className="value">{order.productType}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">牙位：</span>
-                  <span className="value">{order.toothPosition}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">下单时间：</span>
-                  <span className="value">{order.createTime}</span>
-                </div>
-                <div className="info-row">
-                  <span className="label">预计完成：</span>
-                  <span className="value">{order.expectedTime}</span>
-                </div>
+            <div className="order-main">
+              <div className="order-number">
+                {String(index + 1).padStart(2, '0')}
               </div>
               
-              <div className="order-status">
-                <div 
-                  className="status-badge"
-                  style={{ backgroundColor: getStatusColor(order.status) }}
-                >
-                  {order.statusText}
+              <div className="order-details">
+                <div className="patient-info">
+                  <span className="patient-label">患者:</span>
+                  <span className="patient-name">{order.patientName}</span>
+                  <span className="urgency-tag" style={{ color: getUrgencyColor(order.urgency) }}>
+                    {getUrgencyText(order.urgency)}
+                  </span>
+                </div>
+                
+                <div className="responsibility-unit">
+                  责任单位: 南宁市靖佳齿科技术中心
+                </div>
+                
+                <div className="delivery-date">
+                  预计到货: {order.expectedTime}
                 </div>
               </div>
             </div>
             
             <div className="order-actions">
-              <button className="btn-detail">查看详情</button>
-              {order.status === 'draft' && (
-                <button className="btn-submit">提交订单</button>
-              )}
-              {order.status === 'pending' && (
-                <button className="btn-confirm">确认订单</button>
-              )}
-              {order.status === 'processing' && (
-                <button className="btn-track">跟踪进度</button>
-              )}
+              <div className="action-left">
+                <div className="institution-name">ASIANTECH PTE. LTD. - 黄向荣</div>
+              </div>
+              <div className="action-buttons">
+                <button className="btn-chat" onClick={() => handleChatOpen(order.id)}>在线交流</button>
+                <button className="btn-logistics">查看物流</button>
+                <button className="btn-confirm-receipt" onClick={() => handleDetailOpen(order)}>查看详情</button>
+              </div>
             </div>
           </div>
         ))}
@@ -204,6 +283,20 @@ function Orders({ defaultTab = 'all' }) {
           <div className="empty-icon">📋</div>
           <div className="empty-text">暂无订单</div>
         </div>
+      )}
+
+      {showChat && (
+        <OrderChat 
+          orderId={selectedOrderId}
+          onClose={handleChatClose}
+        />
+      )}
+
+      {showDetail && (
+        <OrderDetail 
+          order={selectedOrder}
+          onClose={handleDetailClose}
+        />
       )}
     </div>
   )

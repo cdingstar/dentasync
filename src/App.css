@@ -3,6 +3,8 @@
     position: relative;
     overflow-y: auto;
     background: white;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* 加载动画 */

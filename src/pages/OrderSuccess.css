@@ -1,0 +1,290 @@
+/* 订单成功页面样式 */
+.order-success-page {
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%);
+  padding: 20px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* 成功状态头部 */
+.success-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.success-icon {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.success-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #2196F3;
+  margin: 0;
+}
+
+/* 快递信息区域 */
+.delivery-info {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.delivery-instruction {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.highlight {
+  color: #2196F3;
+  font-weight: 600;
+}
+
+/* 快递号码 */
+.tracking-number {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.digit-box {
+  width: 40px;
+  height: 50px;
+  background: #f8f9fa;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* 订单详情 */
+.order-details {
+  text-align: left;
+}
+
+.order-number {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.delivery-schedule {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.delivery-date {
+  color: #2196F3;
+  font-weight: 600;
+}
+
+/* 详细信息区域 */
+.detail-info {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.info-section {
+  margin-bottom: 20px;
+}
+
+.info-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.section-content {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 下次速单区域 */
+.quick-order-section {
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.quick-order-card {
+  background: linear-gradient(135deg, #64B5F6 0%, #2196F3 100%);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+}
+
+.quick-order-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.quick-order-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.go-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  border-radius: 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.go-btn:hover {
+  background: white;
+  color: #2196F3;
+}
+
+.qr-placeholder {
+  width: 60px;
+  height: 60px;
+}
+
+.qr-code {
+  width: 100%;
+  height: 100%;
+  background: white;
+  border-radius: 8px;
+  opacity: 0.9;
+}
+
+/* 底部按钮 */
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.btn-secondary {
+  flex: 1;
+  padding: 14px 24px;
+  background: white;
+  color: #2196F3;
+  border: 2px solid #2196F3;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #f0f8ff;
+}
+
+.btn-primary {
+  flex: 1;
+  padding: 14px 24px;
+  background: #2196F3;
+  color: white;
+  border: 2px solid #2196F3;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary:hover {
+  background: #1976D2;
+  border-color: #1976D2;
+}
+
+.back-home-btn {
+  background: none;
+  border: none;
+  color: #2196F3;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 12px;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+}
+
+.back-home-btn:hover {
+  color: #1976D2;
+}
+
+/* 移动端适配 */
+@media (max-width: 480px) {
+  .order-success-page {
+    padding: 20px 16px;
+  }
+  
+  .success-title {
+    font-size: 24px;
+  }
+  
+  .delivery-info,
+  .detail-info,
+  .quick-order-section,
+  .action-buttons {
+    max-width: 100%;
+  }
+  
+  .tracking-number {
+    gap: 6px;
+  }
+  
+  .digit-box {
+    width: 36px;
+    height: 45px;
+    font-size: 20px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .btn-secondary,
+  .btn-primary {
+    width: 100%;
+  }
+}
