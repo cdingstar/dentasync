@@ -1,0 +1,58 @@
+/* 底部导航栏 */
+.bottom-nav {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 50;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+    max-width: 414px;
+    margin: 0 auto;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 12px;
+    min-width: 60px;
+}
+
+.nav-item:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.nav-item.active {
+    background: rgba(102, 126, 234, 0.15);
+}
+
+.nav-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+    transition: transform 0.2s ease;
+}
+
+.nav-item.active .nav-icon {
+    transform: scale(1.1);
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #666;
+    transition: color 0.2s ease;
+}
+
+.nav-item.active .nav-label {
+    color: #667eea;
+    font-weight: 600;
+}

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AT DentaLink - 牙科医疗管理平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            height: -webkit-fill-available;
+            background: #000; /* 黑色背景 */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000; /* 黑色背景 */
+            min-height: 100vh;
+            min-height: -webkit-fill-available; /* iOS Safari fix */
+            color: #333;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 手机内容容器 */
+        .phone-container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            position: relative;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        /* 顶部状态栏 */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            min-height: 44px; /* iOS safe area */
+            padding-top: env(safe-area-inset-top, 12px);
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .signal-bars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .bar {
+            width: 3px;
+            background: white;
+            border-radius: 1px;
+        }
+
+        .bar:nth-child(1) { height: 4px; }
+        .bar:nth-child(2) { height: 6px; }
+        .bar:nth-child(3) { height: 8px; }
+
+        .wifi-icon, .battery {
+            font-size: 12px;
+        }
+
+        .battery {
+            background: white;
+            color: #667eea;
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* 欢迎卡片 */
+        .welcome-card {
+            margin: 16px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .welcome-illustration {
+            width: 120px;
+            height: 80px;
+            margin: 0 auto 16px;
+            background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-illustration::before {
+            content: '🦷';
+            font-size: 32px;
+            position: absolute;
+        }
+
+        .welcome-illustration::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .welcome-text {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .coming-soon {
+            display: inline-block;
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        /* 功能网格 */
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 24px 16px;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 0 20px 100px; /* 增加底部间距为菜单栏留空间 */
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .function-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .function-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .function-item:active {
+            transform: translateY(0);
+            opacity: 0.8;
+        }
+
+        .function-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-width: 44px; /* iOS minimum touch target */
+            min-height: 44px;
+        }
+
+        .function-icon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .function-item:hover .function-icon::after {
+            left: 100%;
+        }
+
+        .icon-shipped { background: linear-gradient(45deg, #ff9800, #f57c00); }
+        .icon-products { background: linear-gradient(45deg, #4caf50, #388e3c); }
+        .icon-orders { background: linear-gradient(45deg, #ff5722, #d84315); }
+        .icon-analytics { background: linear-gradient(45deg, #2196f3, #1976d2); }
+
+        .function-label {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* AI助手按钮 */
+        .ai-assistant {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(45deg, #e91e63, #ad1457);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: pulse 2s infinite;
+            z-index: 999;
+        }
+
+        .ai-assistant:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(233, 30, 99, 0.6);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* 响应式设计 - iPhone适配 */
+        
+        /* iPhone SE (375px) */
+        @media (max-width: 375px) {
+            .function-grid {
+                gap: 12px;
+                padding: 20px 12px;
+                margin: 0 16px 100px;
+            }
+            
+            .function-icon {
+                width: 46px;
+                height: 46px;
+                font-size: 22px;
+            }
+            
+            .welcome-card {
+                margin: 12px 16px;
+                padding: 16px;
+            }
+            
+            .welcome-illustration {
+                width: 100px;
+                height: 70px;
+            }
+            
+            .status-bar {
+                padding: 8px 16px;
+                font-size: 15px;
+            }
+        }
+        
+        /* iPhone 12/13/14 (390px) */
+        @media (min-width: 376px) and (max-width: 390px) {
+            .function-grid {
+                gap: 14px;
+                padding: 22px 14px;
+            }
+            
+            .function-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+        }
+        
+        /* iPhone 12/13/14 Pro Max (428px) */
+        @media (min-width: 391px) {
+            .function-grid {
+                gap: 18px;
+                padding: 26px 18px;
+            }
+            
+            .function-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 28px;
+            }
+            
+            .welcome-card {
+                margin: 20px 24px;
+                padding: 24px;
+            }
+        }
+        
+        /* 横屏适配 */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .welcome-card {
+                margin: 8px 20px;
+                padding: 16px;
+            }
+            
+            .welcome-illustration {
+                width: 80px;
+                height: 50px;
+            }
+            
+            .function-grid {
+                padding: 16px 20px;
+                margin: 0 20px 80px;
+            }
+            
+            .ai-assistant {
+                bottom: 80px;
+                right: 16px;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span>8:11</span>
+                <span>📶</span>
+            </div>
+            <div class="status-right">
+                <div class="signal-bars">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <span class="wifi-icon">📶</span>
+                <span class="battery">27</span>
+            </div>
+        </div>
+
+        <!-- 引入头部组件 -->
+        <div id="header-container"></div>
+
+        <!-- 欢迎卡片 -->
+        <div class="welcome-card">
+            <div class="welcome-illustration"></div>
+            <div class="welcome-text">
+                欢迎使用AT DentaLink牙科医疗管理平台
+                <br>连接医生、技师、诊所的专业协作平台
+            </div>
+            <div class="coming-soon">Coming Soon</div>
+        </div>
+
+        <!-- 功能网格 -->
+        <div class="function-grid">
+            <div class="function-item" onclick="navigateTo('shipped')">
+                <div class="function-icon icon-shipped">🚚</div>
+                <div class="function-label">已发货</div>
+            </div>
+            
+            <div class="function-item" onclick="navigateTo('products')">
+                <div class="function-icon icon-products">📋</div>
+                <div class="function-label">产品库</div>
+            </div>
+            
+            <div class="function-item" onclick="navigateTo('orders')">
+                <div class="function-icon icon-orders">🛒</div>
+                <div class="function-label">待下单</div>
+            </div>
+            
+            <div class="function-item" onclick="navigateTo('analytics')">
+                <div class="function-icon icon-analytics">📊</div>
+                <div class="function-label">患者档案</div>
+            </div>
+        </div>
+
+        <!-- AI助手 -->
+        <div class="ai-assistant" onclick="openAIAssistant()">
+            🤖
+        </div>
+    </div>
+
+    <!-- 引入底部菜单栏组件 -->
+    <div id="menubar-container"></div>
+
+    <script>
+        // 功能导航
+        function navigateTo(module) {
+            const moduleNames = {
+                'shipped': '已发货管理',
+                'products': '产品库管理', 
+                'orders': '订单创建',
+                'analytics': '患者档案'
+            };
+            
+            // 添加点击反馈
+            event.currentTarget.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                event.currentTarget.style.transform = '';
+            }, 150);
+            
+            alert(`正在进入${moduleNames[module]}模块...`);
+            // 这里可以添加实际的页面跳转逻辑
+            // window.location.href = `/${module}`;
+        }
+
+        // AI助手
+        function openAIAssistant() {
+            alert('AI智能助手正在为您服务...\n\n可以帮助您：\n• 快速创建订单\n• 查询订单状态\n• 产品推荐\n• 工序指导');
+        }
+
+        // 加载头部组件
+        async function loadHeader() {
+            try {
+                const response = await fetch('HomeHeader.html');
+                const headerHTML = await response.text();
+                document.getElementById('header-container').innerHTML = headerHTML;
+            } catch (error) {
+                console.error('加载头部组件失败:', error);
+                // 如果加载失败，显示简化版头部
+                document.getElementById('header-container').innerHTML = `
+                    <div class="header" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: white;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 32px; height: 32px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">🦷</div>
+                            <div style="font-size: 16px; font-weight: 500;">ASIANTECH PTE. LTD.</div>
+                        </div>
+                        <div style="display: flex; gap: 15px;">
+                            <div style="width: 24px; height: 24px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">🔍</div>
+                            <div style="width: 24px; height: 24px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">🎧</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 加载底部菜单栏组件
+        async function loadMenubar() {
+            try {
+                const response = await fetch('menubar.html');
+                const menubarHTML = await response.text();
+                document.getElementById('menubar-container').innerHTML = menubarHTML;
+            } catch (error) {
+                console.error('加载菜单栏失败:', error);
+                // 如果加载失败，显示简化版菜单栏
+                document.getElementById('menubar-container').innerHTML = `
+                    <div style="position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 10px; text-align: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);">
+                        <p>菜单栏加载中...</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 页面加载动画
+        window.addEventListener('load', function() {
+            // 加载组件
+            loadHeader();
+            loadMenubar();
+            
+            // 功能项动画
+            const functionItems = document.querySelectorAll('.function-item');
+            functionItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    item.style.transition = 'opacity 0.5s, transform 0.5s';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // 添加触摸反馈
+        document.querySelectorAll('.function-item').forEach(item => {
+            item.addEventListener('touchstart', function() {
+                this.style.opacity = '0.7';
+            });
+            
+            item.addEventListener('touchend', function() {
+                this.style.opacity = '1';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!-- 订单管理页面内容 -->
+<div class="page-content">
+    <div class="page-header">
+        <h1>订单管理</h1>
+        <p>查看和管理所有订单</p>
+    </div>
+    
+    <div class="order-tabs">
+        <div class="tab active" data-status="all">全部</div>
+        <div class="tab" data-status="pending">待处理</div>
+        <div class="tab" data-status="processing">处理中</div>
+        <div class="tab" data-status="shipped">已发货</div>
+        <div class="tab" data-status="completed">已完成</div>
+    </div>
+    
+    <div class="order-list">
+        <div class="order-item" data-status="processing">
+            <div class="order-header">
+                <div class="order-number">#12345</div>
+                <div class="order-status processing">处理中</div>
+            </div>
+            <div class="order-info">
+                <div class="patient-name">张三</div>
+                <div class="order-date">2024-03-15</div>
+            </div>
+            <div class="order-products">
+                <div class="product-line">牙科种植体 × 1</div>
+                <div class="product-line">牙冠修复体 × 2</div>
+            </div>
+            <div class="order-footer">
+                <div class="order-total">¥6,800</div>
+                <button class="action-btn">查看详情</button>
+            </div>
+        </div>
+        
+        <div class="order-item" data-status="shipped">
+            <div class="order-header">
+                <div class="order-number">#12344</div>
+                <div class="order-status shipped">已发货</div>
+            </div>
+            <div class="order-info">
+                <div class="patient-name">李四</div>
+                <div class="order-date">2024-03-14</div>
+            </div>
+            <div class="order-products">
+                <div class="product-line">正畸托槽 × 1套</div>
+            </div>
+            <div class="order-footer">
+                <div class="order-total">¥3,200</div>
+                <button class="action-btn">跟踪物流</button>
+            </div>
+        </div>
+        
+        <div class="order-item" data-status="completed">
+            <div class="order-header">
+                <div class="order-number">#12343</div>
+                <div class="order-status completed">已完成</div>
+            </div>
+            <div class="order-info">
+                <div class="patient-name">王五</div>
+                <div class="order-date">2024-03-13</div>
+            </div>
+            <div class="order-products">
+                <div class="product-line">牙科印模材料 × 3</div>
+            </div>
+            <div class="order-footer">
+                <div class="order-total">¥1,500</div>
+                <button class="action-btn">重新下单</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.page-content {
+    padding: 20px 16px 100px;
+    min-height: calc(100vh - 140px);
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a237e;
+}
+
+.page-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.order-tabs {
+    display: flex;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.tab {
+    flex: 1;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.order-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.order-item {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.order-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.order-number {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.order-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.order-status.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.order-status.processing {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.order-status.shipped {
+    background: #d4edda;
+    color: #155724;
+}
+
+.order-status.completed {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+.order-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.patient-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.order-date {
+    font-size: 12px;
+    color: #666;
+}
+
+.order-products {
+    margin-bottom: 16px;
+}
+
+.product-line {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-total {
+    font-size: 18px;
+    font-weight: 600;
+    color: #667eea;
+}
+
+.action-btn {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+</style>
+
+<script>
+// 订单状态筛选
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+        // 移除所有active类
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        // 添加active类到当前tab
+        this.classList.add('active');
+        
+        const status = this.dataset.status;
+        const orderItems = document.querySelectorAll('.order-item');
+        
+        orderItems.forEach(item => {
+            if (status === 'all' || item.dataset.status === status) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+</script>

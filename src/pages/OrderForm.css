@@ -1,0 +1,424 @@
+/* 订单表单页面样式 */
+.order-form-page {
+    width: 100%;
+    height: calc(100vh - env(safe-area-inset-top, 44px) - 44px);
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* 顶部导航栏 - 蓝色背景 */
+.order-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #007AFF;
+    position: relative;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.back-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.header-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+}
+
+/* 表单内容区域 */
+.order-form-content {
+    flex: 1;
+    padding: 0;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+/* 基本信息区域 */
+.form-section {
+    background: white;
+    margin-bottom: 8px;
+    padding: 0;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    min-height: 20px;
+}
+
+.form-row:last-child {
+    border-bottom: none;
+}
+
+.form-label {
+    font-size: 14px;
+    color: #333;
+    min-width: 80px;
+    margin-right: 12px;
+}
+
+.form-label::before {
+    content: "*";
+    color: #FF3B30;
+    margin-right: 4px;
+}
+
+.form-value-with-arrow {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #333;
+    font-size: 14px;
+}
+
+.patient-row {
+    align-items: center;
+    gap: 12px;
+}
+
+.patient-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+}
+
+.gender-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.gender-btn {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    background: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.gender-btn.active {
+    background: #007AFF;
+    color: white;
+    border-color: #007AFF;
+}
+
+.age-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #007AFF;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* 产品信息区域 */
+.product-section {
+    background: white;
+    margin-bottom: 8px;
+    padding: 16px;
+}
+
+.product-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.product-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background: #007AFF;
+    padding: 8px 16px;
+    border-radius: 16px 0 16px 0;
+    position: relative;
+}
+
+.add-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.product-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.product-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.product-count {
+    font-size: 12px;
+    color: #007AFF;
+    margin-bottom: 8px;
+}
+
+.tooth-position-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tooth-position-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+}
+
+.tooth-position-input:focus {
+    border-color: #007AFF;
+}
+
+.delete-btn, .color-delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+}
+
+/* 选项区域 */
+.option-section {
+    background: white;
+    margin-bottom: 8px;
+    padding: 16px;
+}
+
+.option-label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.option-label::before {
+    content: "*";
+    color: #FF3B30;
+    margin-right: 4px;
+}
+
+.option-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.option-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    background: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.option-btn.active {
+    background: #007AFF;
+    color: white;
+    border-color: #007AFF;
+}
+
+.attachment-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #666;
+}
+
+.attachment-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
+
+/* 发送方式 */
+.delivery-section {
+    background: white;
+    margin-bottom: 8px;
+    padding: 16px;
+}
+
+.delivery-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.delivery-label {
+    font-size: 14px;
+    color: #333;
+}
+
+.delivery-value {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #333;
+    font-size: 14px;
+}
+
+/* 颜色选择区域 */
+.color-section {
+    background: white;
+    margin-bottom: 8px;
+    padding: 16px;
+}
+
+.color-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.color-icon {
+    font-size: 16px;
+}
+
+.color-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.color-input-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.color-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+}
+
+.color-input:focus {
+    border-color: #007AFF;
+}
+
+.main-color-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.main-color-label {
+    font-size: 12px;
+    color: #666;
+}
+
+.color-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #333;
+}
+
+.brand-text {
+    color: #007AFF;
+}
+
+.brand-add-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+}
+
+/* 底部提交按钮 */
+.order-form-footer {
+    padding: 16px;
+    background: white;
+    border-top: 1px solid #f0f0f0;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: #007AFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.submit-btn:hover {
+    background: #0056CC;
+}
+
+.submit-btn:active {
+    background: #004499;
+}
+
+/* 移动端适配 */
+@media (max-width: 480px) {
+    .option-buttons {
+        gap: 6px;
+    }
+    
+    .option-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .form-row {
+        padding: 12px 16px;
+    }
+    
+    .product-section, .option-section, .delivery-section, .color-section {
+        padding: 12px;
+    }
+}

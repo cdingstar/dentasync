@@ -1,0 +1,567 @@
+<!-- 工作台页面内容 -->
+<div class="page-content">
+    <!-- 顶部卡片区域 -->
+    <div class="top-card">
+        <div class="card-content">
+            <div class="card-icon">
+                <svg width="120" height="80" viewBox="0 0 120 80" fill="none">
+                    <!-- 卡片背景 -->
+                    <rect x="10" y="20" width="80" height="50" rx="8" fill="#E3F2FD" stroke="#2196F3" stroke-width="2"/>
+                    <!-- 放大镜 -->
+                    <circle cx="75" cy="35" r="12" fill="none" stroke="#2196F3" stroke-width="3"/>
+                    <line x1="84" y1="44" x2="95" y2="55" stroke="#2196F3" stroke-width="3" stroke-linecap="round"/>
+                    <!-- 人物 -->
+                    <circle cx="35" cy="30" r="4" fill="#2196F3"/>
+                    <path d="M25 45 Q35 40 45 45 L45 55 L25 55 Z" fill="#2196F3"/>
+                </svg>
+            </div>
+            <div class="card-text">
+                <h3>更多内容</h3>
+                <p>敬请期待</p>
+            </div>
+            <div class="coming-soon">
+                <span class="coming-badge">coming soon</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 功能网格 -->
+    <div class="function-grid">
+        <div class="function-item" onclick="navigateToFunction('shipped')" data-function="shipped">
+            <div class="function-icon shipped-icon">
+                📦
+            </div>
+            <span class="function-label" style="font-size: 12px !important;">已发货</span>
+        </div>
+        
+        <div class="function-item" onclick="openProductsPage()" data-function="products">
+            <div class="function-icon products-icon">
+                📋
+            </div>
+            <span class="function-label" style="font-size: 12px !important;">产品库</span>
+        </div>
+        
+        <div class="function-item" onclick="navigateToFunction('pending')" data-function="pending">
+            <div class="function-icon pending-icon">
+                ⏳
+            </div>
+            <span class="function-label" style="font-size: 12px !important;">待下单</span>
+        </div>
+        
+        <div class="function-item" onclick="navigateToFunction('patients')" data-function="patients">
+            <div class="function-icon patients-icon">
+                👥
+            </div>
+            <span class="function-label" style="font-size: 12px !important;">患者档案</span>
+        </div>
+    </div>
+</div>
+
+<style>
+/* 工作台页面样式 */
+.page-content {
+    padding: 20px 16px 100px;
+    min-height: calc(100vh - 140px);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* 顶部卡片 */
+.top-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(248, 250, 252, 0.35) 50%, rgba(230, 237, 243, 0.3) 100%);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.top-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.card-icon {
+    flex-shrink: 0;
+    margin-right: 16px;
+}
+
+.card-text {
+    flex: 1;
+}
+
+.card-text h3 {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a237e;
+    background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.card-text p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.coming-soon {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+}
+
+.coming-badge {
+    background: linear-gradient(135deg, #2196F3 0%, #21CBF3 100%);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+    animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* 功能网格 */
+.function-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.function-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    width: 100%;
+    aspect-ratio: 1;
+    background: rgba(248, 250, 252, 0.85);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.function-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+}
+
+.function-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.function-item:hover .function-icon {
+    transform: scale(1.08);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.function-item:hover .function-label {
+    color: #1a237e;
+    font-weight: 600;
+}
+
+/* 悬停时的专业化效果 */
+.function-item:hover .shipped-icon {
+    background: linear-gradient(135deg, #C8E6C9 0%, #DCEDC8 100%);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.25);
+}
+
+.function-item:hover .products-icon {
+    background: linear-gradient(135deg, #FFE0B2 0%, #FFECB3 100%);
+    box-shadow: 0 8px 25px rgba(255, 152, 0, 0.25);
+}
+
+.function-item:hover .pending-icon {
+    background: linear-gradient(135deg, #BBDEFB 0%, #C5CAE9 100%);
+    box-shadow: 0 8px 25px rgba(33, 150, 243, 0.25);
+}
+
+.function-item:hover .patients-icon {
+    background: linear-gradient(135deg, #E1BEE7 0%, #F8BBD9 100%);
+    box-shadow: 0 8px 25px rgba(156, 39, 176, 0.25);
+}
+
+.function-item:active {
+    transform: translateY(-4px) scale(0.98);
+}
+
+.function-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    font-size: 24px;
+}
+
+/* 专业化图标样式 */
+.shipped-icon {
+    background: linear-gradient(135deg, #E8F5E8 0%, #F1F8E9 100%);
+    border-color: rgba(76, 175, 80, 0.2);
+}
+
+.products-icon {
+    background: linear-gradient(135deg, #FFF3E0 0%, #FFF8E1 100%);
+    border-color: rgba(255, 152, 0, 0.2);
+}
+
+.pending-icon {
+    background: linear-gradient(135deg, #E3F2FD 0%, #E8F4FD 100%);
+    border-color: rgba(33, 150, 243, 0.2);
+}
+
+.patients-icon {
+    background: linear-gradient(135deg, #F3E5F5 0%, #F8E8FA 100%);
+    border-color: rgba(156, 39, 176, 0.2);
+}
+
+.function-label {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: #333 !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+    transition: all 0.3s ease;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    width: 100% !important;
+    display: block !important;
+    margin-top: 6px !important;
+    position: relative;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 强制覆盖所有可能的字体大小设置 */
+.function-item .function-label,
+.function-item span.function-label,
+span.function-label {
+    font-size: 12px !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 375px) {
+    .function-grid {
+        gap: 16px;
+    }
+    
+    .function-item {
+        padding: 20px 12px;
+    }
+    
+    .function-icon {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .top-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 320px) {
+    .function-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .function-item {
+        padding: 24px 16px;
+    }
+}
+
+/* 加载动画 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.function-item {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.function-item:nth-child(1) { animation-delay: 0.1s; }
+.function-item:nth-child(2) { animation-delay: 0.2s; }
+.function-item:nth-child(3) { animation-delay: 0.3s; }
+.function-item:nth-child(4) { animation-delay: 0.4s; }
+</style>
+
+<script>
+// 工作台功能导航
+function navigateToFunction(type) {
+    const messages = {
+        'shipped': '正在进入已发货管理...',
+        'products': '正在进入产品库...',
+        'pending': '正在进入待下单列表...',
+        'patients': '正在进入患者档案...'
+    };
+    
+    showNotification(messages[type] || '功能开发中...');
+    
+    // 这里可以添加实际的页面跳转逻辑
+    // window.parent.loadPage(type);
+}
+
+// 打开产品库页面
+function openProductsPage() {
+    // 检查是否在app.html框架内
+    if (window.parent && window.parent.document && window.parent.document !== document) {
+        // 在iframe内，调用父窗口的函数
+        if (window.parent.loadProductsPage) {
+            window.parent.loadProductsPage();
+        }
+    } else {
+        // 直接在app.html中，调用全局函数
+        if (window.loadProductsPage) {
+            window.loadProductsPage();
+        } else {
+            // 如果全局函数不存在，创建它
+            window.loadProductsPage = loadProductsPageImpl;
+            loadProductsPageImpl();
+        }
+    }
+}
+
+// 产品库页面加载实现
+function loadProductsPageImpl() {
+    fetch('products.html')
+        .then(response => response.text())
+        .then(html => {
+            // 创建临时容器来解析HTML
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            
+            // 提取产品库页面内容
+            const productsPage = tempDiv.querySelector('.products-page');
+            const style = tempDiv.querySelector('style');
+            const script = tempDiv.querySelector('script');
+            
+            if (productsPage) {
+                // 保存原始内容以便恢复
+                if (!window.originalContent) {
+                    window.originalContent = {
+                        header: document.getElementById('header-container')?.innerHTML,
+                        page: document.getElementById('page-container')?.innerHTML,
+                        menubar: document.getElementById('menubar-container')?.innerHTML
+                    };
+                }
+                
+                // 替换头部容器 - 清空头部
+                const headerContainer = document.getElementById('header-container');
+                if (headerContainer) {
+                    headerContainer.innerHTML = '';
+                }
+                
+                // 替换页面容器 - 注入产品库内容
+                const pageContainer = document.getElementById('page-container');
+                if (pageContainer) {
+                    pageContainer.innerHTML = '';
+                    pageContainer.appendChild(productsPage);
+                }
+                
+                // 替换菜单容器 - 清空菜单
+                const menubarContainer = document.getElementById('menubar-container');
+                if (menubarContainer) {
+                    menubarContainer.innerHTML = '';
+                }
+                
+                // 添加样式
+                if (style && !document.querySelector('style[data-products-style]')) {
+                    style.setAttribute('data-products-style', 'true');
+                    document.head.appendChild(style);
+                }
+                
+                // 执行脚本
+                if (script) {
+                    try {
+                        eval(script.textContent);
+                        
+                        // 手动触发初始化
+                        if (typeof initProductsPage === 'function') {
+                            initProductsPage();
+                        }
+                    } catch (error) {
+                        console.error('执行产品库脚本失败:', error);
+                    }
+                }
+            }
+        })
+        .catch(error => {
+            console.error('加载产品库页面失败:', error);
+            showNotification('产品库页面加载失败，请稍后重试');
+        });
+}
+
+// 将函数添加到全局作用域
+window.loadProductsPage = loadProductsPageImpl;
+
+// 隐藏当前页面元素
+function hideCurrentPageElements() {
+    // 隐藏workspace内容
+    const workspaceContent = document.querySelector('.workspace-content');
+    if (workspaceContent) {
+        workspaceContent.style.display = 'none';
+    }
+    
+    // 隐藏header（如果存在）
+    const header = document.querySelector('.header, .home-header');
+    if (header) {
+        header.style.display = 'none';
+    }
+    
+    // 隐藏menubar（如果存在）
+    const menubar = document.querySelector('.menubar, .bottom-nav');
+    if (menubar) {
+        menubar.style.display = 'none';
+    }
+    
+    // 存储隐藏状态，用于恢复
+    window.hiddenElements = {
+        workspaceContent: workspaceContent,
+        header: header,
+        menubar: menubar
+    };
+}
+
+// 恢复当前页面元素（供产品库页面的返回功能使用）
+window.restoreCurrentPageElements = function() {
+    if (window.hiddenElements) {
+        if (window.hiddenElements.workspaceContent) {
+            window.hiddenElements.workspaceContent.style.display = '';
+        }
+        if (window.hiddenElements.header) {
+            window.hiddenElements.header.style.display = '';
+        }
+        if (window.hiddenElements.menubar) {
+            window.hiddenElements.menubar.style.display = '';
+        }
+    }
+    
+    // 恢复body滚动
+    document.body.style.overflow = '';
+};
+
+// 通知提示
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        animation: notificationShow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'notificationHide 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 2000);
+}
+
+// 添加通知动画
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes notificationShow {
+        0% { 
+            opacity: 0; 
+            transform: translate(-50%, -50%) scale(0.8) translateY(20px); 
+        }
+        100% { 
+            opacity: 1; 
+            transform: translate(-50%, -50%) scale(1) translateY(0); 
+        }
+    }
+    
+    @keyframes notificationHide {
+        0% { 
+            opacity: 1; 
+            transform: translate(-50%, -50%) scale(1) translateY(0); 
+        }
+        100% { 
+            opacity: 0; 
+            transform: translate(-50%, -50%) scale(0.8) translateY(-20px); 
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// 添加触摸反馈
+document.querySelectorAll('.function-item:not(.disabled)').forEach(item => {
+    item.addEventListener('touchstart', function() {
+        this.style.transform = 'translateY(-4px) scale(0.98)';
+    });
+    
+    item.addEventListener('touchend', function() {
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 150);
+    });
+});
+</script>

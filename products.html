@@ -1,0 +1,1224 @@
+<!-- 产品库页面 -->
+<div class="products-page">
+    <!-- 顶部导航栏 -->
+    <div class="products-header">
+        <div class="header-left">
+            <div class="back-btn" id="back-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M12.5 15L7.5 10L12.5 5" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="header-title">产品库</div>
+        </div>
+        <div class="header-right">
+            <div class="search-container">
+                <input type="text" placeholder="搜索产品..." id="search-input">
+                <div class="search-clear" id="search-clear">×</div>
+            </div>
+            <div class="filter-btn" id="filter-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 6h14M7 12h6M9 18h2" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 筛选面板 -->
+    <div class="filter-panel" id="filter-panel">
+        <div class="filter-section">
+            <div class="filter-title" onclick="toggleFilterCategory('function')">
+                <span>按功能</span>
+                <svg class="filter-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 6L8 10L12 6" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="filter-options show" data-category="function">
+                <button class="filter-option active" data-value="all" onclick="selectFilter('function', 'all')">全部</button>
+                <button class="filter-option" data-value="crown" onclick="selectFilter('function', 'crown')">牙冠修复</button>
+                <button class="filter-option" data-value="bridge" onclick="selectFilter('function', 'bridge')">桥体修复</button>
+                <button class="filter-option" data-value="inlay" onclick="selectFilter('function', 'inlay')">嵌体填充</button>
+                <button class="filter-option" data-value="veneer" onclick="selectFilter('function', 'veneer')">贴面美容</button>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-title" onclick="toggleFilterCategory('material')">
+                <span>按材料</span>
+                <svg class="filter-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 6L8 10L12 6" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="filter-options show" data-category="material">
+                <button class="filter-option active" data-value="all" onclick="selectFilter('material', 'all')">全部</button>
+                <button class="filter-option" data-value="zirconia" onclick="selectFilter('material', 'zirconia')">氧化锆</button>
+                <button class="filter-option" data-value="ceramic" onclick="selectFilter('material', 'ceramic')">全瓷</button>
+                <button class="filter-option" data-value="metal" onclick="selectFilter('material', 'metal')">金属</button>
+                <button class="filter-option" data-value="composite" onclick="selectFilter('material', 'composite')">复合材料</button>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-title" onclick="toggleFilterCategory('brand')">
+                <span>按品牌</span>
+                <svg class="filter-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 6L8 10L12 6" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="filter-options show" data-category="brand">
+                <button class="filter-option active" data-value="all" onclick="selectFilter('brand', 'all')">全部</button>
+                <button class="filter-option" data-value="premium" onclick="selectFilter('brand', 'premium')">Premium系列</button>
+                <button class="filter-option" data-value="digital" onclick="selectFilter('brand', 'digital')">数码系列</button>
+                <button class="filter-option" data-value="classic" onclick="selectFilter('brand', 'classic')">经典系列</button>
+                <button class="filter-option" data-value="japan" onclick="selectFilter('brand', 'japan')">日本进口</button>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-title" onclick="toggleFilterCategory('other')">
+                <span>其他</span>
+                <svg class="filter-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 6L8 10L12 6" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="filter-options show" data-category="other">
+                <button class="filter-option active" data-value="all" onclick="selectFilter('other', 'all')">全部</button>
+                <button class="filter-option" data-value="new" onclick="selectFilter('other', 'new')">新品推荐</button>
+                <button class="filter-option" data-value="popular" onclick="selectFilter('other', 'popular')">热门产品</button>
+                <button class="filter-option" data-value="discount" onclick="selectFilter('other', 'discount')">优惠产品</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分类标签 -->
+    <div class="category-tabs">
+        <div class="category-tab active" data-category="flash" onclick="selectCategory('flash')">闪瓷系列</div>
+        <div class="category-tab" data-category="zirconia" onclick="selectCategory('zirconia')">氧化锆类</div>
+        <div class="category-tab" data-category="metal" onclick="selectCategory('metal')">金属类</div>
+        <div class="category-tab" data-category="ceramic" onclick="selectCategory('ceramic')">铸瓷类</div>
+    </div>
+
+    <!-- 子分类 -->
+    <div class="subcategory-section">
+        <div class="subcategory-dropdown" onclick="toggleSubcategory()">
+            <span id="current-subcategory">氧化锆类</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="dropdown-arrow">
+                <path d="M4 6L8 10L12 6" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- 产品列表 -->
+    <div class="products-content">
+        <div class="product-list" id="product-list">
+            <!-- D1氧化锆全瓷牙 -->
+            <div class="product-item" data-category="zirconia" data-subcategory="氧化锆类" data-type="D1">
+                <div class="product-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMjEyMTIxIi8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iNDAiIHI9IjEyIiBmaWxsPSIjRkZGRkZGIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNDAiIHI9IjEwIiBmaWxsPSIjRjVGNUY1Ii8+CjxjaXJjbGUgY3g9IjkwIiBjeT0iNDAiIHI9IjgiIGZpbGw9IiNFMEUwRTAiLz4KPC9zdmc+" alt="D1氧化锆全瓷牙">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">D1氧化锆全瓷牙</div>
+                    <div class="product-status">未设置</div>
+                </div>
+                <div class="product-action">
+                    <button class="order-btn" onclick="orderProduct('D1氧化锆全瓷牙')">立即下单</button>
+                </div>
+            </div>
+
+            <!-- 数码氧化锆全锆牙 -->
+            <div class="product-item" data-category="zirconia" data-subcategory="氧化锆类" data-type="full-crown">
+                <div class="product-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMjEyMTIxIi8+CjxlbGxpcHNlIGN4PSI0MCIgY3k9IjQwIiByeD0iMTUiIHJ5PSIxMiIgZmlsbD0iI0Y4RjhGOCIvPgo8ZWxsaXBzZSBjeD0iODAiIGN5PSI0MCIgcng9IjEyIiByeT0iMTAiIGZpbGw9IiNGMEYwRjAiLz4KPC9zdmc+" alt="数码氧化锆全锆牙">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">数码氧化锆全锆牙</div>
+                    <div class="product-status">未设置</div>
+                </div>
+                <div class="product-action">
+                    <button class="order-btn" onclick="orderProduct('数码氧化锆全锆牙')">立即下单</button>
+                </div>
+            </div>
+
+            <!-- 图灵氧化锆 -->
+            <div class="product-item" data-category="zirconia" data-subcategory="氧化锆类" data-type="crown">
+                <div class="product-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMjEyMTIxIi8+CjxwYXRoIGQ9Ik0zMCAyNUMzNSAyNSA0MCAzMCA0MCAzNUM0MCA0MCAzNSA0NSAzMCA0NUMyNSA0NSAyMCA0MCAyMCAzNUMyMCAzMCAyNSAyNSAzMCAyNVoiIGZpbGw9IiNGRkZGRkYiLz4KPHA+dGggZD0iTTcwIDI4Qzc0IDI4IDc4IDMyIDc4IDM2Qzc4IDQwIDc0IDQ0IDcwIDQ0QzY2IDQ0IDYyIDQwIDYyIDM2QzYyIDMyIDY2IDI4IDcwIDI4WiIgZmlsbD0iI0Y1RjVGNSIvPgo8cGF0aCBkPSJNOTAgMzJDOTMgMzIgOTYgMzUgOTYgMzhDOTYgNDEgOTMgNDQgOTAgNDRDODcgNDQgODQgNDEgODQgMzhDODQgMzUgODcgMzIgOTAgMzJaIiBmaWxsPSIjRTBFMEUwIi8+Cjwvc3ZnPg==" alt="图灵氧化锆">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">图灵氧化锆</div>
+                    <div class="product-status">未设置</div>
+                </div>
+                <div class="product-action">
+                    <button class="order-btn" onclick="orderProduct('图灵氧化锆')">立即下单</button>
+                </div>
+            </div>
+
+            <!-- 数码氧化锆全瓷牙 -->
+            <div class="product-item" data-category="zirconia" data-subcategory="氧化锆类" data-type="full-crown-2">
+                <div class="product-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMjEyMTIxIi8+CjxyZWN0IHg9IjIwIiB5PSIyNSIgd2lkdGg9IjgwIiBoZWlnaHQ9IjMwIiByeD0iMTUiIGZpbGw9IiNGRkY4RTEiLz4KPHN2ZyB4PSI0NSIgeT0iMzUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIxMCIgdmlld0JveD0iMCAwIDMwIDEwIj4KPHRleHQgeD0iMTUiIHk9IjciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMzMzMiIGZvbnQtc2l6ZT0iNiIgZm9udC1mYW1pbHk9IkFyaWFsIj7mlbDnoIHmsKfljJbplZvlhajnk6bniZk8L3RleHQ+Cjwvc3ZnPgo8L3N2Zz4=" alt="数码氧化锆全瓷牙">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">数码氧化锆全瓷牙</div>
+                    <div class="product-status">未设置</div>
+                </div>
+                <div class="product-action">
+                    <button class="order-btn" onclick="orderProduct('数码氧化锆全瓷牙')">立即下单</button>
+                </div>
+            </div>
+
+            <!-- D1氧化锆全锆牙 -->
+            <div class="product-item" data-category="zirconia" data-subcategory="氧化锆类" data-type="D1">
+                <div class="product-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMjEyMTIxIi8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjEwIiBmaWxsPSIjRkZGRkZGIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iMzAiIHI9IjgiIGZpbGw9IiNGNUY1RjUiLz4KPHN2ZyB4PSIyMCIgeT0iNDUiIHdpZHRoPSI4MCIgaGVpZ2h0PSIyNSI+CjxyZWN0IHdpZHRoPSI4MCIgaGVpZ2h0PSIyNSIgcng9IjEyIiBmaWxsPSIjRkZGOEUxIi8+CjxwYXRoIGQ9Ik0xMCA1TDcwIDVRNzUgNSA3NSAxMEw3NSAyMFE3NSAyNSA3MCAyNUwxMCAyNVE1IDI1IDUgMjBMNSAxMFE1IDUgMTAgNVoiIGZpbGw9IiNGRkVDQjMiLz4KPC9zdmc+Cjwvc3ZnPg==" alt="D1氧化锆全锆牙">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">D1氧化锆全锆牙</div>
+                    <div class="product-status">未设置</div>
+                </div>
+                <div class="product-action">
+                    <button class="order-btn" onclick="orderProduct('D1氧化锆全锆牙')">立即下单</button>
+                </div>
+            </div>
+
+            <!-- 日本氧化锆全锆牙 -->
+            <div class="product-item" data-category="zirconia" data-subcategory="氧化锆类" data-type="full-crown-3">
+                <div class="product-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMjEyMTIxIi8+CjxyZWN0IHg9IjIwIiB5PSIyMCIgd2lkdGg9IjgwIiBoZWlnaHQ9IjE1IiByeD0iNyIgZmlsbD0iI0ZGRThENCIvPgo8cmVjdCB4PSIyMCIgeT0iNDUiIHdpZHRoPSI4MCIgaGVpZ2h0PSIxNSIgcng9IjciIGZpbGw9IiNGRkQ1NEYiLz4KPC9zdmc+" alt="日本氧化锆全锆牙">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">日本氧化锆全锆牙</div>
+                    <div class="product-status">未设置</div>
+                </div>
+                <div class="product-action">
+                    <button class="order-btn" onclick="orderProduct('日本氧化锆全锆牙')">立即下单</button>
+                </div>
+            </div>
+
+            <!-- 闪瓷全瓷牙 -->
+            <div class="product-item" data-category="flash" data-subcategory="闪瓷系列" data-type="flash-ceramic">
+                <div class="product-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMjEyMTIxIi8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNDAiIHI9IjIwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNGRkQ3MDAiIHN0cm9rZS13aWR0aD0iMiIvPgo8Y2lyY2xlIGN4PSI2MCIgY3k9IjQwIiByPSIxMCIgZmlsbD0iI0ZGRDcwMCIvPgo8L3N2Zz4=" alt="闪瓷全瓷牙">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">闪瓷全瓷牙</div>
+                    <div class="product-status">未设置</div>
+                </div>
+                <div class="product-action">
+                    <button class="order-btn" onclick="orderProduct('闪瓷全瓷牙')">立即下单</button>
+                </div>
+            </div>
+
+            <!-- 金属烤瓷牙 -->
+            <div class="product-item" data-category="metal" data-subcategory="金属类" data-type="metal-ceramic">
+                <div class="product-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMjEyMTIxIi8+CjxyZWN0IHg9IjMwIiB5PSIyNSIgd2lkdGg9IjYwIiBoZWlnaHQ9IjMwIiByeD0iNSIgZmlsbD0iI0M5QzlDOSIgc3Ryb2tlPSIjOTk5OTk5IiBzdHJva2Utd2lkdGg9IjEiLz4KPHJlY3QgeD0iMzUiIHk9IjMwIiB3aWR0aD0iNTAiIGhlaWdodD0iMjAiIHJ4PSIzIiBmaWxsPSIjRkZGRkZGIi8+Cjwvc3ZnPg==" alt="金属烤瓷牙">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">金属烤瓷牙</div>
+                    <div class="product-status">未设置</div>
+                </div>
+                <div class="product-action">
+                    <button class="order-btn" onclick="orderProduct('金属烤瓷牙')">立即下单</button>
+                </div>
+            </div>
+
+            <!-- 铸瓷全瓷牙 -->
+            <div class="product-item" data-category="ceramic" data-subcategory="铸瓷类" data-type="cast-ceramic">
+                <div class="product-image">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjMjEyMTIxIi8+CjxlbGxpcHNlIGN4PSI2MCIgY3k9IjQwIiByeD0iMjUiIHJ5PSIxNSIgZmlsbD0iI0Y4RjhGOCIgc3Ryb2tlPSIjRTBFMEUwIiBzdHJva2Utd2lkdGg9IjEiLz4KPGVsbGlwc2UgY3g9IjYwIiBjeT0iNDAiIHJ4PSIxNSIgcnk9IjgiIGZpbGw9IiNGMEYwRjAiLz4KPC9zdmc+" alt="铸瓷全瓷牙">
+                </div>
+                <div class="product-info">
+                    <div class="product-title">铸瓷全瓷牙</div>
+                    <div class="product-status">未设置</div>
+                </div>
+                <div class="product-action">
+                    <button class="order-btn" onclick="orderProduct('铸瓷全瓷牙')">立即下单</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* 产品库页面样式 - 适配app.html框架 */
+.products-page {
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* 顶部导航栏 */
+.products-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: white;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.back-btn, .filter-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.back-btn:hover, .filter-btn:hover {
+    background: #f5f5f5;
+}
+
+.header-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 搜索容器 */
+.search-container {
+    position: relative;
+    flex: 1;
+    max-width: 200px;
+    margin-right: 8px;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 8px 32px 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    font-size: 14px;
+    outline: none;
+    background: #f8f9fa;
+}
+
+.search-container input:focus {
+    border-color: #2196f3;
+    background: white;
+}
+
+.search-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #999;
+    font-size: 16px;
+}
+
+/* 筛选面板 */
+.filter-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    z-index: 200;
+    display: none;
+    padding: 16px 0;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+}
+
+.filter-panel.show {
+    display: block !important;
+}
+
+.filter-section {
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 8px;
+}
+
+.filter-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.filter-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    cursor: pointer;
+    background: white;
+    transition: background 0.2s;
+}
+
+.filter-title:hover {
+    background: #f8f9fa;
+}
+
+.filter-title span {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+.filter-arrow {
+    transition: transform 0.3s ease;
+    color: #666;
+}
+
+.filter-title.collapsed .filter-arrow {
+    transform: rotate(-90deg);
+}
+
+.filter-options {
+    padding: 0 20px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 200px;
+    overflow: visible;
+    transition: all 0.3s ease;
+}
+
+.filter-options.show {
+    display: flex;
+}
+
+.filter-options:not(.show) {
+    display: none;
+}
+
+.filter-option {
+    padding: 8px 16px;
+    border: 1.5px solid #e8e8e8;
+    border-radius: 20px;
+    background: white;
+    color: #555;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-option:hover {
+    border-color: #2196f3;
+    color: #2196f3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.2);
+}
+
+.filter-option.active {
+    background: #2196f3;
+    border-color: #2196f3;
+    color: white;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.filter-option.active {
+    background: #2196f3;
+    border-color: #2196f3;
+    color: white;
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.filter-option.active:hover {
+    background: #1976d2;
+    border-color: #1976d2;
+    color: white;
+}
+
+/* 分类标签 */
+.category-tabs {
+    display: flex;
+    padding: 12px 16px 0;
+    background: white;
+    border-bottom: 1px solid #f0f0f0;
+    overflow-x: auto;
+    gap: 8px;
+}
+
+.category-tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #666;
+    background: #f5f5f5;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.category-tab.active {
+    background: #e3f2fd;
+    color: #2196f3;
+    font-weight: 500;
+}
+
+.category-tab:hover:not(.active) {
+    background: #e8e8e8;
+}
+
+/* 子分类 */
+.subcategory-section {
+    padding: 12px 16px;
+    background: white;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.subcategory-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.subcategory-dropdown:hover {
+    background: #e9ecef;
+}
+
+.subcategory-dropdown span {
+    font-size: 14px;
+    color: #2196f3;
+    font-weight: 500;
+}
+
+.dropdown-arrow {
+    transition: transform 0.2s;
+}
+
+.subcategory-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* 主要内容区域 */
+.products-content {
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 产品列表 */
+.product-list {
+    padding: 16px;
+    overflow-y: auto;
+    background: white;
+    height: 100%;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: white;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.product-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: #e0e0e0;
+}
+
+.product-image {
+    width: 80px;
+    height: 60px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-info {
+    flex: 1;
+    margin-right: 12px;
+}
+
+.product-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.product-status {
+    font-size: 14px;
+    color: #2196f3;
+}
+
+.product-action {
+    flex-shrink: 0;
+}
+
+.order-btn {
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #2196f3;
+    color: #2196f3;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.order-btn:hover {
+    background: #2196f3;
+    color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 414px) {
+    .products-page {
+        max-width: 100%;
+    }
+    
+    .product-image {
+        width: 60px;
+        height: 45px;
+    }
+    
+    .product-title {
+        font-size: 14px;
+    }
+    
+    .order-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+/* 确保产品页面与workspace页面尺寸一致 */
+@media (min-width: 415px) {
+    .products-page {
+        max-width: 414px;
+        margin: 0 auto;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* 加载动画 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.product-item {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.product-item:nth-child(1) { animation-delay: 0.05s; }
+.product-item:nth-child(2) { animation-delay: 0.1s; }
+.product-item:nth-child(3) { animation-delay: 0.15s; }
+.product-item:nth-child(4) { animation-delay: 0.2s; }
+.product-item:nth-child(5) { animation-delay: 0.25s; }
+.product-item:nth-child(6) { animation-delay: 0.3s; }
+.product-item:nth-child(7) { animation-delay: 0.35s; }
+.product-item:nth-child(8) { animation-delay: 0.4s; }
+.product-item:nth-child(9) { animation-delay: 0.45s; }
+</style>
+
+<script>
+// 产品数据
+const products = [
+    {
+        id: 1,
+        name: 'D1氧化锆全瓷牙',
+        category: 'zirconia',
+        subcategory: '氧化锆类',
+        type: 'D1',
+        status: '未设置',
+        image: 'product1.jpg'
+    },
+    {
+        id: 2,
+        name: '数码氧化锆全锆牙',
+        category: 'zirconia',
+        subcategory: '氧化锆类',
+        type: 'full-crown',
+        status: '未设置',
+        image: 'product2.jpg'
+    },
+    {
+        id: 3,
+        name: '图灵氧化锆',
+        category: 'zirconia',
+        subcategory: '氧化锆类',
+        type: 'crown',
+        status: '未设置',
+        image: 'product3.jpg'
+    },
+    {
+        id: 4,
+        name: '数码氧化锆全瓷牙',
+        category: 'zirconia',
+        subcategory: '氧化锆类',
+        type: 'full-crown-2',
+        status: '未设置',
+        image: 'product4.jpg'
+    },
+    {
+        id: 5,
+        name: 'D1氧化锆全锆牙',
+        category: 'zirconia',
+        subcategory: '氧化锆类',
+        type: 'D1',
+        status: '未设置',
+        image: 'product5.jpg'
+    },
+    {
+        id: 6,
+        name: '日本氧化锆全锆牙',
+        category: 'zirconia',
+        subcategory: '氧化锆类',
+        type: 'full-crown-3',
+        status: '未设置',
+        image: 'product6.jpg'
+    },
+    {
+        id: 7,
+        name: '闪瓷全瓷牙',
+        category: 'flash',
+        subcategory: '闪瓷系列',
+        type: 'flash-ceramic',
+        status: '未设置',
+        image: 'product7.jpg'
+    },
+    {
+        id: 8,
+        name: '金属烤瓷牙',
+        category: 'metal',
+        subcategory: '金属类',
+        type: 'metal-ceramic',
+        status: '未设置',
+        image: 'product8.jpg'
+    },
+    {
+        id: 9,
+        name: '铸瓷全瓷牙',
+        category: 'ceramic',
+        subcategory: '铸瓷类',
+        type: 'cast-ceramic',
+        status: '未设置',
+        image: 'product9.jpg'
+    }
+];
+
+// 当前筛选条件
+let currentCategory = 'flash';
+let currentSubcategory = '闪瓷系列';
+let searchQuery = '';
+
+// 关闭产品库页面
+function closeProductsPage() {
+    // 恢复app.html中的原始内容
+    if (window.originalContent) {
+        // 恢复头部容器
+        const headerContainer = document.getElementById('header-container');
+        if (headerContainer && window.originalContent.header) {
+            headerContainer.innerHTML = window.originalContent.header;
+        }
+        
+        // 恢复页面容器
+        const pageContainer = document.getElementById('page-container');
+        if (pageContainer && window.originalContent.page) {
+            pageContainer.innerHTML = window.originalContent.page;
+        }
+        
+        // 恢复菜单容器
+        const menubarContainer = document.getElementById('menubar-container');
+        if (menubarContainer && window.originalContent.menubar) {
+            menubarContainer.innerHTML = window.originalContent.menubar;
+        }
+        
+        // 清除保存的内容
+        window.originalContent = null;
+        
+        // 重新设置菜单事件（如果存在setupMenuEvents函数）
+        if (typeof setupMenuEvents === 'function') {
+            setupMenuEvents();
+        }
+        
+        // 重新执行页面脚本
+        const pageScripts = pageContainer.querySelectorAll('script');
+        pageScripts.forEach(script => {
+            try {
+                eval(script.textContent);
+            } catch (error) {
+                console.error('重新执行页面脚本失败:', error);
+            }
+        });
+    }
+    
+    // 移除产品库样式
+    const productStyle = document.querySelector('style[data-products-style]');
+    if (productStyle && productStyle.parentNode) {
+        productStyle.parentNode.removeChild(productStyle);
+    }
+}
+
+// 切换筛选面板显示
+function toggleFilterPanel() {
+    console.log('toggleFilterPanel 被调用'); // 调试日志
+    const filterPanel = document.getElementById('filter-panel');
+    console.log('filterPanel:', filterPanel); // 调试日志
+    
+    if (filterPanel) {
+        const isCurrentlyShown = filterPanel.classList.contains('show');
+        console.log('当前显示状态:', isCurrentlyShown);
+        
+        if (isCurrentlyShown) {
+            filterPanel.classList.remove('show');
+            console.log('隐藏面板');
+        } else {
+            filterPanel.classList.add('show');
+            console.log('显示面板');
+        }
+        
+        console.log('面板状态切换后，当前类名:', filterPanel.className);
+        console.log('面板样式:', window.getComputedStyle(filterPanel).display);
+    } else {
+        console.error('找不到筛选面板元素');
+    }
+}
+
+// 确保函数在全局作用域中可用
+window.toggleFilterPanel = toggleFilterPanel;
+
+// 切换筛选分类
+function toggleFilterCategory(category) {
+    console.log('toggleFilterCategory 被调用，分类:', category);
+    const filterTitle = event.target.closest('.filter-title');
+    const filterOptions = filterTitle.nextElementSibling;
+    const arrow = filterTitle.querySelector('.filter-arrow');
+    
+    if (filterOptions.classList.contains('show')) {
+        filterOptions.classList.remove('show');
+        arrow.style.transform = 'rotate(-90deg)';
+    } else {
+        filterOptions.classList.add('show');
+        arrow.style.transform = 'rotate(0deg)';
+    }
+}
+
+// 选择筛选选项
+function selectFilter(category, value) {
+    const filterOptions = document.querySelectorAll(`[data-category="${category}"] .filter-option`);
+    
+    if (value === 'all') {
+        // 如果选择"全部"，取消其他选项
+        filterOptions.forEach(option => {
+            if (option.dataset.value === 'all') {
+                option.classList.add('active');
+            } else {
+                option.classList.remove('active');
+            }
+        });
+    } else {
+        // 如果选择具体选项，取消"全部"选项
+        filterOptions.forEach(option => {
+            if (option.dataset.value === 'all') {
+                option.classList.remove('active');
+            } else if (option.dataset.value === value) {
+                option.classList.toggle('active');
+            }
+        });
+        
+        // 如果没有选中任何具体选项，自动选中"全部"
+        const activeSpecificOptions = document.querySelectorAll(`[data-category="${category}"] .filter-option.active:not([data-value="all"])`);
+        if (activeSpecificOptions.length === 0) {
+            document.querySelector(`[data-category="${category}"] .filter-option[data-value="all"]`).classList.add('active');
+        }
+    }
+    
+    // 应用筛选
+    applyFilters();
+}
+
+// 搜索产品
+function searchProducts() {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchQuery = searchInput.value.toLowerCase();
+        applyFilters();
+    }
+}
+
+// 清除搜索
+function clearSearch() {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.value = '';
+        searchQuery = '';
+        applyFilters();
+    }
+}
+
+// 选择分类
+function selectCategory(category) {
+    currentCategory = category;
+    
+    // 更新分类标签样式
+    document.querySelectorAll('.category-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelector(`[data-category="${category}"]`).classList.add('active');
+    
+    // 更新子分类显示
+    const subcategoryMap = {
+        'flash': '闪瓷系列',
+        'zirconia': '氧化锆类',
+        'metal': '金属类',
+        'ceramic': '铸瓷类'
+    };
+    
+    currentSubcategory = subcategoryMap[category];
+    document.getElementById('current-subcategory').textContent = currentSubcategory;
+    
+    applyFilters();
+}
+
+// 切换子分类下拉
+function toggleSubcategory() {
+    const dropdown = document.querySelector('.subcategory-dropdown');
+    dropdown.classList.toggle('active');
+}
+
+// 应用筛选条件
+function applyFilters() {
+    const productItems = document.querySelectorAll('.product-item');
+    
+    // 获取所有激活的筛选条件
+    const activeFilters = {
+        function: getActiveFilters('function'),
+        material: getActiveFilters('material'),
+        brand: getActiveFilters('brand'),
+        other: getActiveFilters('other')
+    };
+    
+    productItems.forEach(item => {
+        const title = item.querySelector('.product-title').textContent.toLowerCase();
+        let shouldShow = true;
+        
+        // 搜索筛选
+        if (searchQuery && !title.includes(searchQuery)) {
+            shouldShow = false;
+        }
+        
+        // 分类筛选
+        if (currentCategory !== 'all' && item.getAttribute('data-category') !== currentCategory) {
+            shouldShow = false;
+        }
+        
+        // 子分类筛选
+        if (currentSubcategory !== 'all' && item.getAttribute('data-subcategory') !== currentSubcategory) {
+            shouldShow = false;
+        }
+        
+        // 应用筛选条件
+        if (shouldShow) {
+            for (const [category, filters] of Object.entries(activeFilters)) {
+                if (filters.length > 0 && !filters.includes('all')) {
+                    const matchesFilter = filters.some(filter => {
+                        return title.includes(filter) || item.getAttribute('data-type') === filter;
+                    });
+                    if (!matchesFilter) {
+                        shouldShow = false;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // 显示或隐藏产品
+        if (shouldShow) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+// 获取激活的筛选条件
+function getActiveFilters(category) {
+    const activeOptions = document.querySelectorAll(`[data-category="${category}"] .filter-option.active`);
+    return Array.from(activeOptions).map(option => option.getAttribute('data-value'));
+}
+
+// 下单功能
+function orderProduct(productName) {
+    alert(`正在为您处理 "${productName}" 的订单...`);
+}
+
+// 获取筛选关键词映射
+function getFilterKeyword(filter) {
+    const filterMap = {
+        'crown': '牙冠',
+        'bridge': '桥体',
+        'inlay': '嵌体',
+        'veneer': '贴面',
+        'zirconia': '氧化锆',
+        'ceramic': '全瓷',
+        'metal': '金属',
+        'composite': '复合',
+        'premium': 'Premium',
+        'digital': '数码',
+        'classic': '经典',
+        'japan': '日本',
+        'new': '新品',
+        'popular': '热门',
+        'discount': '优惠'
+    };
+    return filterMap[filter] || filter;
+}
+
+// 确保所有函数在全局作用域中可用
+window.toggleFilterPanel = toggleFilterPanel;
+window.toggleFilterCategory = toggleFilterCategory;
+window.selectFilter = selectFilter;
+window.searchProducts = searchProducts;
+window.clearSearch = clearSearch;
+window.selectCategory = selectCategory;
+window.toggleSubcategory = toggleSubcategory;
+window.orderProduct = orderProduct;
+function getFilterKeyword(filterValue) {
+    const keywords = {
+        // 功能关键词
+        'crown': '牙冠',
+        'bridge': '桥体',
+        'inlay': '嵌体',
+        'veneer': '贴面',
+        
+        // 材料关键词
+        'zirconia': '氧化锆',
+        'ceramic': '全瓷',
+        'metal': '金属',
+        'composite': '复合',
+        
+        // 品牌关键词
+        'premium': 'premium',
+        'digital': '数码',
+        'classic': '经典',
+        'japan': '日本',
+        
+        // 其他关键词
+        'new': '新品',
+        'popular': '热门',
+        'discount': '优惠'
+    };
+    
+    return keywords[filterValue] || filterValue;
+}
+
+// 下单产品
+function orderProduct(productName) {
+    // 创建下单通知
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(33, 150, 243, 0.95);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        z-index: 4000;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(33, 150, 243, 0.3);
+        opacity: 0;
+        transition: all 0.3s;
+    `;
+    notification.textContent = `正在为您准备 ${productName} 的下单页面...`;
+    
+    document.body.appendChild(notification);
+    
+    // 显示动画
+    setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translate(-50%, -50%) translateY(-10px)';
+    }, 100);
+    
+    // 自动隐藏
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translate(-50%, -50%) translateY(10px)';
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 2000);
+}
+
+// 初始化产品库页面
+function initProductsPage() {
+    console.log('初始化产品库页面');
+    
+    // 禁用主页面滚动
+    document.body.style.overflow = 'hidden';
+    
+    // 页面已经直接显示，不需要动画
+    console.log('产品页面显示');
+    
+    // 初始化筛选 - 不默认展开筛选面板
+    setTimeout(() => {
+        // 应用初始筛选
+        if (typeof applyFilters === 'function') {
+            applyFilters();
+        }
+        console.log('筛选初始化完成');
+    }, 100);
+}
+
+// 确保初始化函数在全局作用域
+window.initProductsPage = initProductsPage;
+
+// 页面加载完成后初始化
+document.addEventListener('DOMContentLoaded', function() {
+    initProductsPage();
+});
+
+// 确保所有函数在全局作用域中可用
+window.closeProductsPage = closeProductsPage;
+window.toggleFilterPanel = toggleFilterPanel;
+window.toggleFilterCategory = toggleFilterCategory;
+window.selectFilter = selectFilter;
+window.searchProducts = searchProducts;
+window.clearSearch = clearSearch;
+window.selectCategory = selectCategory;
+window.toggleSubcategory = toggleSubcategory;
+window.orderProduct = orderProduct;
+
+// 初始化函数
+function initProductsPage() {
+    console.log('产品库页面初始化完成');
+    console.log('toggleFilterPanel函数可用:', typeof window.toggleFilterPanel);
+    
+    // 绑定筛选按钮事件
+    const filterBtn = document.getElementById('filter-btn');
+    if (filterBtn) {
+        filterBtn.addEventListener('click', function() {
+            console.log('筛选按钮被点击');
+            toggleFilterPanel();
+        });
+        console.log('筛选按钮事件绑定成功');
+    } else {
+        console.error('找不到筛选按钮元素');
+    }
+    
+    // 绑定其他按钮事件
+    bindAllEvents();
+}
+
+// 绑定所有事件
+function bindAllEvents() {
+    // 绑定返回按钮事件
+    const backBtn = document.getElementById('back-btn');
+    if (backBtn) {
+        backBtn.addEventListener('click', closeProductsPage);
+        console.log('返回按钮事件绑定成功');
+    }
+    
+    // 绑定搜索输入事件
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', searchProducts);
+        console.log('搜索输入事件绑定成功');
+    }
+    
+    // 绑定搜索清除按钮事件
+    const searchClear = document.getElementById('search-clear');
+    if (searchClear) {
+        searchClear.addEventListener('click', clearSearch);
+        console.log('搜索清除按钮事件绑定成功');
+    }
+    
+    // 绑定筛选分类标题点击事件
+    document.querySelectorAll('.filter-title').forEach(title => {
+        title.addEventListener('click', function() {
+            // 从onclick属性中提取分类名称，或者使用data属性
+            const onclickAttr = this.getAttribute('onclick');
+            let category = null;
+            if (onclickAttr) {
+                const match = onclickAttr.match(/'([^']+)'/);
+                category = match ? match[1] : null;
+            }
+            if (category) {
+                toggleFilterCategory(category);
+            }
+        });
+    });
+    
+    // 绑定筛选选项点击事件
+    document.querySelectorAll('.filter-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const category = this.closest('[data-category]')?.getAttribute('data-category');
+            const value = this.getAttribute('data-value');
+            if (category && value) {
+                selectFilter(category, value);
+            }
+        });
+    });
+    
+    console.log('所有事件绑定完成');
+}
+
+window.initProductsPage = initProductsPage;
+
+// 页面加载完成后自动初始化
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProductsPage);
+} else {
+    initProductsPage();
+}
+
+</script>

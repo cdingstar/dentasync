@@ -1,0 +1,31 @@
+{
+  "name": "at-dentalink",
+  "version": "1.0.0",
+  "description": "AT DentaLink 牙科医疗管理平台",
+  "main": "app.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "dental",
+    "medical",
+    "management",
+    "platform"
+  ],
+  "author": "AT DentaLink Team",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^5.0.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "vite": "^7.1.7"
+  }
+}

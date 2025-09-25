@@ -1,0 +1,175 @@
+<!-- 底部导航菜单栏组件 -->
+<div class="bottom-nav">
+    <div class="nav-item">
+        <div class="nav-icon">📊</div>
+        <div class="nav-label">工作台</div>
+    </div>
+    
+    <div class="nav-item">
+        <div class="nav-icon">💬</div>
+        <div class="nav-label">消息</div>
+    </div>
+    
+    <div class="nav-item active">
+        <div class="nav-icon">➕</div>
+        <div class="nav-label">下单</div>
+    </div>
+    
+    <div class="nav-item">
+        <div class="nav-icon">📋</div>
+        <div class="nav-label">订单</div>
+    </div>
+    
+    <div class="nav-item">
+        <div class="nav-icon">
+            ⋯
+            <div class="nav-badge">6</div>
+        </div>
+        <div class="nav-label">更多</div>
+    </div>
+</div>
+
+<style>
+/* 底部导航样式 */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 20px));
+    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #f0f0f0;
+    max-width: 414px;
+    margin: 0 auto;
+    z-index: 1000;
+    height: 70px;
+}
+
+/* 内容与菜单栏之间的分隔线 */
+.bottom-nav::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: linear-gradient(to right, 
+        transparent 0%, 
+        rgba(0, 0, 0, 0.1) 20%,
+        rgba(0, 0, 0, 0.1) 80%,
+        transparent 100%);
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    transition: color 0.3s;
+    position: relative;
+    padding: 4px 0;
+}
+
+.nav-item.active {
+    color: #2196f3;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    min-width: 40px; /* iOS minimum touch target */
+    min-height: 40px;
+}
+
+.nav-label {
+    font-size: 9px;
+    color: #666;
+    line-height: 1;
+    margin-top: -2px;
+}
+
+.nav-item.active .nav-label {
+    color: #2196f3;
+}
+
+.nav-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #f44336;
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 统一的悬停动画效果 */
+.nav-item {
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+    transform: translateY(-2px);
+}
+
+.nav-item:hover .nav-icon {
+    transform: scale(1.1);
+    color: #2196f3;
+}
+
+.nav-item:hover .nav-label {
+    color: #2196f3;
+}
+
+.nav-item:active {
+    transform: translateY(0);
+}
+
+.nav-item:active .nav-icon {
+    transform: scale(0.95);
+}
+</style>
+
+<script>
+// 底部导航点击事件
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function() {
+            // 移除所有active状态
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            // 添加当前active状态
+            this.classList.add('active');
+            
+            const label = this.querySelector('.nav-label').textContent;
+            if (label !== '下单') {
+                alert(`正在进入${label}页面...`);
+            }
+        });
+    });
+
+    // 添加触摸反馈
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('touchstart', function() {
+            this.style.opacity = '0.7';
+        });
+        
+        item.addEventListener('touchend', function() {
+            this.style.opacity = '1';
+        });
+    });
+});
+</script>
