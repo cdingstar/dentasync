@@ -88,6 +88,35 @@
     gap: 12px;
 }
 
+.message-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.message-item.sent .message-row {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.chat-avatar {
+    width: 32px;
+    height: 32px;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    background: #8ab4f8;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 32px;
+    box-sizing: border-box;
+    overflow: hidden;
+    align-self: flex-start;
+}
+
 /* 系统消息 */
 .system-message {
     text-align: center;
@@ -112,7 +141,6 @@
 
 .message-item.sent .chat-message {
     align-items: flex-end;
-    margin-left: auto;
 }
 
 .message-sender {
@@ -137,9 +165,28 @@
 }
 
 .message-item.sent .message-text {
-    background: #4285f4;
-    color: white;
+    background: #e3f2fd;
+    color: #111;
 }
+
+.message-status {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+}
+.message-status.unread { color: #ff7043; }
+.message-status.read { color: #4caf50; }
+
+.message-item.sent .message-row { justify-content: flex-end; }
+
+.name-tag { font-size: 12px; color: #666; align-self: center; }
+.meta-line { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #666; margin: 0 4px 4px 4px; }
+.meta-name { font-weight: 500; }
+.meta-time { color: #999; }
+.message-item.sent .meta-line { justify-content: flex-end; text-align: right; }
+
+.message-col { display: flex; flex-direction: column; align-items: flex-start; max-width: 78%; }
+.message-item.sent .message-col { align-items: flex-end; }
 
 .message-image {
     margin-top: 4px;

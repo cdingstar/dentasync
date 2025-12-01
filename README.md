@@ -1,11 +1,11 @@
-# dentalink
+# DentaSync
 >>>>>>> f996b2754d9823f66f4449fd1489b9d0fa988cef
 =======
-# DentaLink - 牙科医疗管理平台
+# DentaSync - 牙科医疗管理平台
 
 ## 项目简介
 
-DentaLink 是一个现代化的牙科医疗管理平台，为牙科诊所提供全面的管理解决方案。
+DentaSync 是一个现代化的牙科医疗管理平台，为牙科诊所提供全面的管理解决方案。
 
 ## 功能特性
 
@@ -51,7 +51,7 @@ npm run preview
 ## 项目结构
 
 ```
-DentaLink/
+DentaSync/
 ├── src/
 │   ├── components/     # 可复用组件
 │   ├── pages/         # 页面组件
@@ -69,7 +69,7 @@ DentaLink/
 
 ## 开发团队
 
-AT DentaLink Team
+AT DentaSync Team
 
 ## 许可证
 
@@ -83,5 +83,5 @@ ISC License
 
 如有任何问题或建议，请通过 Issue 联系我们。
 =======
-# dentalink
+# DentaSync
 >>>>>>> f996b2754d9823f66f4449fd1489b9d0fa988cef

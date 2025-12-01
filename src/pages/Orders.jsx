@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Orders.css'
 import OrderChat from './OrderChat'
 import OrderDetail from './OrderDetail'
 
-function Orders({ defaultTab = 'all' }) {
+function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
   const [activeTab, setActiveTab] = useState(defaultTab)
   const [searchQuery, setSearchQuery] = useState('')
   const [showChat, setShowChat] = useState(false)
@@ -11,74 +11,96 @@ function Orders({ defaultTab = 'all' }) {
   const [selectedOrderId, setSelectedOrderId] = useState('')
   const [selectedOrder, setSelectedOrder] = useState(null)
   
-  const orders = [
+  const [orders, setOrders] = useState([
     {
       id: 'ORD-2024-001',
       patientName: '张三',
+      doctorName: '黄向荣',
+      clinic: '仁爱口腔诊所',
       productType: '氧化锆牙冠',
       toothPosition: '11, 12',
       status: 'processing',
       statusText: '制作中',
       createTime: '2024-01-15 10:30',
       expectedTime: '2024-01-22',
-      urgency: 'normal'
+      urgency: 'normal',
+      factory: '南宁市谱佳齿科技术中心'
     },
     {
       id: 'ORD-2024-002',
       patientName: '李四',
+      doctorName: '王医生',
+      clinic: '康乐牙科门诊',
       productType: '全瓷贴面',
       toothPosition: '21-24',
       status: 'shipped',
       statusText: '已发货',
       createTime: '2024-01-14 14:20',
       expectedTime: '2024-01-20',
-      urgency: 'urgent'
+      urgency: 'urgent',
+      factory: '优质牙科实验室'
     },
     {
       id: 'ORD-2024-003',
       patientName: '王五',
+      doctorName: '李医生',
+      clinic: '美齿口腔',
       productType: '金属烤瓷桥',
       toothPosition: '14-16',
       status: 'completed',
       statusText: '已完成',
       createTime: '2024-01-10 09:15',
       expectedTime: '2024-01-18',
-      urgency: 'normal'
+      urgency: 'normal',
+      factory: '精工义齿制作中心'
     },
     {
       id: 'ORD-2024-004',
       patientName: '赵六',
+      doctorName: '周医生',
+      clinic: '瑞康口腔门诊',
       productType: '氧化锆嵌体',
       toothPosition: '36',
       status: 'pending',
-      statusText: '待确认',
+      statusText: '待处理',
       createTime: '2024-01-16 16:45',
       expectedTime: '2024-01-25',
-      urgency: 'emergency'
+      urgency: 'emergency',
+      factory: '南宁市谱佳齿科技术中心'
     },
     {
       id: 'ORD-2024-005',
       patientName: '陈七',
+      doctorName: '刘医生',
+      clinic: '爱康口腔',
       productType: 'D1氧化锆全瓷牙',
       toothPosition: '21, 22',
       status: 'draft',
       statusText: '待下单',
       createTime: '2024-01-17 11:20',
       expectedTime: '2024-01-26',
-      urgency: 'normal'
+      urgency: 'normal',
+      factory: '优质牙科实验室'
     },
     {
       id: 'ORD-2024-006',
       patientName: '刘八',
+      doctorName: '张医生',
+      clinic: '德恩口腔',
       productType: '全瓷冠',
       toothPosition: '16',
       status: 'draft',
       statusText: '待下单',
       createTime: '2024-01-17 15:30',
       expectedTime: '2024-01-27',
-      urgency: 'urgent'
+      urgency: 'urgent',
+      factory: '精工义齿制作中心'
     }
-  ]
+  ])
+
+  const deleteOrder = (id) => {
+    setOrders(prev => prev.filter(o => o.id !== id))
+  }
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -138,6 +160,26 @@ function Orders({ defaultTab = 'all' }) {
     }
   }
 
+  useEffect(() => {
+    const handler = (e) => {
+      const { page, query } = e.detail || {}
+      if (page === 'orders') {
+        setSearchQuery(query || '')
+      }
+    }
+    window.addEventListener('globalSearch', handler)
+    return () => window.removeEventListener('globalSearch', handler)
+  }, [])
+
+  useEffect(() => {
+    const closeHandler = () => {
+      setShowChat(false)
+      setShowDetail(false)
+    }
+    window.addEventListener('requestCloseDialogs', closeHandler)
+    return () => window.removeEventListener('requestCloseDialogs', closeHandler)
+  }, [])
+
   const handleChatOpen = (orderId) => {
     setSelectedOrderId(orderId)
     setShowChat(true)
@@ -161,14 +203,14 @@ function Orders({ defaultTab = 'all' }) {
   const filteredOrders = orders.filter(order => {
     if (activeTab === 'all') {
       if (searchQuery && !order.patientName.toLowerCase().includes(searchQuery.toLowerCase()) && 
-          !order.productType.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !order.doctorName.toLowerCase().includes(searchQuery.toLowerCase()) &&
           !order.id.toLowerCase().includes(searchQuery.toLowerCase())) {
         return false
       }
       return true
     }
     if (searchQuery && !order.patientName.toLowerCase().includes(searchQuery.toLowerCase()) && 
-        !order.productType.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        !order.doctorName.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !order.id.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false
     }
@@ -178,8 +220,7 @@ function Orders({ defaultTab = 'all' }) {
   const tabs = [
     { id: 'all', label: '全部', count: orders.length },
     { id: 'draft', label: '待下单', count: orders.filter(o => o.status === 'draft').length },
-    { id: 'pending', label: '待确认', count: orders.filter(o => o.status === 'pending').length },
-    { id: 'processing', label: '制作中', count: orders.filter(o => o.status === 'processing').length },
+    { id: 'pending', label: '待处理', count: orders.filter(o => o.status === 'pending').length },
     { id: 'shipped', label: '已发货', count: orders.filter(o => o.status === 'shipped').length },
     { id: 'completed', label: '已完成', count: orders.filter(o => o.status === 'completed').length }
   ]
@@ -195,7 +236,7 @@ function Orders({ defaultTab = 'all' }) {
           <div className="search-container">
             <input 
               type="text" 
-              placeholder="患者姓名/产品名称/订单号" 
+              placeholder="患者/医生/订单号" 
               value={searchQuery}
               onChange={handleSearch}
               onKeyPress={handleSearchKeyPress}
@@ -232,11 +273,11 @@ function Orders({ defaultTab = 'all' }) {
 
       <div className="orders-list">
         {filteredOrders.map((order, index) => (
-          <div key={order.id} className="order-item">
+          <div key={order.id} className="order-item" onClick={() => handleDetailOpen(order)}>
             <div className="order-header">
               <div className="order-id">{order.id}</div>
               <div className="order-status-tag" style={{ backgroundColor: getStatusColor(order.status) }}>
-                {order.statusText} {getStatusPercentage(order.status)}
+                {order.statusText}
               </div>
             </div>
             
@@ -247,31 +288,31 @@ function Orders({ defaultTab = 'all' }) {
               
               <div className="order-details">
                 <div className="patient-info">
-                  <span className="patient-label">患者:</span>
-                  <span className="patient-name">{order.patientName}</span>
-                  <span className="urgency-tag" style={{ color: getUrgencyColor(order.urgency) }}>
-                    {getUrgencyText(order.urgency)}
-                  </span>
+                  <span className="patient-name">{order.patientName}/{order.doctorName}（{order.clinic}）</span>
                 </div>
                 
                 <div className="responsibility-unit">
-                  责任单位: 南宁市靖佳齿科技术中心
+                  预期时间：{order.expectedTime}（{order.factory}）
                 </div>
                 
-                <div className="delivery-date">
-                  预计到货: {order.expectedTime}
-                </div>
+                
               </div>
             </div>
             
             <div className="order-actions">
-              <div className="action-left">
-                <div className="institution-name">ASIANTECH PTE. LTD. - 黄向荣</div>
-              </div>
+              
               <div className="action-buttons">
-                <button className="btn-chat" onClick={() => handleChatOpen(order.id)}>在线交流</button>
-                <button className="btn-logistics">查看物流</button>
-                <button className="btn-confirm-receipt" onClick={() => handleDetailOpen(order)}>查看详情</button>
+                {activeTab === 'draft' ? (
+                  <>
+                    <button className="btn-chat" onClick={(e) => { e.stopPropagation(); onGoPlaceOrder && onGoPlaceOrder('order') }}>去下单</button>
+                    <button className="btn-confirm-receipt" onClick={(e) => { e.stopPropagation(); deleteOrder(order.id) }}>删除</button>
+                  </>
+                ) : (
+                  <>
+                    <button className="btn-chat" onClick={(e) => { e.stopPropagation(); handleChatOpen(order.id) }}>在线交流</button>
+                    <button className="btn-confirm-receipt" onClick={(e) => { e.stopPropagation(); handleDetailOpen(order) }}>查看详情</button>
+                  </>
+                )}
               </div>
             </div>
           </div>

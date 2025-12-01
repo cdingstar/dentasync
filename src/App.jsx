@@ -1,25 +1,31 @@
 import React, { useState } from 'react'
+import Login from './pages/Login/Login'
 import StatusBar from './components/StatusBar'
 import Header from './components/Header'
 import MenuBar from './components/MenuBar'
 import Workspace from './pages/Workspace'
 import Messages from './pages/Messages'
 import Orders from './pages/Orders'
-import More from './pages/More'
+import My from './pages/My'
 import Products from './pages/Products'
-import OrderSelection from './pages/OrderSelection'
+import QuickOrder from './pages/QuickOrder/QuickOrder.jsx'
+import AddressManagement from './pages/AddressManagement'
+import PatientArchive from './pages/PatientArchive'
 import './App.css'
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false)
   const [currentPage, setCurrentPage] = useState('workspace')
   const [showProducts, setShowProducts] = useState(false)
+  const [productSelectCallback, setProductSelectCallback] = useState(null)
+  const [selectedProductFromLibrary, setSelectedProductFromLibrary] = useState(null)
   const [showOrderSelection, setShowOrderSelection] = useState(false)
   const [ordersDefaultTab, setOrdersDefaultTab] = useState('all')
 
   const handlePageChange = (page) => {
     if (page === 'order') {
-      // 点击底部菜单的"下单"按钮，显示OrderSelection
-      setShowOrderSelection(true)
+      setCurrentPage('order')
+      setShowOrderSelection(false)
       return
     }
     setCurrentPage(page)
@@ -32,16 +38,46 @@ function App() {
   }
 
   const handleOpenProducts = () => {
+    setProductSelectCallback(() => (product) => {
+      setSelectedProductFromLibrary({ ...product, _ts: Date.now() })
+      setCurrentPage('order')
+    })
+    setShowProducts(true)
+  }
+
+  const openProductLibrary = () => {
+    setProductSelectCallback(() => (product) => {
+      setSelectedProductFromLibrary({ ...product, _ts: Date.now() })
+    })
     setShowProducts(true)
   }
 
   const handleCloseProducts = () => {
     setShowProducts(false)
+    setProductSelectCallback(null)
   }
 
   const handleNavigateToOrders = (defaultTab = 'all') => {
     setOrdersDefaultTab(defaultTab)
     setCurrentPage('orders')
+    setShowProducts(false)
+    setShowOrderSelection(false)
+  }
+
+  const handleNavigateToAddress = () => {
+    setCurrentPage('address')
+    setShowProducts(false)
+    setShowOrderSelection(false)
+  }
+
+  const handleNavigateToPatient = () => {
+    setCurrentPage('patient')
+    setShowProducts(false)
+    setShowOrderSelection(false)
+  }
+
+  const handleNavigateToMessages = () => {
+    setCurrentPage('messages')
     setShowProducts(false)
     setShowOrderSelection(false)
   }
@@ -52,14 +88,21 @@ function App() {
         return <Workspace 
           onOpenProducts={handleOpenProducts} 
           onNavigateToOrders={handleNavigateToOrders}
+          onNavigateToAddress={handleNavigateToAddress}
+          onNavigateToPatient={handleNavigateToPatient}
+          onNavigateToMessages={handleNavigateToMessages}
         />
       case 'messages':
         return <Messages />
 
       case 'orders':
-        return <Orders defaultTab={ordersDefaultTab} />
-      case 'more':
-        return <More />
+        return <Orders defaultTab={ordersDefaultTab} onGoPlaceOrder={() => setCurrentPage('order')} />
+      case 'my':
+        return <My onLogout={() => setLoggedIn(false)} />
+      case 'address':
+        return <AddressManagement />
+      case 'patient':
+        return <PatientArchive />
       default:
         return <Workspace onOpenProducts={handleOpenProducts} />
     }
@@ -67,23 +110,30 @@ function App() {
 
   return (
     <div className="phone-container">
-      <StatusBar />
-      
+      {loggedIn ? (
+        <>
+          <StatusBar />
       {showProducts ? (
-        <Products onClose={handleCloseProducts} />
-      ) : showOrderSelection ? (
-        <OrderSelection 
-          onClose={closeOrderSelection}
-          productName="订单选择"
-        />
+        <Products onClose={handleCloseProducts} onSelect={productSelectCallback} />
       ) : (
         <>
-          <Header currentPage={currentPage} />
+          {currentPage !== 'order' && <Header currentPage={currentPage} />}
           <div className="main-content">
-            {renderCurrentPage()}
+            {currentPage === 'order' ? (
+              <QuickOrder 
+                onClose={() => setCurrentPage('workspace')} 
+                onOpenProducts={openProductLibrary} 
+                selectedProductFromLibrary={selectedProductFromLibrary}
+                onConsumeSelectedProduct={() => setSelectedProductFromLibrary(null)}
+              />
+            ) : renderCurrentPage()}
           </div>
           <MenuBar currentPage={currentPage} onPageChange={handlePageChange} />
         </>
+      )}
+        </>
+      ) : (
+        <Login onSubmit={() => setLoggedIn(true)} />
       )}
     </div>
   )

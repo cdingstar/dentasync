@@ -223,4 +223,132 @@ export const productsData = [
     status: '连续修复',
     image: 'product24.jpg'
   }
+  ,
+  // 种植产品类别
+  {
+    id: 25,
+    title: '种植牙冠标准版',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-crown-standard',
+    status: '热销产品',
+    image: 'implant1.jpg'
+  },
+  {
+    id: 26,
+    title: '种植牙冠高强度',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-crown-strong',
+    status: '强度之选',
+    image: 'implant2.jpg'
+  },
+  {
+    id: 27,
+    title: '种植个性化基台',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-abutment-custom',
+    status: '个性定制',
+    image: 'implant3.jpg'
+  },
+  {
+    id: 28,
+    title: '种植标准基台',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-abutment-standard',
+    status: '稳定可靠',
+    image: 'implant4.jpg'
+  },
+  {
+    id: 29,
+    title: '种植上部修复体',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-suprastructure',
+    status: '临床常用',
+    image: 'implant5.jpg'
+  },
+  {
+    id: 30,
+    title: '种植愈合帽套装',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-healing-cap',
+    status: '术后配件',
+    image: 'implant6.jpg'
+  },
+  {
+    id: 31,
+    title: '种植取模杆组件',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-impression-post',
+    status: '精准取模',
+    image: 'implant7.jpg'
+  },
+  {
+    id: 32,
+    title: '种植转移杆系统',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-transfer-post',
+    status: '规范流程',
+    image: 'implant8.jpg'
+  },
+  {
+    id: 33,
+    title: '种植螺丝附件包',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-screw-kit',
+    status: '配件齐全',
+    image: 'implant9.jpg'
+  },
+  {
+    id: 34,
+    title: '种植数字化导板',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-guide',
+    status: '数字化',
+    image: 'implant10.jpg'
+  },
+  {
+    id: 35,
+    title: '种植桥体修复',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-bridge',
+    status: '多牙修复',
+    image: 'implant11.jpg'
+  },
+  {
+    id: 36,
+    title: '种植即刻修复套组',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-immediate',
+    status: '快速修复',
+    image: 'implant12.jpg'
+  },
+  {
+    id: 37,
+    title: '种植咬合调整组件',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-occlusion',
+    status: '精细调整',
+    image: 'implant13.jpg'
+  },
+  {
+    id: 38,
+    title: '种植全拱修复方案',
+    category: 'implant',
+    subcategory: '种植产品',
+    type: 'implant-full-arch',
+    status: '复杂病例',
+    image: 'implant14.jpg'
+  }
 ]

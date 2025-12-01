@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './Products.css'
 import FilterPanel from '../components/FilterPanel'
 import { productsData } from '../data/productsData'
 
-function Products({ onClose }) {
+function Products({ onClose, onSelect }) {
   const [showFilterPanel, setShowFilterPanel] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [currentCategory, setCurrentCategory] = useState('flash')
@@ -40,6 +40,25 @@ function Products({ onClose }) {
       executeSearch()
     }
   }
+
+  useEffect(() => {
+    const handler = (e) => {
+      const { page, query } = e.detail || {}
+      if (page === 'products') {
+        setSearchQuery(query || '')
+      }
+    }
+    window.addEventListener('globalSearch', handler)
+    return () => window.removeEventListener('globalSearch', handler)
+  }, [])
+
+  useEffect(() => {
+    const closeHandler = () => {
+      setShowFilterPanel(false)
+    }
+    window.addEventListener('requestCloseDialogs', closeHandler)
+    return () => window.removeEventListener('requestCloseDialogs', closeHandler)
+  }, [])
 
   const scrollCategoryTabs = (direction) => {
     if (categoryTabsRef.current) {
@@ -93,8 +112,13 @@ function Products({ onClose }) {
     console.log('应用筛选条件:', filters)
   }
 
-  const orderProduct = (productName) => {
-    alert(`下单产品: ${productName}`)
+  const orderProduct = (product) => {
+    if(onSelect){
+      onSelect({ title: product.title, id: product.id })
+      onClose && onClose()
+    } else {
+      alert(`下单产品: ${product.title}`)
+    }
   }
 
   const filteredProducts = products.filter(product => {
@@ -131,12 +155,11 @@ function Products({ onClose }) {
             {searchQuery && (
               <div className="search-clear" onClick={clearSearch}>×</div>
             )}
-            <button className="search-btn" onClick={executeSearch}>
+            <button className="search-btn" onClick={executeSearch} aria-label="搜索">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M14 14L10.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              搜索
             </button>
           </div>
           <div className="filter-btn" onClick={toggleFilterPanel}>
@@ -193,6 +216,12 @@ function Products({ onClose }) {
           >
             铸瓷类
           </div>
+          <div 
+            className={`category-tab ${currentCategory === 'implant' ? 'active' : ''}`}
+            onClick={() => selectCategory('implant')}
+          >
+            种植产品
+          </div>
         </div>
         
         <button 
@@ -220,7 +249,7 @@ function Products({ onClose }) {
               <div className="product-action">
                 <button 
                   className="order-btn" 
-                  onClick={() => orderProduct(product.title)}
+                  onClick={() => orderProduct(product)}
                 >
                   立即下单
                 </button>

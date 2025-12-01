@@ -43,7 +43,7 @@ function More() {
       title: '关于我们',
       icon: 'ℹ️',
       description: '应用版本和公司信息',
-      action: () => alert('AT DentaLink v1.0.0\n牙科医疗管理平台')
+      action: () => alert('DentaSync v1.0.0\n牙科医疗管理平台')
     }
   ]
 
@@ -84,7 +84,7 @@ function More() {
           <div className="user-details">
             <div className="user-name">Dr. 张医生</div>
             <div className="user-role">牙科医师</div>
-            <div className="user-clinic">阳光口腔诊所</div>
+            <div className="user-clinic">DentaSync</div>
           </div>
         </div>
       </div>
@@ -132,10 +132,10 @@ function More() {
 
       <div className="app-info">
         <div className="app-version">
-          <span>版本信息：AT DentaLink v1.0.0</span>
+          <span>版本信息：DentaSync v1.0.0</span>
         </div>
         <div className="copyright">
-          <span>© 2024 AT DentaLink. All rights reserved.</span>
+          <span>© 2024 DentaSync. All rights reserved.</span>
         </div>
       </div>
     </div>

@@ -1,9 +1,20 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import './Workspace.css'
-import OrderSelection from './OrderSelection'
 
-function Workspace({ onOpenProducts, onNavigateToOrders }) {
+function Workspace({ onOpenProducts, onNavigateToOrders, onNavigateToAddress, onNavigateToPatient, onNavigateToMessages }) {
   const [showOrderSelection, setShowOrderSelection] = useState(false)
+
+  const ordersSample = useMemo(() => ([
+    { status: 'processing' },
+    { status: 'shipped' },
+    { status: 'completed' },
+    { status: 'pending' },
+    { status: 'draft' },
+    { status: 'completed' }
+  ]), [])
+
+  const completedCount = useMemo(() => ordersSample.filter(o => o.status === 'completed').length, [ordersSample])
+  const uncompletedCount = useMemo(() => ordersSample.filter(o => o.status !== 'completed').length, [ordersSample])
 
   const handleNavigateToFunction = (functionType) => {
     console.log('点击了功能按钮:', functionType)
@@ -11,7 +22,7 @@ function Workspace({ onOpenProducts, onNavigateToOrders }) {
     const messages = {
       shipped: '已发货功能开发中...',
       settings: '设置功能开发中...',
-      mytasks: '我的任务功能开发中...',
+      mytasks: '我的信息功能开发中...',
       account: '账号管理功能开发中...'
     }
     
@@ -31,26 +42,26 @@ function Workspace({ onOpenProducts, onNavigateToOrders }) {
 
   return (
     <div className="page-content">
-      {/* 更多内容即将到来提示块 */}
-      <div className="coming-soon-banner">
-        <div className="coming-soon-content">
-          <div className="coming-soon-icon">
-            <div className="person-icon">👤</div>
-            <div className="card-icon">💳</div>
+      <div className="order-stats">
+        <div className="stat-card" onClick={() => onNavigateToOrders && onNavigateToOrders('completed')}>
+          <div className="stat-label">已完成订单</div>
+          <div className="stat-value">
+            <span className="stat-icon">🛒</span>
+            <span className="stat-number">{completedCount}</span>
           </div>
-          <div className="coming-soon-text">
-            <h3>更多内容</h3>
-            <p>即将到来</p>
-          </div>
-          <div className="coming-soon-badge">
-            <span>coming soon</span>
+        </div>
+        <div className="stat-card" onClick={() => onNavigateToOrders && onNavigateToOrders('pending')}>
+          <div className="stat-label">待处理订单</div>
+          <div className="stat-value">
+            <span className="stat-icon">✅</span>
+            <span className="stat-number">{uncompletedCount}</span>
           </div>
         </div>
       </div>
 
       {/* 功能网格 */}
       <div className="function-grid">
-        <div className="function-item" onClick={() => handleNavigateToFunction('shipped')}>
+        <div className="function-item" onClick={() => onNavigateToOrders && onNavigateToOrders('shipped')}>
           <div className="function-icon shipped-icon">📦</div>
           <span className="function-label">已发货</span>
         </div>
@@ -65,39 +76,23 @@ function Workspace({ onOpenProducts, onNavigateToOrders }) {
           <span className="function-label">待下单</span>
         </div>
         
-        <div className="function-item" onClick={() => handleNavigateToFunction('settings')}>
-          <div className="function-icon settings-icon">⚙️</div>
-          <span className="function-label">设置</span>
+        <div className="function-item" onClick={onNavigateToAddress}>
+          <div className="function-icon settings-icon">📮</div>
+          <span className="function-label">地址管理</span>
         </div>
         
-        <div className="function-item" onClick={() => handleNavigateToFunction('mytasks')}>
+        <div className="function-item" onClick={onNavigateToMessages}>
           <div className="function-icon mytasks-icon">📋</div>
-          <span className="function-label">我的任务</span>
+          <span className="function-label">我的消息</span>
         </div>
         
-        <div className="function-item" onClick={() => handleNavigateToFunction('account')}>
-          <div className="function-icon account-icon">👤</div>
-          <span className="function-label">账号管理</span>
+        <div className="function-item" onClick={onNavigateToPatient}>
+          <div className="function-icon account-icon">🧑‍⚕️</div>
+          <span className="function-label">患者档案</span>
         </div>
       </div>
 
-      {/* 订单选择页面 */}
-      {showOrderSelection && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 100000,
-          background: 'rgba(0,0,0,0.8)'
-        }}>
-          <OrderSelection 
-            onClose={closeOrderSelection}
-            productName="订单选择"
-          />
-        </div>
-      )}
+      {/* 订单选择页面（已废弃，使用 QuickOrder 单页流程） */}
     </div>
   )
 }

@@ -15,34 +15,42 @@ function OrderChat({ orderId, onClose }) {
     {
       id: 2,
       type: 'received',
-      content: '【客服】韦洁',
+      content: '下图为边缘参考，请确认',
       timestamp: '2024-11-21 11:08',
       hasImage: true,
-      imageUrl: '/api/placeholder/200/150'
+      imageUrl: '/api/placeholder/200/150',
+      status: 'read',
+      sender: '客服'
     },
     {
       id: 3,
       type: 'received',
       content: '【客服】韦洁',
-      timestamp: '2024-11-21 11:08'
+      timestamp: '2024-11-21 11:08',
+      sender: '韦洁'
     },
     {
       id: 4,
       type: 'received',
       content: '医生早上好！JOSHUA LIM TZE HAO 顾客的数据边缘不清晰，建议发PLY彩色格式的压缩包数据给我们哦，谢谢。',
-      timestamp: '2024-11-21 11:08'
+      timestamp: '2024-11-21 11:08',
+      status: 'read',
+      sender: '客服'
     },
     {
       id: 5,
       type: 'received',
       content: '【客服】韦洁',
-      timestamp: '2024-11-21 16:58'
+      timestamp: '2024-11-21 16:58',
+      sender: '韦洁'
     },
     {
       id: 6,
       type: 'received',
       content: '微信对接中',
-      timestamp: '2024-11-21 16:58'
+      timestamp: '2024-11-21 16:58',
+      status: 'unread',
+      sender: '客服'
     },
     {
       id: 7,
@@ -69,6 +77,19 @@ function OrderChat({ orderId, onClose }) {
 
   const [inputMessage, setInputMessage] = useState('')
 
+  const getAvatarText = (name = '') => {
+    const n = String(name).trim()
+    if (!n) return '我'
+    const hasChinese = /[\u4e00-\u9fa5]/.test(n)
+    if (hasChinese) {
+      return n.slice(-1)
+    }
+    const parts = n.split(/\s+/).filter(Boolean)
+    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+    const w = parts[0]
+    return (w.slice(0, 2) || w[0]).toUpperCase()
+  }
+
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
       const newMessage = {
@@ -82,6 +103,9 @@ function OrderChat({ orderId, onClose }) {
           hour: '2-digit',
           minute: '2-digit'
         }).replace(/\//g, '-')
+        ,
+        status: 'unread',
+        sender: '我'
       }
       setMessages([...messages, newMessage])
       setInputMessage('')
@@ -148,15 +172,32 @@ function OrderChat({ orderId, onClose }) {
             )}
             
             {(message.type === 'received' || message.type === 'sent') && (
-              <div className="chat-message">
-                <div className="message-sender">{message.content}</div>
-                {message.hasImage && (
-                  <div className="message-image">
-                    <img src={message.imageUrl} alt="聊天图片" />
-                  </div>
+              <div className="message-row">
+                {message.type === 'received' && (
+                  <div className="chat-avatar">{getAvatarText(message.sender)}</div>
                 )}
-                {!message.hasImage && message.content !== '【客服】韦洁' && (
-                  <div className="message-text">{message.content}</div>
+                <div className={`message-col ${message.type}`}>
+                  <div className="meta-line">
+                    <span className="meta-name">{message.type === 'sent' ? '我' : message.sender}</span>
+                    <span className="meta-time">{message.timestamp}</span>
+                  </div>
+                  <div className="chat-message">
+                    <div className="message-sender">{message.content}</div>
+                    {message.hasImage && (
+                      <div className="message-image">
+                        <img src={message.imageUrl} alt="聊天图片" />
+                      </div>
+                    )}
+                    {!message.hasImage && message.content !== '【客服】韦洁' && (
+                      <div className="message-text">{message.content}</div>
+                    )}
+                    {message.status && (
+                      <div className={`message-status ${message.status}`}>{message.status === 'read' ? '已读' : '未读'}</div>
+                    )}
+                  </div>
+                </div>
+                {message.type === 'sent' && (
+                  <div className="chat-avatar">{getAvatarText('我')}</div>
                 )}
               </div>
             )}

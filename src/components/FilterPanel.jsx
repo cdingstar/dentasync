@@ -90,55 +90,6 @@ function FilterPanel({ showFilterPanel, toggleFilterPanel, filters, selectFilter
         <div className="filter-header">
           <h3>筛选条件</h3>
           <div className="filter-header-right">
-            <div className="supplier-selector" ref={supplierSelectorRef}>
-              <div 
-                className="supplier-dropdown-trigger"
-                onClick={() => setShowSupplierDropdown(!showSupplierDropdown)}
-              >
-                <span className="supplier-text">{getSupplierDisplayText()}</span>
-                <svg 
-                  className={`supplier-arrow ${showSupplierDropdown ? 'open' : ''}`}
-                  width="12" height="12" viewBox="0 0 12 12" fill="none"
-                >
-                  <path d="M3 4.5L6 7.5L9 4.5" stroke="#666" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              {showSupplierDropdown && (
-                <div className="supplier-dropdown">
-                  <div className="supplier-dropdown-header">
-                    <span className="supplier-count">已选择 {selectedSuppliers.length} / {suppliers.length}</span>
-                    <button 
-                      className="supplier-select-all"
-                      onClick={() => {
-                        if (selectedSuppliers.length === suppliers.length) {
-                          setSelectedSuppliers(['ASIANTECH PTE. LTD.']) // 至少保留一个
-                        } else {
-                          setSelectedSuppliers([...suppliers])
-                        }
-                      }}
-                    >
-                      {selectedSuppliers.length === suppliers.length ? '取消全选' : '全选'}
-                    </button>
-                  </div>
-                  {suppliers.map(supplier => (
-                    <div
-                      key={supplier}
-                      className={`supplier-option ${selectedSuppliers.includes(supplier) ? 'active' : ''}`}
-                      onClick={() => toggleSupplier(supplier)}
-                    >
-                      <div className="supplier-checkbox">
-                        {selectedSuppliers.includes(supplier) && (
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        )}
-                      </div>
-                      <span className="supplier-name">{supplier}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
             <button className="filter-close" onClick={toggleFilterPanel}>×</button>
           </div>
         </div>

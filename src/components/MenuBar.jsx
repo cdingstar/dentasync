@@ -7,7 +7,7 @@ function MenuBar({ currentPage, onPageChange }) {
     { id: 'messages', label: '消息', icon: '💬' },
     { id: 'order', label: '下单', icon: '📝' },
     { id: 'orders', label: '订单', icon: '📋' },
-    { id: 'more', label: '更多', icon: '⋯' }
+    { id: 'my', label: '我的', icon: '👤' }
   ]
 
   return (

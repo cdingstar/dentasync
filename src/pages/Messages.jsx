@@ -1,75 +1,110 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import './Messages.css'
+import OrderChat from './OrderChat'
+import ContactChat from './ContactChat'
 
 function Messages() {
-  const messages = [
+  const [searchQuery, setSearchQuery] = useState('')
+  const threads = [
     {
-      id: 1,
-      sender: '系统通知',
-      content: '您有新的订单需要处理',
-      time: '10:30',
-      unread: true,
-      type: 'system'
+      id: 'ORD-1025111444444301',
+      type: 'order',
+      title: '订单1025111444444301',
+      initial: '订',
+      color: '#7e57c2',
+      unreadCount: 5,
+      time: '10:56'
     },
     {
-      id: 2,
-      sender: '客户服务',
-      content: '产品咨询回复：关于氧化锆材料的详细信息...',
-      time: '09:15',
-      unread: true,
-      type: 'service'
+      id: 'DR-HXR',
+      type: 'contact',
+      title: '黄向荣医生',
+      initial: '黄',
+      color: '#2196f3',
+      unreadCount: 3,
+      time: '10:53'
     },
     {
-      id: 3,
-      sender: '订单更新',
-      content: '订单 #12345 已发货，预计明天到达',
-      time: '昨天',
-      unread: false,
-      type: 'order'
+      id: 'DR-WSF',
+      type: 'contact',
+      title: '王师傅',
+      initial: '王',
+      color: '#4caf50',
+      unreadCount: 1,
+      time: '10:01'
     },
     {
-      id: 4,
-      sender: '技术支持',
-      content: '系统维护通知：今晚22:00-24:00进行系统升级',
-      time: '昨天',
-      unread: false,
-      type: 'tech'
+      id: 'DR-LYS',
+      type: 'contact',
+      title: '李医生',
+      initial: '李',
+      color: '#2196f3',
+      unreadCount: 0,
+      time: '昨天'
     }
   ]
 
-  const getMessageIcon = (type) => {
-    switch (type) {
-      case 'system': return '🔔'
-      case 'service': return '💬'
-      case 'order': return '📦'
-      case 'tech': return '🔧'
-      default: return '💬'
+  const [showOrderChat, setShowOrderChat] = useState(false)
+  const [showContactChat, setShowContactChat] = useState(false)
+  const [selectedThread, setSelectedThread] = useState(null)
+
+  const getInitialStyle = (color) => ({ backgroundColor: color })
+
+  useEffect(() => {
+    const handler = (e) => {
+      const { page, query } = e.detail || {}
+      if (page === 'messages') {
+        setSearchQuery(query || '')
+      }
+    }
+    window.addEventListener('globalSearch', handler)
+    return () => window.removeEventListener('globalSearch', handler)
+  }, [])
+
+  const filteredMessages = useMemo(() => {
+    const q = (searchQuery || '').toLowerCase()
+    if (!q) return threads
+    return threads.filter(t => {
+      const idText = String(t.id)
+      return (
+        idText.toLowerCase().includes(q) ||
+        t.title.toLowerCase().includes(q)
+      )
+    })
+  }, [threads, searchQuery])
+
+  const openThread = (thread) => {
+    setSelectedThread(thread)
+    if (thread.type === 'order') {
+      setShowOrderChat(true)
+    } else {
+      setShowContactChat(true)
     }
   }
 
-  return (
-    <div className="messages-page">
-      <div className="messages-header">
-        <h2>消息中心</h2>
-        <div className="header-actions">
-          <button className="mark-all-read">全部已读</button>
-        </div>
-      </div>
+  useEffect(() => {
+    const closeHandler = () => {
+      setShowOrderChat(false)
+      setShowContactChat(false)
+    }
+    window.addEventListener('requestCloseDialogs', closeHandler)
+    return () => window.removeEventListener('requestCloseDialogs', closeHandler)
+  }, [])
 
+  return (
+    <>
+    <div className="messages-page">
       <div className="messages-list">
-        {messages.map(message => (
-          <div key={message.id} className={`message-item ${message.unread ? 'unread' : ''}`}>
-            <div className="message-icon">
-              {getMessageIcon(message.type)}
+        {filteredMessages.map(thread => (
+          <div key={thread.id} className={`thread-item ${thread.unreadCount > 0 ? 'unread' : ''}`} onClick={() => openThread(thread)}>
+            <div className="thread-initial" style={getInitialStyle(thread.color)}>{thread.initial}</div>
+            <div className="thread-title">{thread.title}</div>
+            <div className="thread-right">
+              <span className="thread-time">{thread.time}</span>
+              {thread.unreadCount > 0 && (
+                <span className="thread-badge">{thread.unreadCount}</span>
+              )}
             </div>
-            <div className="message-content">
-              <div className="message-header">
-                <span className="message-sender">{message.sender}</span>
-                <span className="message-time">{message.time}</span>
-              </div>
-              <div className="message-text">{message.content}</div>
-            </div>
-            {message.unread && <div className="unread-dot"></div>}
           </div>
         ))}
       </div>
@@ -79,6 +114,13 @@ function Messages() {
         <div className="empty-text">暂无消息</div>
       </div>
     </div>
+    {showOrderChat && selectedThread && (
+      <OrderChat orderId={selectedThread.id} onClose={() => setShowOrderChat(false)} />
+    )}
+    {showContactChat && selectedThread && (
+      <ContactChat contactName={selectedThread.title} onClose={() => setShowContactChat(false)} />
+    )}
+  </>
   )
 }
 

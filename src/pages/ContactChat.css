@@ -1,0 +1,85 @@
+.contact-chat-page {
+  width: 100%;
+  max-width: 414px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: #f5f5f5;
+  box-sizing: border-box;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 44px) + 12px) 16px 12px 16px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  z-index: 100;
+}
+
+.header-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+.back-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; transition: background 0.2s; }
+.back-btn:hover { background: #f5f5f5; }
+.order-title { font-size: 16px; font-weight: 600; color: #333; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message-row { display: flex; align-items: flex-start; gap: 8px; }
+.message-item.sent .message-row { flex-direction: row-reverse; justify-content: flex-end; }
+.message-item.sent .message-row { justify-content: flex-end; }
+.name-tag { font-size: 12px; color: #666; align-self: center; }
+.chat-avatar { width: 32px; height: 32px; aspect-ratio: 1/1; border-radius: 8px; background: #8ab4f8; color: #fff; font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 32px; box-sizing: border-box; overflow: hidden; align-self: flex-start; }
+
+.message-item .system-time { font-size: 12px; color: #999; margin-top: 4px; }
+
+.chat-message { display: flex; flex-direction: column; align-items: flex-start; max-width: 80%; }
+.message-item.sent .chat-message { align-items: flex-end; }
+.message-text { background: #fff; padding: 12px 16px; border-radius: 16px; font-size: 14px; color: #333; line-height: 1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+/* 统一右侧我方消息为亮色背景 */
+.message-item.sent .message-text { background: #e3f2fd; color: #111; }
+
+.file-bubble { display: flex; align-items: center; gap: 8px; background: #fff; padding: 10px 12px; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+.message-item.sent .file-bubble { background: #e3f2fd; }
+.file-icon { font-size: 16px; }
+.file-name { font-size: 14px; color: #333; font-weight: 500; }
+.file-size { font-size: 12px; color: #999; }
+
+.message-status { font-size: 11px; color: #999; margin-top: 4px; }
+.message-status.unread { color: #ff7043; }
+.message-status.read { color: #4caf50; }
+
+/* 名称在消息内容上方显示 */
+.message-col { display: flex; flex-direction: column; align-items: flex-start; max-width: 78%; }
+.message-item.sent .message-col { align-items: flex-end; }
+.name-line { font-size: 12px; color: #666; margin: 0 0 4px 4px; }
+
+.chat-input-container { background: white; border-top: 1px solid #e0e0e0; padding: 12px 16px; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+.input-wrapper { display: flex; align-items: center; gap: 8px; background: #f8f9fa; border-radius: 24px; padding: 8px 12px; }
+.emoji-btn, .add-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; transition: background 0.2s; }
+.emoji-btn:hover, .add-btn:hover { background: rgba(0,0,0,0.05); }
+.message-input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; color: #333; padding: 4px 8px; }
+.message-input::placeholder { color: #999; }
+
+@media (max-width: 768px) {
+  .file-name { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+.message-col { display: flex; flex-direction: column; align-items: flex-start; max-width: 78%; }
+.message-item.sent .message-col { align-items: flex-end; }
+.meta-line { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #666; margin: 0 4px 4px 4px; }
+.message-item.sent .meta-line { justify-content: flex-end; text-align: right; }
+.meta-name { font-weight: 500; }
+.meta-time { color: #999; }
