@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import './Orders.css'
 import OrderChat from './OrderChat'
 import OrderDetail from './OrderDetail'
+import { useLanguage } from '../context/LanguageContext'
 
 function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState(defaultTab)
   const [searchQuery, setSearchQuery] = useState('')
   const [showChat, setShowChat] = useState(false)
@@ -122,12 +124,23 @@ function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
     }
   }
 
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'draft': return t('workspace.toOrder')
+      case 'pending': return t('workspace.pending')
+      case 'processing': return t('workspace.processing')
+      case 'shipped': return t('workspace.shipped')
+      case 'completed': return t('workspace.completed')
+      default: return t('common.unknown')
+    }
+  }
+
   const getUrgencyText = (urgency) => {
     switch (urgency) {
-      case 'emergency': return '特急'
-      case 'urgent': return '加急'
-      case 'normal': return '普通'
-      default: return '普通'
+      case 'emergency': return t('orders.urgency.emergency')
+      case 'urgent': return t('orders.urgency.urgent')
+      case 'normal': return t('orders.urgency.normal')
+      default: return t('orders.urgency.normal')
     }
   }
 
@@ -218,11 +231,11 @@ function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
   })
 
   const tabs = [
-    { id: 'all', label: '全部', count: orders.length },
-    { id: 'draft', label: '待下单', count: orders.filter(o => o.status === 'draft').length },
-    { id: 'pending', label: '待处理', count: orders.filter(o => o.status === 'pending').length },
-    { id: 'shipped', label: '已发货', count: orders.filter(o => o.status === 'shipped').length },
-    { id: 'completed', label: '已完成', count: orders.filter(o => o.status === 'completed').length }
+    { id: 'all', label: t('orders.all'), count: orders.length },
+    { id: 'draft', label: t('workspace.toOrder'), count: orders.filter(o => o.status === 'draft').length },
+    { id: 'pending', label: t('workspace.pending'), count: orders.filter(o => o.status === 'pending').length },
+    { id: 'shipped', label: t('workspace.shipped'), count: orders.filter(o => o.status === 'shipped').length },
+    { id: 'completed', label: t('workspace.completed'), count: orders.filter(o => o.status === 'completed').length }
   ]
 
   return (
@@ -230,13 +243,13 @@ function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
       {/* 顶部导航栏 */}
       <div className="orders-header">
         <div className="header-left">
-          <div className="header-title">订单管理</div>
+          <div className="header-title">{t('orders.title')}</div>
         </div>
         <div className="header-right">
           <div className="search-container">
             <input 
               type="text" 
-              placeholder="患者/医生/订单号" 
+              placeholder={t('orders.searchPlaceholder')} 
               value={searchQuery}
               onChange={handleSearch}
               onKeyPress={handleSearchKeyPress}
@@ -249,7 +262,7 @@ function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
                 <path d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M14 14L10.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              搜索
+              {t('common.search')}
             </button>
           </div>
           <div className="doctor-avatar">
@@ -277,7 +290,7 @@ function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
             <div className="order-header">
               <div className="order-id">{order.id}</div>
               <div className="order-status-tag" style={{ backgroundColor: getStatusColor(order.status) }}>
-                {order.statusText}
+                {getStatusText(order.status)}
               </div>
             </div>
             
@@ -292,7 +305,7 @@ function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
                 </div>
                 
                 <div className="responsibility-unit">
-                  预期时间：{order.expectedTime}（{order.factory}）
+                  {t('orders.deliveryTime')}：{order.expectedTime}（{order.factory}）
                 </div>
                 
                 
@@ -304,13 +317,13 @@ function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
               <div className="action-buttons">
                 {activeTab === 'draft' ? (
                   <>
-                    <button className="btn-chat" onClick={(e) => { e.stopPropagation(); onGoPlaceOrder && onGoPlaceOrder('order') }}>去下单</button>
-                    <button className="btn-confirm-receipt" onClick={(e) => { e.stopPropagation(); deleteOrder(order.id) }}>删除</button>
+                    <button className="btn-chat" onClick={(e) => { e.stopPropagation(); onGoPlaceOrder && onGoPlaceOrder('order') }}>{t('orders.placeOrder')}</button>
+                    <button className="btn-confirm-receipt" onClick={(e) => { e.stopPropagation(); deleteOrder(order.id) }}>{t('common.delete')}</button>
                   </>
                 ) : (
                   <>
-                    <button className="btn-chat" onClick={(e) => { e.stopPropagation(); handleChatOpen(order.id) }}>在线交流</button>
-                    <button className="btn-confirm-receipt" onClick={(e) => { e.stopPropagation(); handleDetailOpen(order) }}>查看详情</button>
+                    <button className="btn-chat" onClick={(e) => { e.stopPropagation(); handleChatOpen(order.id) }}>{t('orders.chat')}</button>
+                    <button className="btn-confirm-receipt" onClick={(e) => { e.stopPropagation(); handleDetailOpen(order) }}>{t('orders.viewDetail')}</button>
                   </>
                 )}
               </div>
@@ -322,7 +335,7 @@ function Orders({ defaultTab = 'all', onGoPlaceOrder }) {
       {filteredOrders.length === 0 && (
         <div className="empty-state">
           <div className="empty-icon">📋</div>
-          <div className="empty-text">暂无订单</div>
+          <div className="empty-text">{t('common.noData')}</div>
         </div>
       )}
 

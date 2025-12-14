@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import './ToothSel.css'
+import { useLanguage } from '../context/LanguageContext'
 
 function ToothSel({ visible, onClose, onConfirm, initialValue, allowedTeeth = [] }) {
+  const { t } = useLanguage()
   const [selectedTeeth, setSelectedTeeth] = useState([])
 
   const topLeft = [18, 17, 16, 15, 14, 13, 12, 11]
@@ -107,9 +109,9 @@ function ToothSel({ visible, onClose, onConfirm, initialValue, allowedTeeth = []
   return (
     <div className="page-overlay">
       <div className="page-header">
-        <button className="primary-btn" onClick={onClose}>返回</button>
-        <div className="page-title">选择牙位</div>
-        <button className="primary-btn" onClick={() => { onConfirm(selectedTeeth); onClose() }}>确定</button>
+        <button className="primary-btn" onClick={onClose}>{t('common.back')}</button>
+        <div className="page-title">{t('quickOrder.selectTooth')}</div>
+        <button className="primary-btn" onClick={() => { onConfirm(selectedTeeth); onClose() }}>{t('common.confirm')}</button>
       </div>
       <div className="page-body">
         <div className="teeth-diagram-wrapper">
@@ -156,13 +158,13 @@ function ToothSel({ visible, onClose, onConfirm, initialValue, allowedTeeth = []
         </div>
         <div className="quick-actions">
           <div className="quick-actions-left">
-            <button className="primary-btn" onClick={selectAll}>🦷 全口</button>
-            <button className="primary-btn" onClick={selectUpperJaw}>🦷 上颌</button>
-            <button className="primary-btn" onClick={selectLowerJaw}>🦷 下颌</button>
+            <button className="primary-btn" onClick={selectAll}>🦷 {t('quickOrder.tooth.all')}</button>
+            <button className="primary-btn" onClick={selectUpperJaw}>🦷 {t('quickOrder.tooth.upper')}</button>
+            <button className="primary-btn" onClick={selectLowerJaw}>🦷 {t('quickOrder.tooth.lower')}</button>
           </div>
           <div className="quick-actions-right">
-            <button className="secondary-btn" onClick={onClose}>取消</button>
-            <button className="primary-btn" onClick={() => { onConfirm(selectedTeeth); onClose() }}>确定</button>
+            <button className="secondary-btn" onClick={onClose}>{t('common.cancel')}</button>
+            <button className="primary-btn" onClick={() => { onConfirm(selectedTeeth); onClose() }}>{t('common.confirm')}</button>
           </div>
         </div>
       </div>

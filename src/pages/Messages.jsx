@@ -2,15 +2,18 @@ import React, { useEffect, useMemo, useState } from 'react'
 import './Messages.css'
 import OrderChat from './OrderChat'
 import ContactChat from './ContactChat'
+import { useLanguage } from '../context/LanguageContext'
 
 function Messages() {
+  const { t } = useLanguage()
   const [searchQuery, setSearchQuery] = useState('')
+  const orderTitleTpl = t('messages.orderTitle') || '订单{id}'
   const threads = [
     {
       id: 'ORD-1025111444444301',
       type: 'order',
-      title: '订单1025111444444301',
-      initial: '订',
+      title: orderTitleTpl.replace('{id}', '1025111444444301'),
+      initial: t('messages.orderInitial') || '订',
       color: '#7e57c2',
       unreadCount: 5,
       time: '10:56'
@@ -40,7 +43,7 @@ function Messages() {
       initial: '李',
       color: '#2196f3',
       unreadCount: 0,
-      time: '昨天'
+      time: t('common.yesterday') || '昨天'
     }
   ]
 
@@ -111,7 +114,7 @@ function Messages() {
 
       <div className="empty-state" style={{ display: 'none' }}>
         <div className="empty-icon">📭</div>
-        <div className="empty-text">暂无消息</div>
+        <div className="empty-text">{t('messages.empty')}</div>
       </div>
     </div>
     {showOrderChat && selectedThread && (

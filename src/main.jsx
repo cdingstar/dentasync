@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import { LanguageProvider } from './context/LanguageContext'
 import './index.css'
 
 const mount = (el) => {
@@ -8,7 +9,9 @@ const mount = (el) => {
   const root = ReactDOM.createRoot(el)
   root.render(
     <React.StrictMode>
-      <App />
+      <LanguageProvider>
+        <App />
+      </LanguageProvider>
     </React.StrictMode>
   )
   console.info('DentaSync: mount done')

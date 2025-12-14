@@ -1,8 +1,10 @@
 import React, { useMemo, useState } from 'react'
 import './Header.css'
 import SearchModal from './SearchModal'
+import { useLanguage } from '../context/LanguageContext'
 
 function Header({ currentPage }) {
+  const { t } = useLanguage()
   const [selectedOrg, setSelectedOrg] = useState({
     id: 1,
     name: 'ASIANTECH PTE. LTD.',
@@ -14,14 +16,14 @@ function Header({ currentPage }) {
   const getHeaderContent = () => {
     if (currentPage === 'orders') {
       return {
-        name: '订单管理',
+        name: t('orders.title'),
         icon: '📋',
         showDropdown: false
       }
     }
     if (currentPage === 'messages') {
       return {
-        name: '消息中心',
+        name: t('messages.title'),
         icon: '💬',
         showDropdown: false
       }
@@ -47,15 +49,15 @@ function Header({ currentPage }) {
   const searchConfig = useMemo(() => {
     if (currentPage === 'messages') {
       return {
-        placeholder: '订单ID、联系人或消息内容',
-        tip: '支持按订单ID、联系人或消息内容搜索',
+        placeholder: t('messages.searchPlaceholder') || '订单ID、联系人或消息内容',
+        tip: t('messages.searchTip') || '支持按订单ID、联系人或消息内容搜索',
         page: 'messages'
       }
     }
     if (currentPage === 'orders') {
       return {
-        placeholder: '患者、医生或订单号',
-        tip: '支持按患者、医生或订单号搜索',
+        placeholder: t('orders.searchPlaceholder'),
+        tip: t('orders.searchTip') || '支持按患者、医生或订单号搜索',
         page: 'orders'
       }
     }
@@ -99,10 +101,10 @@ function Header({ currentPage }) {
                 const ev = new CustomEvent('openAboutFromHeader')
                 window.dispatchEvent(ev)
               }}
-            >
-              联系我们
-            </button>
-          )}
+          >
+            {t('my.contact')}
+          </button>
+        )}
           {currentPage !== 'workspace' && currentPage !== 'my' && (
             <div
               className="search-icon"

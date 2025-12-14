@@ -1,7 +1,9 @@
 import React, { useMemo, useState } from 'react'
 import './Workspace.css'
+import { useLanguage } from '../context/LanguageContext'
 
 function Workspace({ onOpenProducts, onNavigateToOrders, onNavigateToAddress, onNavigateToPatient, onNavigateToMessages }) {
+  const { t } = useLanguage()
   const [showOrderSelection, setShowOrderSelection] = useState(false)
 
   const ordersSample = useMemo(() => ([
@@ -20,13 +22,13 @@ function Workspace({ onOpenProducts, onNavigateToOrders, onNavigateToAddress, on
     console.log('点击了功能按钮:', functionType)
     
     const messages = {
-      shipped: '已发货功能开发中...',
-      settings: '设置功能开发中...',
-      mytasks: '我的信息功能开发中...',
-      account: '账号管理功能开发中...'
+      shipped: t('common.featureInProgress'),
+      settings: t('common.featureInProgress'),
+      mytasks: t('common.featureInProgress'),
+      account: t('common.featureInProgress')
     }
     
-    alert(messages[functionType] || '功能开发中...')
+    alert(messages[functionType] || t('common.featureInProgress'))
   }
 
   const handlePendingOrders = () => {
@@ -44,14 +46,14 @@ function Workspace({ onOpenProducts, onNavigateToOrders, onNavigateToAddress, on
     <div className="page-content">
       <div className="order-stats">
         <div className="stat-card" onClick={() => onNavigateToOrders && onNavigateToOrders('completed')}>
-          <div className="stat-label">已完成订单</div>
+          <div className="stat-label">{t('workspace.completedOrders')}</div>
           <div className="stat-value">
             <span className="stat-icon">🛒</span>
             <span className="stat-number">{completedCount}</span>
           </div>
         </div>
         <div className="stat-card" onClick={() => onNavigateToOrders && onNavigateToOrders('pending')}>
-          <div className="stat-label">待处理订单</div>
+          <div className="stat-label">{t('workspace.pendingOrders')}</div>
           <div className="stat-value">
             <span className="stat-icon">✅</span>
             <span className="stat-number">{uncompletedCount}</span>
@@ -63,32 +65,32 @@ function Workspace({ onOpenProducts, onNavigateToOrders, onNavigateToAddress, on
       <div className="function-grid">
         <div className="function-item" onClick={() => onNavigateToOrders && onNavigateToOrders('shipped')}>
           <div className="function-icon shipped-icon">📦</div>
-          <span className="function-label">已发货</span>
+          <span className="function-label">{t('workspace.shipped')}</span>
         </div>
         
         <div className="function-item" onClick={onOpenProducts}>
           <div className="function-icon products-icon">📋</div>
-          <span className="function-label">产品库</span>
+          <span className="function-label">{t('workspace.products')}</span>
         </div>
         
         <div className="function-item" onClick={handlePendingOrders}>
           <div className="function-icon order-icon">📝</div>
-          <span className="function-label">待下单</span>
+          <span className="function-label">{t('workspace.toOrder')}</span>
         </div>
         
         <div className="function-item" onClick={onNavigateToAddress}>
           <div className="function-icon settings-icon">📮</div>
-          <span className="function-label">地址管理</span>
+          <span className="function-label">{t('workspace.address')}</span>
         </div>
         
         <div className="function-item" onClick={onNavigateToMessages}>
           <div className="function-icon mytasks-icon">📋</div>
-          <span className="function-label">我的消息</span>
+          <span className="function-label">{t('workspace.myMessages')}</span>
         </div>
         
         <div className="function-item" onClick={onNavigateToPatient}>
           <div className="function-icon account-icon">🧑‍⚕️</div>
-          <span className="function-label">患者档案</span>
+          <span className="function-label">{t('workspace.patientArchive')}</span>
         </div>
       </div>
 

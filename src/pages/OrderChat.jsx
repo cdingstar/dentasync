@@ -1,61 +1,63 @@
 import React, { useState } from 'react'
 import './OrderChat.css'
 import OrderDetail from './OrderDetail'
+import { useLanguage } from '../context/LanguageContext'
 
 function OrderChat({ orderId, onClose }) {
+  const { t } = useLanguage()
   const [showDetail, setShowDetail] = useState(false)
   const [messages, setMessages] = useState([
     {
       id: 1,
       type: 'system',
-      content: '【客服】韦洁',
+      content: `【${t('chat.customerService')}】韦洁`,
       timestamp: '2024-11-21 11:08',
       isSystem: true
     },
     {
       id: 2,
       type: 'received',
-      content: '下图为边缘参考，请确认',
+      content: t('chat.mock.img_msg'),
       timestamp: '2024-11-21 11:08',
       hasImage: true,
       imageUrl: '/api/placeholder/200/150',
       status: 'read',
-      sender: '客服'
+      sender: t('chat.customerService')
     },
     {
       id: 3,
       type: 'received',
-      content: '【客服】韦洁',
+      content: `【${t('chat.customerService')}】韦洁`,
       timestamp: '2024-11-21 11:08',
       sender: '韦洁'
     },
     {
       id: 4,
       type: 'received',
-      content: '医生早上好！JOSHUA LIM TZE HAO 顾客的数据边缘不清晰，建议发PLY彩色格式的压缩包数据给我们哦，谢谢。',
+      content: t('chat.mock.cs_msg_1'),
       timestamp: '2024-11-21 11:08',
       status: 'read',
-      sender: '客服'
+      sender: t('chat.customerService')
     },
     {
       id: 5,
       type: 'received',
-      content: '【客服】韦洁',
+      content: `【${t('chat.customerService')}】韦洁`,
       timestamp: '2024-11-21 16:58',
       sender: '韦洁'
     },
     {
       id: 6,
       type: 'received',
-      content: '微信对接中',
+      content: t('chat.mock.wechat'),
       timestamp: '2024-11-21 16:58',
       status: 'unread',
-      sender: '客服'
+      sender: t('chat.customerService')
     },
     {
       id: 7,
       type: 'notification',
-      content: '预出厂时间变更',
+      content: t('chat.mock.notif_time'),
       details: {
         original: '2024-11-25 20:30',
         new: '2024-11-23 20:30'
@@ -66,9 +68,9 @@ function OrderChat({ orderId, onClose }) {
     {
       id: 8,
       type: 'notification',
-      content: '订单开始制作',
+      content: t('chat.mock.notif_prod'),
       details: {
-        message: '该订单已进入生产线开始制作'
+        message: t('chat.mock.notif_prod_detail')
       },
       timestamp: '2024-11-21 17:30',
       notificationType: 'production-start'
@@ -79,7 +81,7 @@ function OrderChat({ orderId, onClose }) {
 
   const getAvatarText = (name = '') => {
     const n = String(name).trim()
-    if (!n) return '我'
+    if (!n) return t('chat.me')
     const hasChinese = /[\u4e00-\u9fa5]/.test(n)
     if (hasChinese) {
       return n.slice(-1)
@@ -105,7 +107,7 @@ function OrderChat({ orderId, onClose }) {
         }).replace(/\//g, '-')
         ,
         status: 'unread',
-        sender: '我'
+        sender: t('chat.me')
       }
       setMessages([...messages, newMessage])
       setInputMessage('')
@@ -119,14 +121,13 @@ function OrderChat({ orderId, onClose }) {
   }
 
   const handleDetailOpen = () => {
-    // 创建一个模拟的订单对象，实际应用中应该根据 orderId 获取完整订单信息
     const mockOrder = {
       id: orderId,
       patientName: 'JOSHUA LIM TZE HAO',
       productType: 'D1氧化锆全瓷牙',
       toothPosition: '21, 22',
       status: 'processing',
-      statusText: '制作中',
+      statusText: t('orders.processing'),
       createTime: '2024-11-21 11:08',
       expectedTime: '2025-10-01',
       urgency: 'normal'
@@ -140,7 +141,6 @@ function OrderChat({ orderId, onClose }) {
 
   return (
     <div className="order-chat-page">
-      {/* 顶部导航栏 */}
       <div className="chat-header">
         <div className="header-left">
           <div className="back-btn" onClick={onClose}>
@@ -161,7 +161,6 @@ function OrderChat({ orderId, onClose }) {
         </div>
       </div>
 
-      {/* 消息列表 */}
       <div className="messages-container">
         {messages.map(message => (
           <div key={message.id} className={`message-item ${message.type}`}>
@@ -178,7 +177,7 @@ function OrderChat({ orderId, onClose }) {
                 )}
                 <div className={`message-col ${message.type}`}>
                   <div className="meta-line">
-                    <span className="meta-name">{message.type === 'sent' ? '我' : message.sender}</span>
+                    <span className="meta-name">{message.type === 'sent' ? t('chat.me') : message.sender}</span>
                     <span className="meta-time">{message.timestamp}</span>
                   </div>
                   <div className="chat-message">
@@ -188,71 +187,51 @@ function OrderChat({ orderId, onClose }) {
                         <img src={message.imageUrl} alt="聊天图片" />
                       </div>
                     )}
-                    {!message.hasImage && message.content !== '【客服】韦洁' && (
+                    {!message.hasImage && message.content !== `【${t('chat.customerService')}】韦洁` && (
                       <div className="message-text">{message.content}</div>
                     )}
                     {message.status && (
-                      <div className={`message-status ${message.status}`}>{message.status === 'read' ? '已读' : '未读'}</div>
+                      <div className={`message-status ${message.status}`}>{message.status === 'read' ? t('chat.read') : t('chat.unread')}</div>
                     )}
                   </div>
                 </div>
                 {message.type === 'sent' && (
-                  <div className="chat-avatar">{getAvatarText('我')}</div>
+                  <div className="chat-avatar">{getAvatarText(t('chat.me'))}</div>
                 )}
               </div>
             )}
-
+            
             {message.type === 'notification' && (
               <div className="notification-message">
-                <div className="system-time">{message.timestamp}</div>
-                <div className={`notification-card ${message.notificationType}`}>
-                  <div className="notification-header">
-                    <div className="notification-icon">●</div>
-                    <div className="notification-title">{message.content}</div>
-                    {message.notificationType === 'production-start' && (
-                      <div className="notification-arrow">&gt;&gt;</div>
-                    )}
-                  </div>
-                  {message.details && (
+                <div className="notification-content">
+                  <div className="notification-title">{message.content}</div>
+                  {message.notificationType === 'time-change' && (
                     <div className="notification-details">
-                      {message.notificationType === 'time-change' && (
-                        <>
-                          <div className="detail-row">
-                            <span className="detail-label">原预出厂时间：</span>
-                            <span className="detail-value">{message.details.original}</span>
-                          </div>
-                          <div className="detail-row">
-                            <span className="detail-label">新预出厂时间：</span>
-                            <span className="detail-value">{message.details.new}</span>
-                          </div>
-                        </>
-                      )}
-                      {message.notificationType === 'production-start' && (
-                        <div className="production-message">{message.details.message}</div>
-                      )}
+                      <div className="time-change-row">
+                        <span className="old-time">{message.details.original}</span>
+                        <span className="arrow">→</span>
+                        <span className="new-time">{message.details.new}</span>
+                      </div>
+                    </div>
+                  )}
+                  {message.notificationType === 'production-start' && (
+                    <div className="notification-details">
+                      <div className="production-msg">{message.details.message}</div>
                     </div>
                   )}
                 </div>
+                <div className="system-time">{message.timestamp}</div>
               </div>
             )}
           </div>
         ))}
       </div>
 
-      {/* 底部输入栏 */}
       <div className="chat-input-container">
         <div className="input-wrapper">
-          <div className="voice-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 1C10.34 1 9 2.34 9 4V12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12V4C15 2.34 13.66 1 12 1Z" fill="#666"/>
-              <path d="M19 10V12C19 16.42 15.42 20 11 20H13C17.42 20 21 16.42 21 12V10H19Z" fill="#666"/>
-              <path d="M5 10V12C5 16.42 8.58 20 13 20H11C6.58 20 3 16.42 3 12V10H5Z" fill="#666"/>
-              <path d="M12 20V23M8 23H16" stroke="#666" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
-          </div>
           <input
             type="text"
-            placeholder="请输入消息"
+            placeholder={t('chat.inputPlaceholder')}
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
@@ -274,20 +253,24 @@ function OrderChat({ orderId, onClose }) {
       </div>
 
       {showDetail && (
-        <OrderDetail 
-          order={{
-            id: orderId,
-            patientName: 'JOSHUA LIM TZE HAO',
-            productType: 'D1氧化锆全瓷牙',
-            toothPosition: '21, 22',
-            status: 'processing',
-            statusText: '制作中',
-            createTime: '2024-11-21 11:08',
-            expectedTime: '2025-10-01',
-            urgency: 'normal'
-          }}
-          onClose={handleDetailClose}
-        />
+        <div className="order-detail-overlay">
+           <div className="order-detail-panel">
+             <OrderDetail order={{
+                id: orderId,
+                patientName: 'JOSHUA LIM TZE HAO',
+                productType: 'D1氧化锆全瓷牙',
+                toothPosition: '21, 22',
+                status: 'processing',
+                statusText: t('orders.processing'),
+                createTime: '2024-11-21 11:08',
+                expectedTime: '2025-10-01',
+                urgency: 'normal',
+                doctorName: '黄向荣',
+                clinic: 'ASIANTECH PTE. LTD.',
+                factory: '南宁市后齐科技'
+             }} onClose={handleDetailClose} />
+           </div>
+        </div>
       )}
     </div>
   )

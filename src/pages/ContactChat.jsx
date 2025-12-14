@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import './ContactChat.css'
+import { useLanguage } from '../context/LanguageContext'
 
 function ContactChat({ contactName, onClose }) {
+  const { t } = useLanguage()
   const [messages, setMessages] = useState([
     {
       id: 1,
       type: 'received',
-      content: '您好，我是工厂客服，关于您昨日上传的咬合数据，我们已收到。',
+      content: t('chat.mock.contact_1'),
       timestamp: '2024-11-22 09:12',
       status: 'read',
       sender: contactName
@@ -14,7 +16,7 @@ function ContactChat({ contactName, onClose }) {
     {
       id: 2,
       type: 'received',
-      file: { name: '订单工艺单-ORD-1025111444444301.pdf', size: '284 KB' },
+      file: { name: t('chat.mock.file_1'), size: '284 KB' },
       timestamp: '2024-11-22 09:13',
       status: 'read',
       sender: contactName
@@ -22,23 +24,23 @@ function ContactChat({ contactName, onClose }) {
     {
       id: 3,
       type: 'sent',
-      content: '好的，请查收新的取模照片。',
+      content: t('chat.mock.sent_1'),
       timestamp: '2024-11-22 09:15',
       status: 'read',
-      sender: '我'
+      sender: t('chat.me')
     },
     {
       id: 4,
       type: 'sent',
-      file: { name: '取模照片-20241122.zip', size: '1.2 MB' },
+      file: { name: t('chat.mock.file_2'), size: '1.2 MB' },
       timestamp: '2024-11-22 09:16',
       status: 'unread',
-      sender: '我'
+      sender: t('chat.me')
     },
     {
       id: 5,
       type: 'received',
-      content: '已收到，设计师会根据照片优化边缘线。预计今天傍晚给到预出厂时间。',
+      content: t('chat.mock.msg_1'),
       timestamp: '2024-11-22 09:22',
       status: 'unread',
       sender: contactName
@@ -49,7 +51,7 @@ function ContactChat({ contactName, onClose }) {
 
   const getAvatarText = (name = '') => {
     const n = String(name).trim()
-    if (!n) return '我'
+    if (!n) return t('chat.me')
     const hasChinese = /[\u4e00-\u9fa5]/.test(n)
     if (hasChinese) {
       return n.slice(-1)
@@ -102,7 +104,7 @@ function ContactChat({ contactName, onClose }) {
               )}
               <div className={`message-col ${m.type}`}>
                 <div className="meta-line">
-                  <span className="meta-name">{m.type === 'sent' ? '我' : m.sender}</span>
+                  <span className="meta-name">{m.type === 'sent' ? t('chat.me') : m.sender}</span>
                   <span className="meta-time">{m.timestamp}</span>
                 </div>
                 <div className="chat-message">
@@ -117,7 +119,7 @@ function ContactChat({ contactName, onClose }) {
                   ) : (
                     <div className="message-text">{m.content}</div>
                   )}
-                  <div className={`message-status ${m.status}`}>{m.status === 'read' ? '已读' : '未读'}</div>
+                  <div className={`message-status ${m.status}`}>{m.status === 'read' ? t('chat.read') : t('chat.unread')}</div>
                 </div>
               </div>
               {m.type === 'sent' && (
@@ -133,7 +135,7 @@ function ContactChat({ contactName, onClose }) {
         <div className="input-wrapper">
           <input
             type="text"
-            placeholder="请输入消息"
+            placeholder={t('chat.inputPlaceholder')}
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}

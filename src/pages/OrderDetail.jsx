@@ -1,7 +1,9 @@
 import React, { useMemo, useState } from 'react'
 import './OrderDetail.css'
+import { useLanguage } from '../context/LanguageContext'
 
 function OrderDetail({ order, onClose }) {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState('detail')
 
   const data = useMemo(() => ({
@@ -60,7 +62,12 @@ function OrderDetail({ order, onClose }) {
   }), [order])
 
   const statusTextMap = {
-    pending: '待接单', accepted: '已接单', processing: '制作中', shipped: '已发货', received: '已收货', completed: '已完成'
+    pending: t('orderDetail.statusMap.pending'),
+    accepted: t('orderDetail.statusMap.accepted'),
+    processing: t('orderDetail.statusMap.processing'),
+    shipped: t('orderDetail.statusMap.shipped'),
+    received: t('orderDetail.statusMap.received'),
+    completed: t('orderDetail.statusMap.completed')
   }
 
   return (
@@ -72,7 +79,7 @@ function OrderDetail({ order, onClose }) {
               <path d="M12.5 15L7.5 10L12.5 5" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <div className="header-title">订单详情</div>
+          <div className="header-title">{t('orderDetail.title')}</div>
         </div>
         <div className="header-right">
           <div className="notification-btn">
@@ -93,15 +100,15 @@ function OrderDetail({ order, onClose }) {
 
       <div className="order-basic-info">
         <div className="kv-list">
-          <div className="kv-row"><span className="kv-label">订单号:</span><span className="kv-value">{data.orderNo}</span></div>
-          <div className="kv-row"><span className="kv-label">状态:</span><span className="kv-value">{statusTextMap[data.status] || '未知状态'}</span></div>
-          <div className="kv-row"><span className="kv-label">患者:</span><span className="kv-value">{data.patientName}</span></div>
-          <div className="kv-row"><span className="kv-label">医生:</span><span className="kv-value">{data.doctor}</span></div>
-          <div className="kv-row"><span className="kv-label">执业单位:</span><span className="kv-value">{data.practiceUnit}</span></div>
-          <div className="kv-row"><span className="kv-label">责任单位:</span><span className="kv-value">{data.responsibleUnit}</span></div>
-          <div className="kv-row"><span className="kv-label">下单时间:</span><span className="kv-value">{data.createTime}</span></div>
-          <div className="kv-row"><span className="kv-label">预计到货:</span><span className="kv-value">{data.deliveryTime}</span></div>
-          <div className="kv-row"><span className="kv-label">生产进度:</span><span className="kv-value">{data.progress}%</span></div>
+          <div className="kv-row"><span className="kv-label">{t('orderDetail.baseInfo.orderNo')}:</span><span className="kv-value">{data.orderNo}</span></div>
+          <div className="kv-row"><span className="kv-label">{t('orderDetail.baseInfo.status')}:</span><span className="kv-value">{statusTextMap[data.status] || t('common.unknown')}</span></div>
+          <div className="kv-row"><span className="kv-label">{t('orderDetail.baseInfo.patient')}:</span><span className="kv-value">{data.patientName}</span></div>
+          <div className="kv-row"><span className="kv-label">{t('orderDetail.baseInfo.doctor')}:</span><span className="kv-value">{data.doctor}</span></div>
+          <div className="kv-row"><span className="kv-label">{t('orderDetail.baseInfo.practice')}:</span><span className="kv-value">{data.practiceUnit}</span></div>
+          <div className="kv-row"><span className="kv-label">{t('orderDetail.baseInfo.responsible')}:</span><span className="kv-value">{data.responsibleUnit}</span></div>
+          <div className="kv-row"><span className="kv-label">{t('orderDetail.baseInfo.createTime')}:</span><span className="kv-value">{data.createTime}</span></div>
+          <div className="kv-row"><span className="kv-label">{t('orderDetail.baseInfo.deliveryTime')}:</span><span className="kv-value">{data.deliveryTime}</span></div>
+          <div className="kv-row"><span className="kv-label">{t('orderDetail.baseInfo.progress')}:</span><span className="kv-value">{data.progress}%</span></div>
         </div>
       </div>
 
@@ -112,7 +119,7 @@ function OrderDetail({ order, onClose }) {
             className={`tab-item ${activeTab === tab ? 'active' : ''}`}
             onClick={() => setActiveTab(tab)}
           >
-            {tab === 'detail' ? '订单详情' : '订单状态'}
+            {tab === 'detail' ? t('orderDetail.title') : t('orderDetail.statusTab')}
           </div>
         ))}
       </div>
@@ -120,64 +127,64 @@ function OrderDetail({ order, onClose }) {
       <div className="tab-content">
         {activeTab === 'detail' && (
           <div className="tab-panel">
-            <div className="section-title">收件信息</div>
+            <div className="section-title">{t('orderDetail.receiverInfo.title')}</div>
             <div className="product-item" style={{ marginBottom: 12 }}>
-              <div className="product-name">收件人：{data.receiver || '-'}</div>
-              <div className="product-name">电话：{order?.receiverPhone || '-'}</div>
-              <div className="product-name">收件地址：{data.address || '-'}</div>
+              <div className="product-name">{t('orderDetail.receiverInfo.receiver')}：{data.receiver || '-'}</div>
+              <div className="product-name">{t('orderDetail.receiverInfo.phone')}：{order?.receiverPhone || '-'}</div>
+              <div className="product-name">{t('orderDetail.receiverInfo.address')}：{data.address || '-'}</div>
             </div>
 
-            <div className="section-title">患者信息</div>
+            <div className="section-title">{t('orderDetail.patientInfo.title')}</div>
             <div className="product-item" style={{ marginBottom: 12 }}>
-              <div className="product-name">姓名：{data.patientName}</div>
-              <div className="product-name">手机号：{data.patientPhone}</div>
-              <div className="product-name">性别：{data.gender}</div>
-              <div className="product-name">年龄：{data.age}</div>
+              <div className="product-name">{t('orderDetail.patientInfo.name')}：{data.patientName}</div>
+              <div className="product-name">{t('orderDetail.patientInfo.phone')}：{data.patientPhone}</div>
+              <div className="product-name">{t('orderDetail.patientInfo.gender')}：{data.gender}</div>
+              <div className="product-name">{t('orderDetail.patientInfo.age')}：{data.age}</div>
             </div>
 
-            <div className="section-title">产品信息</div>
+            <div className="section-title">{t('orderDetail.productInfo.title')}</div>
             <div className="product-item" style={{ marginBottom: 12 }}>
-              <div className="product-name">产品名称：{data.productName}</div>
-              <div className="product-name">牙位：<span className="tooth-grid">{renderToothGrid(data.toothPosition || '')}</span></div>
-              <div className="product-name">修复方式：{data.repairMethod}</div>
-              <div className="product-name">取模方式：{data.moldingMethod}</div>
-              <div className="product-name">扫描设备：{data.scanDevice}</div>
-              <div className="product-name">连接方式：{data.connectionMethod}</div>
+              <div className="product-name">{t('orderDetail.productInfo.name')}：{data.productName}</div>
+              <div className="product-name">{t('orderDetail.productInfo.position')}：<span className="tooth-grid">{renderToothGrid(data.toothPosition || '')}</span></div>
+              <div className="product-name">{t('orderDetail.productInfo.repairMethod')}：{data.repairMethod}</div>
+              <div className="product-name">{t('orderDetail.productInfo.moldingMethod')}：{data.moldingMethod}</div>
+              <div className="product-name">{t('orderDetail.productInfo.scanDevice')}：{data.scanDevice}</div>
+              <div className="product-name">{t('orderDetail.productInfo.connectionMethod')}：{data.connectionMethod}</div>
             </div>
 
             {(data.mainColor || data.neckColor || data.middleColor || data.cuttingEdgeColor || data.baseColor || data.toothBodyColor || data.customColor) && (
               <>
-                <div className="section-title">颜色设定</div>
+                <div className="section-title">{t('orderDetail.colorInfo.title')}</div>
                 <div className="product-item" style={{ marginBottom: 12 }}>
-                  <div className="product-name">牙位：<span className="tooth-grid">{renderToothGrid(data.toothPosition || '')}</span></div>
-                  <div className="product-name">主色：{data.mainColor || '-'}</div>
-                  <div className="product-name">颈部颜色：{data.neckColor || '-'}</div>
-                  <div className="product-name">中部颜色：{data.middleColor || '-'}</div>
-                  <div className="product-name">切端颜色：{data.cuttingEdgeColor || '-'}</div>
-                  <div className="product-name">基牙颜色：{data.baseColor || '-'}</div>
-                  <div className="product-name">牙体颜色：{data.toothBodyColor || '-'}</div>
-                  <div className="product-name">自定义色：{data.customColor || '-'}</div>
+                  <div className="product-name">{t('orderDetail.productInfo.position')}：<span className="tooth-grid">{renderToothGrid(data.toothPosition || '')}</span></div>
+                  <div className="product-name">{t('orderDetail.colorInfo.main')}：{data.mainColor || '-'}</div>
+                  <div className="product-name">{t('orderDetail.colorInfo.neck')}：{data.neckColor || '-'}</div>
+                  <div className="product-name">{t('orderDetail.colorInfo.middle')}：{data.middleColor || '-'}</div>
+                  <div className="product-name">{t('orderDetail.colorInfo.cutting')}：{data.cuttingEdgeColor || '-'}</div>
+                  <div className="product-name">{t('orderDetail.colorInfo.base')}：{data.baseColor || '-'}</div>
+                  <div className="product-name">{t('orderDetail.colorInfo.body')}：{data.toothBodyColor || '-'}</div>
+                  <div className="product-name">{t('orderDetail.colorInfo.custom')}：{data.customColor || '-'}</div>
                 </div>
               </>
             )}
 
             {data.remarks && (
               <>
-                <div className="section-title">备注信息</div>
+                <div className="section-title">{t('orderDetail.remarks.title')}</div>
                 <div className="product-item" style={{ marginBottom: 12 }}>
                   <div className="product-name">{data.remarks}</div>
                 </div>
               </>
             )}
 
-            <div className="section-title">其他设置</div>
+            <div className="section-title">{t('orderDetail.otherSettings.title')}</div>
             <div className="product-item" style={{ marginBottom: 12 }}>
-              <div className="product-name">试戴情况：{data.trialStatus}</div>
+              <div className="product-name">{t('orderDetail.otherSettings.trial')}：{data.trialStatus}</div>
             </div>
 
             {data.designSchemes && data.designSchemes.length > 0 && (
               <div style={{ marginTop: 12 }}>
-                <div className="section-title">设计方案</div>
+                <div className="section-title">{t('orderDetail.design.title')}</div>
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                   {data.designSchemes.map((scheme, index) => (
                     <div key={index} style={{ border: '1px solid #d9d9d9', borderRadius: 8, padding: 8, minWidth: 100, textAlign: 'center', background: '#f8f9fa' }}>
@@ -191,7 +198,7 @@ function OrderDetail({ order, onClose }) {
 
             {data.attachments && data.attachments.length > 0 && (
               <div style={{ marginTop: 12 }}>
-                <div className="section-title">附件</div>
+                <div className="section-title">{t('orderDetail.attachments.title')}</div>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   {data.attachments.map((attachment, index) => (
                     <div key={index} style={{ background: '#4285f4', color: '#fff', borderRadius: 4, padding: '4px 8px', fontSize: 12 }}>{attachment.name} × {attachment.count}</div>
@@ -202,7 +209,7 @@ function OrderDetail({ order, onClose }) {
 
             {data.uploadedImages && data.uploadedImages.length > 0 && (
               <div style={{ marginTop: 12 }}>
-                <div className="section-title">上传的图片</div>
+                <div className="section-title">{t('orderDetail.images.title')}</div>
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   {data.uploadedImages.map((img, index) => (
                     <div key={index} style={{ width: 100, height: 100, border: '1px solid #d9d9d9', borderRadius: 4, overflow: 'hidden' }}>
@@ -215,7 +222,7 @@ function OrderDetail({ order, onClose }) {
 
             {data.uploadedFiles && data.uploadedFiles.length > 0 && (
               <div style={{ marginTop: 12 }}>
-                <div className="section-title">上传的文件</div>
+                <div className="section-title">{t('orderDetail.files.title')}</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {data.uploadedFiles.map((file, index) => (
                     <div key={index} style={{ display: 'flex', alignItems: 'center', padding: '8px 12px', background: '#f5f5f5', borderRadius: 8, border: '1px solid #e0e0e0' }}>
@@ -228,7 +235,7 @@ function OrderDetail({ order, onClose }) {
             )}
             {(data.uploaded3DFiles && data.uploaded3DFiles.length > 0) || data.threeDFile ? (
               <div style={{ marginTop: 12 }}>
-                <div className="section-title">3D文件</div>
+                <div className="section-title">{t('orderDetail.threeD.title')}</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {Array.isArray(data.uploaded3DFiles) && data.uploaded3DFiles.length > 0 ? (
                     data.uploaded3DFiles.map((file, index) => (
@@ -241,7 +248,7 @@ function OrderDetail({ order, onClose }) {
                     data.threeDFile ? (
                       <div style={{ display: 'flex', alignItems: 'center', padding: '8px 12px', background: '#f5f5f5', borderRadius: 8, border: '1px solid #e0e0e0' }}>
                         <span style={{ fontSize: 18, marginRight: 8 }}>📄</span>
-                        <a href={data.threeDFile} target="_blank" rel="noreferrer" style={{ flex: 1 }}>查看3D文件</a>
+                        <a href={data.threeDFile} target="_blank" rel="noreferrer" style={{ flex: 1 }}>{t('orderDetail.threeD.view')}</a>
                       </div>
                     ) : null
                   )}
@@ -253,7 +260,7 @@ function OrderDetail({ order, onClose }) {
 
         {activeTab === 'progress' && (
           <div className="tab-panel">
-            <div className="section-title">订单状态记录</div>
+            <div className="section-title">{t('orderDetail.timeline.title')}</div>
             <div className="timeline-list">
               {data.progressNodes.map((node) => (
                 <div key={node.id} className="timeline-node">
@@ -262,7 +269,7 @@ function OrderDetail({ order, onClose }) {
                     <span className="node-time">{node.time}</span>
                   </div>
                   <div className="node-description">{node.description}</div>
-                  {node.operator && <div className="node-operator">操作人：{node.operator}</div>}
+                  {node.operator && <div className="node-operator">{t('orderDetail.timeline.operator')}：{node.operator}</div>}
                   {node.images && node.images.length > 0 && (
                     <div className="node-images">
                       {node.images.map((img, idx) => (

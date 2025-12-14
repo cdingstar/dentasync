@@ -4,12 +4,15 @@ import ToothSel from '../../components/ToothSel'
 import './QuickOrder.css'
 import BaseInfoSection from './components/BaseInfoSection'
 import PatientInfoSection from './components/PatientInfoSection'
+import AppDesignSchemeModal from '../../components/AppDesignSchemeModal'
+import { useLanguage } from '../../context/LanguageContext'
 
 function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onConsumeSelectedProduct }) {
+  const { t } = useLanguage()
   const [form, setForm] = useState({
     clinic: 'ASIANTECH PTE. LTD.',
     doctor: '黄向荣',
-    factory: '南宁市谱佳齿科技术中心',
+    factory: 'f1',
     receiver: '',
     address: '',
     patientName: '',
@@ -62,14 +65,14 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
     '5': ['5M1','5M2','5M3']
   }
   const specialColors = [
-    { id: 'fluorosis', label: '氟斑牙' },
-    { id: 'tetracycline', label: '四环素牙' },
-    { id: 'metal-post', label: '金属桩' },
-    { id: 'fiber-post', label: '纤维桩' }
+    { id: 'fluorosis', label: t('quickOrder.specialColors.fluorosis') },
+    { id: 'tetracycline', label: t('quickOrder.specialColors.tetracycline') },
+    { id: 'metal-post', label: t('quickOrder.specialColors.metalPost') },
+    { id: 'fiber-post', label: t('quickOrder.specialColors.fiberPost') }
   ]
 
   const updateForm = (k, v) => setForm(prev => ({ ...prev, [k]: v }))
-  const addProduct = () => setProducts(prev => ([...prev, { id: prev.length + 1, name: '点击选择产品', tooth: '', molding: '常规取模', scan: '', connection: '单冠', repair: '新做' }]))
+  const addProduct = () => setProducts(prev => ([...prev, { id: prev.length + 1, name: t('quickOrder.clickToSelect'), tooth: '', molding: 'normal', scan: '', connection: 'single', repair: 'new' }]))
   const updateProduct = (id, k, v) => setProducts(prev => prev.map(p => p.id === id ? { ...p, [k]: v } : p))
   const deleteProduct = (id) => setProducts(prev => prev.filter(p => p.id !== id))
   const addColor = () => setColors(prev => ([...prev, { id: prev.length + 1, tooth: '', mainColor: '', neckColor: '', middleColor: '', cuttingEdgeColor: '', baseColor: '', toothBodyColor: '', customColor: '' }]))
@@ -87,11 +90,11 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
   }
 
   const save = () => {
-    console.info('保存下单草稿', { form, products, colors, attachments })
-    alert('已保存草稿')
+    console.info('Save Draft', { form, products, colors, attachments })
+    alert(t('quickOrder.savedDraft'))
   }
   const reset = () => {
-    setForm({ clinic: 'ASIANTECH PTE. LTD.', doctor: '黄向荣', factory: '南宁市谱佳齿科技术中心', receiver: '', address: '', patientName: '', patientPhone: '', gender: '', age: '' })
+    setForm({ clinic: 'ASIANTECH PTE. LTD.', doctor: '黄向荣', factory: 'f1', receiver: '', address: '', patientName: '', patientPhone: '', gender: '', age: '' })
     setProducts([])
     setColors([{ id: 1, tooth: '', mainColor: '', neckColor: '', middleColor: '', cuttingEdgeColor: '', baseColor: '', toothBodyColor: '', customColor: '' }])
   }
@@ -115,7 +118,7 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
         setProducts(prev => {
           const nextId = prev.length + 1
           setScrollToProductId(nextId)
-          return [...prev, { id: nextId, name, tooth: '', molding: '常规取模', scan: '', connection: '单冠', repair: '新做' }]
+          return [...prev, { id: nextId, name, tooth: '', molding: 'normal', scan: '', connection: 'single', repair: 'new' }]
         })
         if (String(name).includes('种植')) {
           setCurrentProductId(products.length + 1)
@@ -177,12 +180,26 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
     setUploaded3DFiles(prev => prev.filter((_, i) => i !== idx))
   }
 
+  const moldingOptions = [
+    { label: t('quickOrder.options.molding.normal'), value: 'normal' },
+    { label: t('quickOrder.options.molding.digital'), value: 'digital' }
+  ]
+  const connectionOptions = [
+    { label: t('quickOrder.options.connection.single'), value: 'single' },
+    { label: t('quickOrder.options.connection.bridge'), value: 'bridge' }
+  ]
+  const repairOptions = [
+    { label: t('quickOrder.options.repair.new'), value: 'new' },
+    { label: t('quickOrder.options.repair.repair'), value: 'repair' },
+    { label: t('quickOrder.options.repair.redo'), value: 'redo' }
+  ]
+
   return (
     <div className="quick-order-page">
       <div className="qo-header">
-        <div className="qo-title">一键下单</div>
+        <div className="qo-title">{t('quickOrder.title')}</div>
         <div className="qo-header-right">
-          <button className="qo-secondary" onClick={onClose}>返回</button>
+          <button className="qo-secondary" onClick={onClose}>{t('quickOrder.back')}</button>
         </div>
       </div>
 
@@ -193,28 +210,28 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
 
         {/* 产品信息 */}
         <div className="qo-section">
-          <div className="qo-section-title">产品信息（{products.length}）</div>
+          <div className="qo-section-title">{t('quickOrder.productInfo')}（{products.length}）</div>
           <div className="qo-section-content">
             <button className="qo-secondary" onClick={()=>{
               onOpenProducts && onOpenProducts()
-            }}>新增产品</button>
+            }}>{t('quickOrder.addProduct')}</button>
             {products.map(p => (
               <div key={p.id} id={`product-item-${p.id}`} className="qo-product-item">
-                <div className="qo-row"><div className="qo-label">产品名称</div><button className="qo-secondary" onClick={()=>{setActiveProductId(p.id);setLibrarySelectForProductId(p.id);onOpenProducts && onOpenProducts()}}>{pendingProductNames[p.id] || p.name}</button></div>
-                <div className="qo-row"><div className="qo-label">牙位选择</div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.productName')}</div><button className="qo-secondary" onClick={()=>{setActiveProductId(p.id);setLibrarySelectForProductId(p.id);onOpenProducts && onOpenProducts()}}>{pendingProductNames[p.id] || p.name}</button></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.toothPosition')}</div>
                   <button className="qo-secondary" onClick={()=>{setToothEditing({type:'product',id:p.id});setShowToothSelector(true)}}>
                     {p.tooth ? (
                       <span className="tooth-grid">
                         {renderToothGrid(p.tooth)}
                       </span>
-                    ) : '选择牙位'}
+                    ) : t('quickOrder.selectTooth')}
                   </button>
                 </div>
-                <div className="qo-row"><div className="qo-label">取模方式</div><Select className="qo-select" value={p.molding} onChange={(v)=>updateProduct(p.id,'molding',v)} options={["常规取模","口内扫描"]} /></div>
-                <div className="qo-row"><div className="qo-label">扫描设备</div><input className="qo-input" value={p.scan} onChange={(e)=>updateProduct(p.id,'scan',e.target.value)} placeholder="选择设备或编号" /></div>
-                <div className="qo-row"><div className="qo-label">连接方式</div><Select className="qo-select" value={p.connection} onChange={(v)=>updateProduct(p.id,'connection',v)} options={["单冠","桥体"]} /></div>
-                <div className="qo-row"><div className="qo-label">修复方式</div><Select className="qo-select" value={p.repair} onChange={(v)=>updateProduct(p.id,'repair',v)} options={["新做","返修","重做"]} /></div>
-                <button className="qo-secondary" onClick={()=>deleteProduct(p.id)}>删除</button>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.molding')}</div><Select className="qo-select" value={p.molding} onChange={(v)=>updateProduct(p.id,'molding',v)} options={moldingOptions} /></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.scan')}</div><input className="qo-input" value={p.scan} onChange={(e)=>updateProduct(p.id,'scan',e.target.value)} placeholder={t('quickOrder.scanPlaceholder')} /></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.connection')}</div><Select className="qo-select" value={p.connection} onChange={(v)=>updateProduct(p.id,'connection',v)} options={connectionOptions} /></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.repair')}</div><Select className="qo-select" value={p.repair} onChange={(v)=>updateProduct(p.id,'repair',v)} options={repairOptions} /></div>
+                <button className="qo-secondary" onClick={()=>deleteProduct(p.id)}>{t('common.delete')}</button>
               </div>
             ))}
           </div>
@@ -222,15 +239,15 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
 
         {implantParamsList.length > 0 && (
           <div className="qo-section">
-            <div className="qo-section-title">种植参数（{implantParamsList.length}）</div>
+            <div className="qo-section-title">{t('quickOrder.implantParams')}（{implantParamsList.length}）</div>
             <div className="qo-section-content">
               <div className="product-table-container">
                 <table className="product-table" style={{width:'100%',borderCollapse:'collapse'}}>
                   <thead>
                     <tr>
-                      <th style={{width:80,textAlign:'left',borderBottom:'1px solid #f0f0f0',padding:'8px 0'}}>序号</th>
-                      <th style={{textAlign:'left',borderBottom:'1px solid #f0f0f0',padding:'8px 0'}}>种植参数</th>
-                      <th style={{width:120,textAlign:'left',borderBottom:'1px solid #f0f0f0',padding:'8px 0'}}>操作</th>
+                      <th style={{width:80,textAlign:'left',borderBottom:'1px solid #f0f0f0',padding:'8px 0'}}>{t('common.no')}</th>
+                      <th style={{textAlign:'left',borderBottom:'1px solid #f0f0f0',padding:'8px 0'}}>{t('quickOrder.implantParams')}</th>
+                      <th style={{width:120,textAlign:'left',borderBottom:'1px solid #f0f0f0',padding:'8px 0'}}>{t('common.action')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -239,20 +256,20 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
                         <td style={{padding:'8px 0'}}>{item.productId}</td>
                         <td style={{padding:'8px 0'}}>
                           <div style={{ fontSize: 13, lineHeight: '1.8' }}>
-                            <div>种植系统：{item.params?.implantSystem || '-'}</div>
-                            <div>植体型号：{item.params?.implantModel || '-'}</div>
-                            <div>愈合帽直径：{item.params?.healingCapDiameter || '-'}</div>
-                            <div>取模杆：{item.params?.impressionPost || '-'}</div>
-                            <div>修复方式：{item.params?.repairMethod || '-'}</div>
+                            <div>{t('quickOrder.implantSystem')}：{item.params?.implantSystem || '-'}</div>
+                            <div>{t('quickOrder.implantModel')}：{item.params?.implantModel || '-'}</div>
+                            <div>{t('quickOrder.healingCapDiameter')}：{item.params?.healingCapDiameter || '-'}</div>
+                            <div>{t('quickOrder.impressionPost')}：{item.params?.impressionPost || '-'}</div>
+                            <div>{t('quickOrder.repairMethod')}：{item.params?.repairMethod || '-'}</div>
                           </div>
                         </td>
                         <td style={{padding:'8px 0'}}>
                           <button className="qo-secondary" onClick={()=>{
                             setEditingImplantParams(item); setCurrentProductId(item.productId); setImplantParamsVisible(true)
-                          }} style={{marginRight:8}}>修改</button>
+                          }} style={{marginRight:8}}>{t('common.edit')}</button>
                           <button className="qo-secondary" onClick={()=>{
                             setImplantParamsList(prev=>prev.filter(x=>x.productId!==item.productId))
-                          }}>删除</button>
+                          }}>{t('common.delete')}</button>
                         </td>
                       </tr>
                     ))}
@@ -265,28 +282,28 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
 
         {/* 颜色设定 */}
         <div className="qo-section">
-          <div className="qo-section-title">颜色设定</div>
+          <div className="qo-section-title">{t('quickOrder.colorSettings')}</div>
           <div className="qo-section-content">
-            <button className="qo-secondary" onClick={addColor}>添加一行</button>
+            <button className="qo-secondary" onClick={addColor}>{t('quickOrder.addColor')}</button>
             {colors.map(c => (
               <div key={c.id} className="qo-product-item">
-                <div className="qo-row"><div className="qo-label">牙位选择</div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.toothPosition')}</div>
                   <button className="qo-secondary" onClick={()=>{setToothEditing({type:'color',id:c.id});setShowToothSelector(true)}}>
                     {c.tooth ? (
                       <span className="tooth-grid">
                         {renderToothGrid(c.tooth)}
                       </span>
-                    ) : '选择牙位'}
+                    ) : t('quickOrder.selectTooth')}
                   </button>
                 </div>
-                <div className="qo-row"><div className="qo-label">主色</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'mainColor'});setShowColorSelector(true)}}>{c.mainColor||'点击选择'}</button></div>
-                <div className="qo-row"><div className="qo-label">颈部颜色</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'neckColor'});setShowColorSelector(true)}}>{c.neckColor||'点击选择'}</button></div>
-                <div className="qo-row"><div className="qo-label">中部颜色</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'middleColor'});setShowColorSelector(true)}}>{c.middleColor||'点击选择'}</button></div>
-                <div className="qo-row"><div className="qo-label">切端颜色</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'cuttingEdgeColor'});setShowColorSelector(true)}}>{c.cuttingEdgeColor||'点击选择'}</button></div>
-                <div className="qo-row"><div className="qo-label">基牙颜色</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'baseColor'});setShowColorSelector(true)}}>{c.baseColor||'点击选择'}</button></div>
-                <div className="qo-row"><div className="qo-label">牙体颜色</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'toothBodyColor'});setShowColorSelector(true)}}>{c.toothBodyColor||'点击选择'}</button></div>
-                <div className="qo-row"><div className="qo-label">自定义色</div><input className="qo-input" value={c.customColor} onChange={(e)=>updateColor(c.id,'customColor',e.target.value)} /></div>
-                <button className="qo-secondary" onClick={()=>deleteColor(c.id)}>删除</button>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.mainColor')}</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'mainColor'});setShowColorSelector(true)}}>{c.mainColor||t('quickOrder.clickToSelect')}</button></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.neckColor')}</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'neckColor'});setShowColorSelector(true)}}>{c.neckColor||t('quickOrder.clickToSelect')}</button></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.middleColor')}</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'middleColor'});setShowColorSelector(true)}}>{c.middleColor||t('quickOrder.clickToSelect')}</button></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.cuttingEdgeColor')}</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'cuttingEdgeColor'});setShowColorSelector(true)}}>{c.cuttingEdgeColor||t('quickOrder.clickToSelect')}</button></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.baseColor')}</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'baseColor'});setShowColorSelector(true)}}>{c.baseColor||t('quickOrder.clickToSelect')}</button></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.toothBodyColor')}</div><button className="qo-secondary" onClick={()=>{setColorEditing({id:c.id,field:'toothBodyColor'});setShowColorSelector(true)}}>{c.toothBodyColor||t('quickOrder.clickToSelect')}</button></div>
+                <div className="qo-row"><div className="qo-label">{t('quickOrder.customColor')}</div><input className="qo-input" value={c.customColor} onChange={(e)=>updateColor(c.id,'customColor',e.target.value)} /></div>
+                <button className="qo-secondary" onClick={()=>deleteColor(c.id)}>{t('common.delete')}</button>
               </div>
             ))}
           </div>
@@ -294,62 +311,70 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
 
         {/* 其他设置 */}
         <div className="qo-section">
-          <div className="qo-section-title">其他设置</div>
+          <div className="qo-section-title">{t('quickOrder.otherSettings')}</div>
           <div className="qo-section-content">
-            <div className="qo-row"><div className="qo-label">试戴情况</div><Select className="qo-select" value={form.trialStatus} onChange={(v)=>updateForm('trialStatus',v)} options={["试戴蜡型外形","试戴内冠","试戴颜色","试戴车瓷外形","试戴基台","试戴基台蜡冠"]} /></div>
-            <div className="qo-row"><div className="qo-label">设计方案</div><button className="qo-secondary" onClick={()=>setShowDesign(true)}>选择方案</button></div>
-            <div className="qo-row"><div className="qo-label">已选方案</div><div className="list" style={{flex:1}}>{Object.values(designSchemes).map(s=> <div key={s.id} className="list-item"><span>{s.name}</span><button className="qo-secondary" onClick={()=>removeDesign(s.category)}>移除</button></div>)}</div></div>
-            <div className="qo-row"><div className="qo-label">选择附件</div><button className="qo-secondary" onClick={()=>setShowAttachmentSelector(true)}>选择附件</button></div>
-            <div className="qo-row"><div className="qo-label">已选附件</div><div className="list" style={{flex:1}}>{attachments.map(a=> <div key={a.name} className="list-item"><span>{a.name} * {a.count}</span><button className="qo-secondary" onClick={()=>removeAttachment(a.name)}>移除</button></div>)}</div></div>
-            <div className="qo-row"><div className="qo-label">文字备注</div><input className="qo-input" value={form.remark || ''} onChange={(e)=>updateForm('remark', e.target.value)} placeholder="请输入文字备注" /></div>
+            <div className="qo-row"><div className="qo-label">{t('quickOrder.trialStatus')}</div><Select className="qo-select" value={form.trialStatus} onChange={(v)=>updateForm('trialStatus',v)} placeholder={t('common.selectPlaceholder')} options={[
+              { label: t('quickOrder.options.trial.wax'), value: 'wax' },
+              { label: t('quickOrder.options.trial.inner'), value: 'inner' },
+              { label: t('quickOrder.options.trial.color'), value: 'color' },
+              { label: t('quickOrder.options.trial.ceramic'), value: 'ceramic' },
+              { label: t('quickOrder.options.trial.abutment'), value: 'abutment' },
+              { label: t('quickOrder.options.trial.waxAbutment'), value: 'waxAbutment' }
+            ]} /></div>
+            <div className="qo-row"><div className="qo-label">{t('quickOrder.designScheme')}</div><button className="qo-secondary" onClick={()=>setShowDesign(true)}>{t('quickOrder.selectScheme')}</button></div>
+            <div className="qo-row"><div className="qo-label">{t('quickOrder.selectedScheme')}</div><div className="list" style={{flex:1}}>{Object.values(designSchemes).map(s=> <div key={s.id} className="list-item"><span>{s.name}</span><button className="qo-secondary" onClick={()=>removeDesign(s.category)}>{t('quickOrder.remove')}</button></div>)}</div></div>
+            <div className="qo-row"><div className="qo-label">{t('quickOrder.selectAttachment')}</div><button className="qo-secondary" onClick={()=>setShowAttachmentSelector(true)}>{t('quickOrder.selectAttachment')}</button></div>
+            <div className="qo-row"><div className="qo-label">{t('quickOrder.selectedAttachment')}</div><div className="list" style={{flex:1}}>{attachments.map(a=> <div key={a.name} className="list-item"><span>{a.name} * {a.count}</span><button className="qo-secondary" onClick={()=>removeAttachment(a.name)}>{t('quickOrder.remove')}</button></div>)}</div></div>
+            <div className="qo-row"><div className="qo-label">{t('quickOrder.remark')}</div><input className="qo-input" value={form.remark || ''} onChange={(e)=>updateForm('remark', e.target.value)} placeholder={t('quickOrder.remarkPlaceholder')} /></div>
 
-            <div className="qo-row"><div className="qo-label">图片上传</div>
+            <div className="qo-row"><div className="qo-label">{t('quickOrder.imageUpload')}</div>
               <div style={{flex:1}}>
                 <div className="list" style={{marginBottom:8}}>
                   {uploadedImages.map((img, idx) => (
                     <div key={idx} className="list-item" style={{gap:12}}>
                       <img src={img.url} alt={img.name} style={{width:48,height:48,borderRadius:6,objectFit:'cover'}} />
                       <span style={{flex:1}}>{img.name}</span>
-                      <button className="qo-secondary" onClick={()=>removeImage(idx)}>移除</button>
+                      <button className="qo-secondary" onClick={()=>removeImage(idx)}>{t('quickOrder.remove')}</button>
                     </div>
                   ))}
                 </div>
                 <label className="qo-secondary" style={{display:'inline-block',cursor:'pointer'}}>
-                  + 图片上传
+                  + {t('quickOrder.imageUpload')}
                   <input type="file" accept="image/*" multiple onChange={handleImageUpload} style={{display:'none'}} />
                 </label>
               </div>
             </div>
 
-            <div className="qo-row"><div className="qo-label">上传文件</div>
+            <div className="qo-row"><div className="qo-label">{t('quickOrder.fileUpload')}</div>
               <div style={{flex:1}}>
                 <div className="list" style={{marginBottom:8}}>
                   {uploadedFiles.map((file, idx) => (
                     <div key={idx} className="list-item" style={{gap:12}}>
                       <span style={{flex:1}}>{file.name}</span>
-                      <button className="qo-secondary" onClick={()=>removeFile(idx)}>移除</button>
+                      <button className="qo-secondary" onClick={()=>removeFile(idx)}>{t('quickOrder.remove')}</button>
                     </div>
                   ))}
                 </div>
                 <label className="qo-secondary" style={{display:'inline-block',cursor:'pointer'}}>
-                  + 上传文件
+                  + {t('quickOrder.fileUpload')}
+
                   <input type="file" multiple onChange={handleFileUpload} style={{display:'none'}} />
                 </label>
               </div>
             </div>
 
-            <div className="qo-row"><div className="qo-label">3D文件</div>
+            <div className="qo-row"><div className="qo-label">{t('quickOrder.3dUpload')}</div>
               <div style={{flex:1}}>
                 <div className="list" style={{marginBottom:8}}>
                   {uploaded3DFiles.map((file, idx) => (
                     <div key={idx} className="list-item" style={{gap:12}}>
                       <span style={{flex:1}}>{file.name}</span>
-                      <button className="qo-secondary" onClick={()=>remove3DFile(idx)}>移除</button>
+                      <button className="qo-secondary" onClick={()=>remove3DFile(idx)}>{t('quickOrder.remove')}</button>
                     </div>
                   ))}
                 </div>
                 <label className="qo-secondary" style={{display:'inline-block',cursor:'pointer'}}>
-                  + 3D文件
+                  + {t('quickOrder.3dUpload')}
                   <input type="file" multiple onChange={handle3DUpload} style={{display:'none'}} />
                 </label>
               </div>
@@ -359,39 +384,39 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
       </div>
 
       <div className="qo-actions">
-        <button className="qo-primary" onClick={submit}>立即下单</button>
-        <button className="qo-secondary" onClick={save}>保存</button>
-        <button className="qo-secondary" onClick={reset}>重置</button>
+        <button className="qo-primary" onClick={submit}>{t('quickOrder.submit')}</button>
+        <button className="qo-secondary" onClick={save}>{t('common.save')}</button>
+        <button className="qo-secondary" onClick={reset}>{t('quickOrder.reset')}</button>
       </div>
 
       {showProductSelector && (
         <div className="page-overlay">
           <div className="page-header">
-            <button className="primary-btn" onClick={()=>setShowProductSelector(false)}>返回</button>
-            <div className="page-title">选择产品</div>
-            <button className="primary-btn" onClick={()=>setShowProductSelector(false)}>确定</button>
+            <button className="primary-btn" onClick={()=>setShowProductSelector(false)}>{t('common.back')}</button>
+            <div className="page-title">{t('quickOrder.selectProduct')}</div>
+            <button className="primary-btn" onClick={()=>setShowProductSelector(false)}>{t('common.confirm')}</button>
           </div>
           <div className="page-body">
             <div className="list">
               {[
-                {id:'p1',name:'D1氧化锆全瓷牙',productCode:'D1'},
-                {id:'p2',name:'全瓷贴面',productCode:'VP'},
-                {id:'p3',name:'金属烤瓷冠',productCode:'PFM'},
-                {id:'p4',name:'种植牙冠',productCode:'IMPLANT'}
+                {id:'p1',name:t('quickOrder.localList.p1'),productCode:'D1'},
+                {id:'p2',name:t('quickOrder.localList.p2'),productCode:'VP'},
+                {id:'p3',name:t('quickOrder.localList.p3'),productCode:'PFM'},
+                {id:'p4',name:t('quickOrder.localList.p4'),productCode:'IMPLANT'}
               ].map(item=> (
                 <div key={item.id} className="list-item">
                   <div>{item.name}</div>
                   <button className="qo-secondary" onClick={()=>{
                     if(activeProductId){
                       updateProduct(activeProductId,'name',item.name)
-                      if (String(item.name).includes('种植')) {
+                      if (String(item.name).includes('种植') || String(item.productCode) === 'IMPLANT') {
                         setCurrentProductId(activeProductId)
                         setPendingProduct({ name: item.name, key: item.id, productCode: item.productCode })
                         setEditingImplantParams(null)
                         setImplantParamsVisible(true)
                       }
                     }
-                  }}>选择</button>
+                  }}>{t('common.select')}</button>
                 </div>
               ))}
             </div>
@@ -433,16 +458,16 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
       {showColorSelector && (
         <div className="page-overlay">
           <div className="page-header">
-            <button className="primary-btn" onClick={()=>setShowColorSelector(false)}>返回</button>
-            <div className="page-title">选择颜色</div>
-            <button className="primary-btn" onClick={()=>setShowColorSelector(false)}>确定</button>
+            <button className="primary-btn" onClick={()=>setShowColorSelector(false)}>{t('common.back')}</button>
+            <div className="page-title">{t('quickOrder.selectColor')}</div>
+            <button className="primary-btn" onClick={()=>setShowColorSelector(false)}>{t('common.confirm')}</button>
           </div>
           <div className="page-body">
             <div className="list" style={{flexDirection:'row',gap:8,marginBottom:12}}>
-              <button className={`grid-btn ${activeColorTab==='vita-classic'?'active':''}`} onClick={()=>setActiveColorTab('vita-classic')}>VITA Classic</button>
-              <button className={`grid-btn ${activeColorTab==='vita-3d'?'active':''}`} onClick={()=>setActiveColorTab('vita-3d')}>VITA 3D MASTER</button>
-              <button className={`grid-btn ${activeColorTab==='special'?'active':''}`} onClick={()=>isBaseColorField && setActiveColorTab('special')} disabled={!isBaseColorField}>特殊色</button>
-              <button className={`grid-btn ${activeColorTab==='image'?'active':''}`} onClick={()=>setActiveColorTab('image')}>图片</button>
+              <button className={`grid-btn ${activeColorTab==='vita-classic'?'active':''}`} onClick={()=>setActiveColorTab('vita-classic')}>{t('quickOrder.colorTabs.vitaClassic')}</button>
+              <button className={`grid-btn ${activeColorTab==='vita-3d'?'active':''}`} onClick={()=>setActiveColorTab('vita-3d')}>{t('quickOrder.colorTabs.vita3d')}</button>
+              <button className={`grid-btn ${activeColorTab==='special'?'active':''}`} onClick={()=>isBaseColorField && setActiveColorTab('special')} disabled={!isBaseColorField}>{t('quickOrder.colorTabs.special')}</button>
+              <button className={`grid-btn ${activeColorTab==='image'?'active':''}`} onClick={()=>setActiveColorTab('image')}>{t('quickOrder.colorTabs.image')}</button>
             </div>
 
             {activeColorTab==='vita-classic' && (
@@ -486,59 +511,42 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
             {activeColorTab==='image' && (
               <div>
                 <label className="qo-secondary" style={{display:'inline-block',cursor:'pointer'}}>
-                  上传图片
+                  {t('quickOrder.uploadImage')}
                   <input type="file" accept="image/*" onChange={(e)=>{
                     const f = (e.target.files||[])[0]
                     if (f && colorEditing.id) {
-                      updateColor(colorEditing.id, colorEditing.field, `图片:${f.name}`)
+                      updateColor(colorEditing.id, colorEditing.field, `Image:${f.name}`)
                       setShowColorSelector(false)
                       e.target.value=''
                     }
                   }} style={{display:'none'}} />
                 </label>
-                <p style={{fontSize:12,color:'#666',marginTop:8}}>支持 JPG、PNG 等图片格式</p>
+                <p style={{fontSize:12,color:'#666',marginTop:8}}>{t('quickOrder.imageUploadNote')}</p>
               </div>
             )}
           </div>
         </div>
       )}
 
-      {showDesign && (
-        <div className="page-overlay">
-          <div className="page-header">
-            <button className="primary-btn" onClick={()=>setShowDesign(false)}>返回</button>
-            <div className="page-title">选择设计方案</div>
-            <button className="primary-btn" onClick={()=>setShowDesign(false)}>确定</button>
-          </div>
-          <div className="page-body">
-            <div className="list">
-              {[
-                {id:'d1',name:'试戴内冠',category:'trial'},
-                {id:'d2',name:'试戴颜色',category:'trial'},
-                {id:'d3',name:'试戴蜡型外形',category:'trial'},
-              ].map(s=> (
-                <div key={s.id} className="list-item">
-                  <div>{s.name}</div>
-                  <button className="qo-secondary" onClick={()=> setDesignSchemes(prev=> ({...prev, [s.category]: s})) }>选择</button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      <AppDesignSchemeModal
+        visible={showDesign}
+        onClose={() => setShowDesign(false)}
+        onConfirm={(schemes) => setDesignSchemes(schemes)}
+        initialSelection={designSchemes}
+      />
 
       {showAttachmentSelector && (
         <div className="page-overlay">
           <div className="page-header">
-            <button className="primary-btn" onClick={()=>setShowAttachmentSelector(false)}>返回</button>
-            <div className="page-title">选择附件</div>
-            <button className="primary-btn" onClick={()=>{ setAttachments(tempAttachments); setShowAttachmentSelector(false) }}>确定</button>
+            <button className="primary-btn" onClick={()=>setShowAttachmentSelector(false)}>{t('common.back')}</button>
+            <div className="page-title">{t('quickOrder.selectAttachment')}</div>
+            <button className="primary-btn" onClick={()=>{ setAttachments(tempAttachments); setShowAttachmentSelector(false) }}>{t('common.confirm')}</button>
           </div>
           <div className="page-body">
             <div className="list" style={{marginBottom:12}}>
               {tempAttachments.map(item => (
                 <div key={item.name} className="list-item">
-                  <div style={{flex:1}}>{item.name}</div>
+                  <div style={{flex:1}}>{t(`quickOrder.attachments.${item.name}`)}</div>
                   <button className="secondary-btn" onClick={()=>{
                     setTempAttachments(prev => prev.map(a => a.name===item.name ? { ...a, count: Math.max(1, (a.count||1)-1) } : a))
                   }}>－</button>
@@ -550,10 +558,10 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
               ))}
             </div>
 
-            <div style={{fontSize:12,color:'#666',margin:'0 0 8px 0'}}>附件（重复点击可取消选择）</div>
+            <div style={{fontSize:12,color:'#666',margin:'0 0 8px 0'}}>{t('quickOrder.attachmentNote')}</div>
             <div className="grid" style={{gridTemplateColumns:'repeat(3,1fr)'}}>
               {[
-                '工厂颈架','颈架垫片','螺丝附件','颊面管','托槽','螺旋','带环','取模杆','旧模','替代体','医生颈架','U盘','蜡冠','参考模','胶粒','转移杆螺丝','保证卡','基台发货单','定位器','印模帽','基台','旧牙','转移杆','取模杆螺丝'
+                'factoryNeck','neckSpacer','screw','buccalTube','bracket','spiral','band','impressionPost','oldMold','analog','doctorNeck','usb','waxCrown','refMold','rubber','transferScrew','warranty','abutmentList','locator','impressionCap','abutment','oldTooth','transfer','impressionScrew'
               ].map(name => {
                 const selected = tempAttachments.some(a => a.name===name)
                 return (
@@ -569,7 +577,7 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
                         return [...prev, { name, count: 1 }]
                       })
                     }}
-                  >{name}</button>
+                  >{t(`quickOrder.attachments.${name}`)}</button>
                 )
               })}
             </div>
@@ -580,22 +588,22 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
       {implantParamsVisible && (
         <div className="page-overlay">
           <div className="page-header">
-            <button className="primary-btn" onClick={()=>{ setImplantParamsVisible(false); setPendingProduct(null); setEditingImplantParams(null) }}>返回</button>
-            <div className="page-title">种植参数选择器</div>
+            <button className="primary-btn" onClick={()=>{ setImplantParamsVisible(false); setPendingProduct(null); setEditingImplantParams(null) }}>{t('common.back')}</button>
+            <div className="page-title">{t('quickOrder.implantParamsSelector')}</div>
             <button className="primary-btn" onClick={()=>{
               setImplantParamsVisible(false)
-            }}>确定</button>
+            }}>{t('common.confirm')}</button>
           </div>
           <div className="page-body">
             <div className="qo-product-item">
-              <div className="qo-row"><div className="qo-label">种植系统</div><input id="ipt-implantSystem" className="qo-input" placeholder="输入或选择" /></div>
-              <div className="qo-row"><div className="qo-label">植体型号</div><input id="ipt-implantModel" className="qo-input" placeholder="输入型号" /></div>
-              <div className="qo-row"><div className="qo-label">愈合帽直径</div><input id="ipt-healingCapDiameter" className="qo-input" placeholder="如 4.5mm" /></div>
-              <div className="qo-row"><div className="qo-label">取模杆</div><input id="ipt-impressionPost" className="qo-input" placeholder="输入取模杆类型" /></div>
-              <div className="qo-row"><div className="qo-label">修复方式</div><Select className="qo-select" value={editingImplantParams?.params?.repairMethod || '新做'} onChange={(v)=>{
+              <div className="qo-row"><div className="qo-label">{t('quickOrder.implantParams.system')}</div><input id="ipt-implantSystem" className="qo-input" placeholder={t('quickOrder.inputOrSelect')} /></div>
+              <div className="qo-row"><div className="qo-label">{t('quickOrder.implantParams.model')}</div><input id="ipt-implantModel" className="qo-input" placeholder={t('quickOrder.inputModel')} /></div>
+              <div className="qo-row"><div className="qo-label">{t('quickOrder.implantParams.healingCap')}</div><input id="ipt-healingCapDiameter" className="qo-input" placeholder={t('quickOrder.inputDia')} /></div>
+              <div className="qo-row"><div className="qo-label">{t('quickOrder.implantParams.impressionPost')}</div><input id="ipt-impressionPost" className="qo-input" placeholder={t('quickOrder.inputPost')} /></div>
+              <div className="qo-row"><div className="qo-label">{t('quickOrder.implantParams.repairMethod')}</div><Select className="qo-select" value={editingImplantParams?.params?.repairMethod || t('quickOrder.options.repair.new')} onChange={(v)=>{
                 const el = document.getElementById('ipt-repairMethod-store'); if(el) el.value = v
-              }} options={["新做","返修","重做"]} /></div>
-              <input id="ipt-repairMethod-store" type="hidden" defaultValue={editingImplantParams?.params?.repairMethod || '新做'} />
+              }} options={[t('quickOrder.options.repair.new'),t('quickOrder.options.repair.repair'),t('quickOrder.options.repair.redo')]} /></div>
+              <input id="ipt-repairMethod-store" type="hidden" defaultValue={editingImplantParams?.params?.repairMethod || t('quickOrder.options.repair.new')} />
               <div style={{display:'flex',gap:8,marginTop:12}}>
                 <button className="qo-primary" onClick={()=>{
                   const params = {
@@ -603,7 +611,7 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
                     implantModel: document.getElementById('ipt-implantModel')?.value || '',
                     healingCapDiameter: document.getElementById('ipt-healingCapDiameter')?.value || '',
                     impressionPost: document.getElementById('ipt-impressionPost')?.value || '',
-                    repairMethod: document.getElementById('ipt-repairMethod-store')?.value || '新做'
+                    repairMethod: document.getElementById('ipt-repairMethod-store')?.value || t('quickOrder.options.repair.new')
                   }
                   if (editingImplantParams) {
                     setImplantParamsList(prev=>prev.map(it=> it.productId===editingImplantParams.productId ? { ...it, params } : it))
@@ -614,8 +622,8 @@ function QuickOrder({ onClose, onOpenProducts, selectedProductFromLibrary, onCon
                     setPendingProduct(null)
                     setImplantParamsVisible(false)
                   }
-                }}>保存参数</button>
-                <button className="qo-secondary" onClick={()=>{ setImplantParamsVisible(false); setPendingProduct(null); setEditingImplantParams(null) }}>取消</button>
+                }}>{t('quickOrder.saveParams')}</button>
+                <button className="qo-secondary" onClick={()=>{ setImplantParamsVisible(false); setPendingProduct(null); setEditingImplantParams(null) }}>{t('common.cancel')}</button>
               </div>
             </div>
           </div>

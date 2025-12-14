@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import './PatientArchive.css'
+import { useLanguage } from '../context/LanguageContext'
 
 function PatientArchive() {
+  const { t } = useLanguage()
   const [search, setSearch] = useState('')
   const [showEditor, setShowEditor] = useState(false)
   const [editing, setEditing] = useState(null)
@@ -17,11 +19,22 @@ function PatientArchive() {
     return data.filter(x => x.patientName.toLowerCase().includes(s) || x.patientId.toLowerCase().includes(s) || x.phone.toLowerCase().includes(s))
   }, [search, data])
 
+  useEffect(() => {
+    const handler = (e) => {
+      const { page, query } = e.detail || {}
+      if (page === 'patient') {
+        setSearch(query || '')
+      }
+    }
+    window.addEventListener('globalSearch', handler)
+    return () => window.removeEventListener('globalSearch', handler)
+  }, [])
+
   const openAdd = () => { setEditing(null); setForm({ patientName: '', phone: '', gender: '', birthday: '', addPerson: '黄向荣', notes: '' }); setShowEditor(true) }
   const openEdit = (item) => { setEditing(item); setForm({ patientName: item.patientName, phone: item.phone, gender: item.gender, birthday: item.birthday, addPerson: item.addPerson, notes: item.notes }); setShowEditor(true) }
   const remove = (id) => setData(data.filter(x => x.id !== id))
   const save = () => {
-    if (!form.patientName || !form.phone) return alert('请填写患者姓名与手机号码')
+    if (!form.patientName || !form.phone) return alert(t('patient.pleaseEnterNameAndPhone'))
     if (editing) setData(data.map(x => x.id === editing.id ? { ...editing, ...form } : x))
     else setData([{ id: String(Date.now()), patientId: `PA${Date.now().toString().slice(-6)}`, clinic: 'ASIANTECH PTE. LTD.', createTime: new Date().toISOString().replace('T',' ').slice(0,19), ...form }, ...data])
     setShowEditor(false)
@@ -30,9 +43,9 @@ function PatientArchive() {
   return (
     <div className="patient-page">
       <div className="header">
-        <div className="title">患者档案</div>
+        <div className="title">{t('patient.title')}</div>
         <div className="tools">
-          <button className="primary" onClick={openAdd}>添加患者档案</button>
+          <button className="primary" onClick={openAdd}>{t('patient.add')}</button>
         </div>
       </div>
 
@@ -45,32 +58,32 @@ function PatientArchive() {
               <div className="time">{x.createTime}</div>
             </div>
             <div className="row">
-              <div className="label">患者</div>
+              <div className="label">{t('patient.name')}</div>
               <div className="value name">{x.patientName}</div>
             </div>
             <div className="row">
-              <div className="label">手机号码</div>
+              <div className="label">{t('patient.phone')}</div>
               <div className="value">{x.phone}</div>
             </div>
             <div className="row">
-              <div className="label">性别</div>
-              <div className="value">{x.gender || '未知'}</div>
+              <div className="label">{t('patient.gender')}</div>
+              <div className="value">{x.gender || t('patient.unknown')}</div>
             </div>
             <div className="row">
-              <div className="label">生日</div>
+              <div className="label">{t('patient.birthday')}</div>
               <div className="value">{x.birthday || '-'}</div>
             </div>
             <div className="row">
-              <div className="label">添加人</div>
+              <div className="label">{t('patient.creator')}</div>
               <div className="value">{x.addPerson}</div>
             </div>
             <div className="row">
-              <div className="label">备注</div>
+              <div className="label">{t('patient.notes')}</div>
               <div className="value">{x.notes || '-'}</div>
             </div>
             <div className="actions">
-              <button className="link" onClick={() => openEdit(x)}>编辑</button>
-              <button className="danger" onClick={() => remove(x.id)}>删除</button>
+              <button className="link" onClick={() => openEdit(x)}>{t('common.edit')}</button>
+              <button className="danger" onClick={() => remove(x.id)}>{t('common.delete')}</button>
             </div>
           </div>
         ))}
@@ -79,17 +92,17 @@ function PatientArchive() {
       {showEditor && (
         <div className="page-overlay">
           <div className="page-header">
-            <button className="primary" onClick={() => setShowEditor(false)}>返回</button>
-            <div className="page-title">{editing ? '编辑患者' : '添加患者'}</div>
-            <button className="primary" onClick={save}>确定</button>
+            <button className="primary" onClick={() => setShowEditor(false)}>{t('common.back')}</button>
+            <div className="page-title">{editing ? t('patient.edit') : t('patient.add')}</div>
+            <button className="primary" onClick={save}>{t('common.confirm')}</button>
           </div>
           <div className="page-body">
-            <Field label="患者姓名" value={form.patientName} onChange={(t) => setForm({ ...form, patientName: t })} />
-            <Field label="手机号码" value={form.phone} onChange={(t) => setForm({ ...form, phone: t })} />
-            <Field label="性别" value={form.gender} onChange={(t) => setForm({ ...form, gender: t })} />
-            <Field label="生日" value={form.birthday} onChange={(t) => setForm({ ...form, birthday: t })} />
-            <Field label="添加人" value={form.addPerson} onChange={(t) => setForm({ ...form, addPerson: t })} />
-            <Field label="备注" value={form.notes} onChange={(t) => setForm({ ...form, notes: t })} multiline />
+            <Field label={t('patient.name')} value={form.patientName} onChange={(t) => setForm({ ...form, patientName: t })} />
+            <Field label={t('patient.phone')} value={form.phone} onChange={(t) => setForm({ ...form, phone: t })} />
+            <Field label={t('patient.gender')} value={form.gender} onChange={(t) => setForm({ ...form, gender: t })} />
+            <Field label={t('patient.birthday')} value={form.birthday} onChange={(t) => setForm({ ...form, birthday: t })} />
+            <Field label={t('patient.creator')} value={form.addPerson} onChange={(t) => setForm({ ...form, addPerson: t })} />
+            <Field label={t('patient.notes')} value={form.notes} onChange={(t) => setForm({ ...form, notes: t })} multiline />
           </div>
         </div>
       )}
@@ -111,13 +124,3 @@ function Field({ label, value, onChange, multiline }) {
 }
 
 export default PatientArchive
-  useEffect(() => {
-    const handler = (e) => {
-      const { page, query } = e.detail || {}
-      if (page === 'patient') {
-        setSearch(query || '')
-      }
-    }
-    window.addEventListener('globalSearch', handler)
-    return () => window.removeEventListener('globalSearch', handler)
-  }, [])

@@ -8,5 +8,22 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      (function(){
+        var root = document.getElementById('root');
+        setTimeout(function(){
+          if (!root) return;
+          if (root.childElementCount === 0) {
+            root.style.display = 'flex';
+            root.style.alignItems = 'center';
+            root.style.justifyContent = 'center';
+            root.style.color = '#333';
+            root.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+            root.style.padding = '20px';
+            root.innerHTML = '预览需要构建或运行 Vite。请运行 npm run preview 或打开 ./dist/index.html';
+          }
+        }, 800);
+      })();
+    </script>
   </body>
 </html>

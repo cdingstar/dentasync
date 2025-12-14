@@ -1,13 +1,15 @@
 import React from 'react'
 import './MenuBar.css'
+import { useLanguage } from '../context/LanguageContext'
 
 function MenuBar({ currentPage, onPageChange }) {
+  const { t } = useLanguage()
   const menuItems = [
-    { id: 'workspace', label: '工作台', icon: '🏠' },
-    { id: 'messages', label: '消息', icon: '💬' },
-    { id: 'order', label: '下单', icon: '📝' },
-    { id: 'orders', label: '订单', icon: '📋' },
-    { id: 'my', label: '我的', icon: '👤' }
+    { id: 'workspace', label: t('menu.workspace'), icon: '🏠' },
+    { id: 'messages', label: t('menu.messages'), icon: '💬' },
+    { id: 'order', label: t('menu.order'), icon: '📝' },
+    { id: 'orders', label: t('menu.orders'), icon: '📋' },
+    { id: 'my', label: t('menu.my'), icon: '👤' }
   ]
 
   return (

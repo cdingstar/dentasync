@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import './Products.css'
 import FilterPanel from '../components/FilterPanel'
 import { productsData } from '../data/productsData'
+import { useLanguage } from '../context/LanguageContext'
 
 function Products({ onClose, onSelect }) {
+  const { t } = useLanguage()
   const [showFilterPanel, setShowFilterPanel] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [currentCategory, setCurrentCategory] = useState('flash')
@@ -112,17 +114,22 @@ function Products({ onClose, onSelect }) {
     console.log('应用筛选条件:', filters)
   }
 
+  const getProductTitle = (product) => t(`products.data.${product.id}.title`) || product.title
+  const getProductStatus = (product) => t(`products.data.${product.id}.status`) || product.status
+
   const orderProduct = (product) => {
+    const title = getProductTitle(product)
     if(onSelect){
-      onSelect({ title: product.title, id: product.id })
+      onSelect({ ...product, title, id: product.id })
       onClose && onClose()
     } else {
-      alert(`下单产品: ${product.title}`)
+      alert(`${t('products.orderProduct')}: ${title}`)
     }
   }
 
   const filteredProducts = products.filter(product => {
-    if (searchQuery && !product.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+    const title = getProductTitle(product)
+    if (searchQuery && !title.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false
     }
     if (currentCategory !== 'all' && product.category !== currentCategory) {
@@ -141,13 +148,13 @@ function Products({ onClose, onSelect }) {
               <path d="M12.5 15L7.5 10L12.5 5" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <div className="header-title">产品库</div>
+          <div className="header-title">{t('products.title')}</div>
         </div>
         <div className="header-right">
           <div className="search-container">
             <input 
               type="text" 
-              placeholder="产品名称" 
+              placeholder={t('products.searchPlaceholder')}
               value={searchQuery}
               onChange={handleSearch}
               onKeyPress={handleSearchKeyPress}
@@ -155,7 +162,7 @@ function Products({ onClose, onSelect }) {
             {searchQuery && (
               <div className="search-clear" onClick={clearSearch}>×</div>
             )}
-            <button className="search-btn" onClick={executeSearch} aria-label="搜索">
+            <button className="search-btn" onClick={executeSearch} aria-label={t('common.search') || "搜索"}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M14 14L10.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -196,31 +203,31 @@ function Products({ onClose, onSelect }) {
             className={`category-tab ${currentCategory === 'flash' ? 'active' : ''}`}
             onClick={() => selectCategory('flash')}
           >
-            闪瓷系列
+            {t('products.flash')}
           </div>
           <div 
             className={`category-tab ${currentCategory === 'zirconia' ? 'active' : ''}`}
             onClick={() => selectCategory('zirconia')}
           >
-            氧化锆类
+            {t('products.zirconia')}
           </div>
           <div 
             className={`category-tab ${currentCategory === 'metal' ? 'active' : ''}`}
             onClick={() => selectCategory('metal')}
           >
-            金属类
+            {t('products.metal')}
           </div>
           <div 
             className={`category-tab ${currentCategory === 'ceramic' ? 'active' : ''}`}
             onClick={() => selectCategory('ceramic')}
           >
-            铸瓷类
+            {t('products.ceramic')}
           </div>
           <div 
             className={`category-tab ${currentCategory === 'implant' ? 'active' : ''}`}
             onClick={() => selectCategory('implant')}
           >
-            种植产品
+            {t('products.implant')}
           </div>
         </div>
         
@@ -243,15 +250,15 @@ function Products({ onClose, onSelect }) {
                 <div className="product-placeholder">🦷</div>
               </div>
               <div className="product-info">
-                <div className="product-title">{product.title}</div>
-                <div className="product-status">{product.status}</div>
+                <div className="product-title">{getProductTitle(product)}</div>
+                <div className="product-status">{getProductStatus(product)}</div>
               </div>
               <div className="product-action">
                 <button 
                   className="order-btn" 
                   onClick={() => orderProduct(product)}
                 >
-                  立即下单
+                  {t('products.orderNow')}
                 </button>
               </div>
             </div>

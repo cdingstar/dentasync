@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './FilterPanel.css'
+import { useLanguage } from '../context/LanguageContext'
 
 // 筛选Tab面板组件
 function FilterTabPanel({ category, options, activeFilters, onSelectFilter, onResetToAll }) {
+  const { t } = useLanguage()
   return (
     <div className="filter-tab-panel">
       <div className="filter-panel-header">
         <span className="filter-count">
-          已选择 {activeFilters.includes('all') ? 0 : activeFilters.length} 项
+          {t('filter.selectedCount', { count: activeFilters.includes('all') ? 0 : activeFilters.length }).replace('{count}', activeFilters.includes('all') ? 0 : activeFilters.length)}
         </span>
         <button className="filter-reset-btn" onClick={onResetToAll}>
-          重置为全部
+          {t('filter.resetToAll')}
         </button>
       </div>
       
@@ -31,6 +33,7 @@ function FilterTabPanel({ category, options, activeFilters, onSelectFilter, onRe
 
 // 主筛选面板组件
 function FilterPanel({ showFilterPanel, toggleFilterPanel, filters, selectFilter, resetFilters, applyFilters }) {
+  const { t } = useLanguage()
   const [activeFilterTab, setActiveFilterTab] = useState('function')
   const [selectedSuppliers, setSelectedSuppliers] = useState(['ASIANTECH PTE. LTD.'])
   const [showSupplierDropdown, setShowSupplierDropdown] = useState(false)
@@ -88,7 +91,7 @@ function FilterPanel({ showFilterPanel, toggleFilterPanel, filters, selectFilter
     <div className="filter-panel" onClick={toggleFilterPanel}>
       <div className="filter-panel-content" onClick={(e) => e.stopPropagation()}>
         <div className="filter-header">
-          <h3>筛选条件</h3>
+          <h3>{t('filter.title')}</h3>
           <div className="filter-header-right">
             <button className="filter-close" onClick={toggleFilterPanel}>×</button>
           </div>
@@ -101,25 +104,25 @@ function FilterPanel({ showFilterPanel, toggleFilterPanel, filters, selectFilter
               className={`filter-tab ${activeFilterTab === 'function' ? 'active' : ''}`}
               onClick={() => setActiveFilterTab('function')}
             >
-              功能
+              {t('filter.category.function')}
             </button>
             <button 
               className={`filter-tab ${activeFilterTab === 'material' ? 'active' : ''}`}
               onClick={() => setActiveFilterTab('material')}
             >
-              材质
+              {t('filter.category.material')}
             </button>
             <button 
               className={`filter-tab ${activeFilterTab === 'brand' ? 'active' : ''}`}
               onClick={() => setActiveFilterTab('brand')}
             >
-              品牌
+              {t('filter.category.brand')}
             </button>
             <button 
               className={`filter-tab ${activeFilterTab === 'other' ? 'active' : ''}`}
               onClick={() => setActiveFilterTab('other')}
             >
-              其他
+              {t('filter.category.other')}
             </button>
           </div>
 
@@ -129,11 +132,11 @@ function FilterPanel({ showFilterPanel, toggleFilterPanel, filters, selectFilter
               <FilterTabPanel 
                 category="function"
                 options={[
-                  { value: 'all', label: '全部' },
-                  { value: 'crown', label: '牙冠修复' },
-                  { value: 'bridge', label: '桥体修复' },
-                  { value: 'inlay', label: '嵌体填充' },
-                  { value: 'veneer', label: '贴面美容' }
+                  { value: 'all', label: t('filter.options.all') },
+                  { value: 'crown', label: t('filter.options.crown') },
+                  { value: 'bridge', label: t('filter.options.bridge') },
+                  { value: 'inlay', label: t('filter.options.inlay') },
+                  { value: 'veneer', label: t('filter.options.veneer') }
                 ]}
                 activeFilters={filters.function}
                 onSelectFilter={selectFilter}
@@ -145,11 +148,11 @@ function FilterPanel({ showFilterPanel, toggleFilterPanel, filters, selectFilter
               <FilterTabPanel 
                 category="material"
                 options={[
-                  { value: 'all', label: '全部' },
-                  { value: 'zirconia', label: '氧化锆' },
-                  { value: 'ceramic', label: '全瓷' },
-                  { value: 'metal', label: '金属' },
-                  { value: 'composite', label: '复合材料' }
+                  { value: 'all', label: t('filter.options.all') },
+                  { value: 'zirconia', label: t('filter.options.zirconia') },
+                  { value: 'ceramic', label: t('filter.options.ceramic') },
+                  { value: 'metal', label: t('filter.options.metal') },
+                  { value: 'composite', label: t('filter.options.composite') }
                 ]}
                 activeFilters={filters.material}
                 onSelectFilter={selectFilter}
@@ -161,11 +164,11 @@ function FilterPanel({ showFilterPanel, toggleFilterPanel, filters, selectFilter
               <FilterTabPanel 
                 category="brand"
                 options={[
-                  { value: 'all', label: '全部' },
-                  { value: 'premium', label: 'Premium系列' },
-                  { value: 'digital', label: '数码系列' },
-                  { value: 'classic', label: '经典系列' },
-                  { value: 'japan', label: '日本进口' }
+                  { value: 'all', label: t('filter.options.all') },
+                  { value: 'premium', label: t('filter.options.premium') },
+                  { value: 'digital', label: t('filter.options.digital') },
+                  { value: 'classic', label: t('filter.options.classic') },
+                  { value: 'japan', label: t('filter.options.japan') }
                 ]}
                 activeFilters={filters.brand}
                 onSelectFilter={selectFilter}
@@ -177,10 +180,10 @@ function FilterPanel({ showFilterPanel, toggleFilterPanel, filters, selectFilter
               <FilterTabPanel 
                 category="other"
                 options={[
-                  { value: 'all', label: '全部' },
-                  { value: 'new', label: '新品推荐' },
-                  { value: 'popular', label: '热门产品' },
-                  { value: 'discount', label: '优惠产品' }
+                  { value: 'all', label: t('filter.options.all') },
+                  { value: 'new', label: t('filter.options.new') },
+                  { value: 'popular', label: t('filter.options.popular') },
+                  { value: 'discount', label: t('filter.options.discount') }
                 ]}
                 activeFilters={filters.other}
                 onSelectFilter={selectFilter}
@@ -191,8 +194,8 @@ function FilterPanel({ showFilterPanel, toggleFilterPanel, filters, selectFilter
         </div>
         
         <div className="filter-actions">
-          <button className="filter-reset" onClick={resetFilters}>重置</button>
-          <button className="filter-apply" onClick={applyFilters}>应用筛选</button>
+          <button className="filter-reset" onClick={resetFilters}>{t('filter.reset')}</button>
+          <button className="filter-apply" onClick={applyFilters}>{t('filter.apply')}</button>
         </div>
       </div>
     </div>
